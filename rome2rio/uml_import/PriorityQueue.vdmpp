@@ -1,0 +1,16 @@
+class PriorityQueue
+operations
+  public  push : ()  ==> ?
+  push() ==
+    is not yet specified;
+
+  public  pop : ()  ==> ?
+  pop() ==
+    is not yet specified;
+
+  public  clear : ()  ==> ?
+  clear() ==
+    is not yet specified;
+
+
+end PriorityQueue

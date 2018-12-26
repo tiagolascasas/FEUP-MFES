@@ -1,0 +1,12 @@
+class Graph
+instance variables
+  node:set of (Node);
+  priorityQueue:[PriorityQueue];
+
+operations
+  public  findShortestPath : ()  ==> ?
+  findShortestPath() ==
+    is not yet specified;
+
+
+end Graph

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_S9TTsAkwEem9R9-zCjaHaQ" name="rome2rio">
+  <eAnnotations xmi:id="_S9T6wAkwEem9R9-zCjaHaQ" source="Objing">
+    <contents xmi:type="uml:Property" xmi:id="_S9T6wQkwEem9R9-zCjaHaQ" name="exporterVersion">
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_S9T6wgkwEem9R9-zCjaHaQ" value="3.0.0"/>
+    </contents>
+  </eAnnotations>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9T6wwkwEem9R9-zCjaHaQ" name="Graph">
+    <ownedAttribute xmi:id="_S9YzQAkwEem9R9-zCjaHaQ" name="node" visibility="public" type="_S9aBZwkwEem9R9-zCjaHaQ" aggregation="composite" association="_S9ZaUAkwEem9R9-zCjaHaQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S9YzQQkwEem9R9-zCjaHaQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S9YzQgkwEem9R9-zCjaHaQ"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_S9YzQwkwEem9R9-zCjaHaQ" name="priorityQueue" visibility="public" type="_S9aBYwkwEem9R9-zCjaHaQ" aggregation="composite" association="_S9aBYQkwEem9R9-zCjaHaQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S9YzRAkwEem9R9-zCjaHaQ"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_S9YzRQkwEem9R9-zCjaHaQ" name="findShortestPath" visibility="public"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_S9ZaUAkwEem9R9-zCjaHaQ" memberEnd="_S9YzQAkwEem9R9-zCjaHaQ _S9aBYAkwEem9R9-zCjaHaQ">
+    <ownedEnd xmi:id="_S9aBYAkwEem9R9-zCjaHaQ" visibility="public" type="_S9T6wwkwEem9R9-zCjaHaQ" association="_S9ZaUAkwEem9R9-zCjaHaQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_S9aBYQkwEem9R9-zCjaHaQ" memberEnd="_S9YzQwkwEem9R9-zCjaHaQ _S9aBYgkwEem9R9-zCjaHaQ">
+    <ownedEnd xmi:id="_S9aBYgkwEem9R9-zCjaHaQ" visibility="public" type="_S9T6wwkwEem9R9-zCjaHaQ" association="_S9aBYQkwEem9R9-zCjaHaQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9aBYwkwEem9R9-zCjaHaQ" name="PriorityQueue">
+    <ownedOperation xmi:id="_S9aBZAkwEem9R9-zCjaHaQ" name="push" visibility="public"/>
+    <ownedOperation xmi:id="_S9aBZQkwEem9R9-zCjaHaQ" name="pop" visibility="public"/>
+    <ownedOperation xmi:id="_S9aBZgkwEem9R9-zCjaHaQ" name="clear" visibility="public"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9aBZwkwEem9R9-zCjaHaQ" name="Node">
+    <ownedAttribute xmi:id="_S9aBaAkwEem9R9-zCjaHaQ" name="node" visibility="public" type="_S9aBZwkwEem9R9-zCjaHaQ" association="_S9aBbwkwEem9R9-zCjaHaQ">
+      <ownedComment xmi:id="_S9aBaQkwEem9R9-zCjaHaQ">
+        <body>&lt;Enter note text here></body>
+      </ownedComment>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S9aBagkwEem9R9-zCjaHaQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S9aBawkwEem9R9-zCjaHaQ"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_S9aBbAkwEem9R9-zCjaHaQ" visibility="public" type="_S9aBZwkwEem9R9-zCjaHaQ" association="_S9aBbwkwEem9R9-zCjaHaQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S9aBbQkwEem9R9-zCjaHaQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S9aBbgkwEem9R9-zCjaHaQ"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:AssociationClass" xmi:id="_S9aBbwkwEem9R9-zCjaHaQ" name="Edge" memberEnd="_S9aBaAkwEem9R9-zCjaHaQ _S9aBbAkwEem9R9-zCjaHaQ">
+    <ownedComment xmi:id="_S9aBcAkwEem9R9-zCjaHaQ">
+      <body>&lt;Enter note text here></body>
+    </ownedComment>
+    <ownedAttribute xmi:id="_S9aBcQkwEem9R9-zCjaHaQ" name="edgeType" visibility="public" type="_S9aBdgkwEem9R9-zCjaHaQ" aggregation="composite" association="_S9aBdAkwEem9R9-zCjaHaQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S9aBcgkwEem9R9-zCjaHaQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S9aBcwkwEem9R9-zCjaHaQ"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_S9aBdAkwEem9R9-zCjaHaQ" memberEnd="_S9aBcQkwEem9R9-zCjaHaQ _S9aBdQkwEem9R9-zCjaHaQ">
+    <ownedEnd xmi:id="_S9aBdQkwEem9R9-zCjaHaQ" visibility="public" type="_S9aBbwkwEem9R9-zCjaHaQ" association="_S9aBdAkwEem9R9-zCjaHaQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9aBdgkwEem9R9-zCjaHaQ" name="EdgeType"/>
+</uml:Model>

@@ -1,0 +1,6 @@
+class Node
+instance variables
+  node:set of (Node);
+  null:set of (Node);
+
+end Node
