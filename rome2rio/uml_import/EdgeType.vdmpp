@@ -8,6 +8,6 @@ instance variables
   travelType:TravelType;
   time:int;
   distance:int;
-  price:?;
+  price:real;
 
 end EdgeType

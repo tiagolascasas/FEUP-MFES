@@ -1,6 +1,6 @@
 class PriorityQueue
 operations
-  public  addElement : Node ==> ?
+  public  addElement : Node ==> bool
   addElement(element) ==
     is not yet specified;
 

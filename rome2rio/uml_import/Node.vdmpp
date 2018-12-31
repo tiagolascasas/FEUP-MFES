@@ -1,8 +1,8 @@
 class Node
 instance variables
   priority:int;
-  coordinateNS:?;
-  coordinateEW:?;
+  coordinateNS:real;
+  coordinateEW:real;
   location:seq of (char);
 
 end Node
