@@ -1,15 +1,11 @@
 class PriorityQueue
 operations
-  public  push : ()  ==> ?
-  push() ==
+  public  addElement : Node ==> ?
+  addElement(element) ==
     is not yet specified;
 
-  public  pop : ()  ==> ?
-  pop() ==
-    is not yet specified;
-
-  public  clear : ()  ==> ?
-  clear() ==
+  public  popHighestPriorityElement : ()  ==> Node
+  popHighestPriorityElement() ==
     is not yet specified;
 
 

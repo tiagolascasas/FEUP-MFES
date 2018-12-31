@@ -1,2 +1,13 @@
 class EdgeType
+
+types
+  public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
+  public TravelType = <ALL> | <CAR> | <PLANE> | <TRAIN> | <FERRY>;
+
+instance variables
+  travelType:TravelType;
+  time:int;
+  distance:int;
+  price:?;
+
 end EdgeType

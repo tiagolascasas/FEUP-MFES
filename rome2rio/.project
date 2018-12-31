@@ -18,4 +18,11 @@
 	<natures>
 		<nature>org.overture.ide.vdmpp.core.nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>rome2rio.uml</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/model/rome2rio.uml</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -1,0 +1,11 @@
+class Rome2Rio
+instance variables
+  graph:Graph;
+
+operations
+  public  listLocations : ()  ==> ?
+  listLocations() ==
+    is not yet specified;
+
+
+end Rome2Rio

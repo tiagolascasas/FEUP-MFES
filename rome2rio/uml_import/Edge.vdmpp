@@ -1,5 +1,7 @@
 class Edge
 instance variables
   edgeType:set of (EdgeType);
+  sourceNode:Node;
+  targetNode:Node;
 
 end Edge

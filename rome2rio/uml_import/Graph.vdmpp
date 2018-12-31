@@ -1,11 +1,20 @@
 class Graph
 instance variables
   node:set of (Node);
-  priorityQueue:[PriorityQueue];
+  priorityQueue:PriorityQueue;
+  edge:set of (Edge);
 
 operations
-  public  findShortestPath : ()  ==> ?
-  findShortestPath() ==
+  public  addNode : seq of (char) * real * real ==> bool
+  addNode(name, coordinateNS, coordinateEW) ==
+    is not yet specified;
+
+  public  removeNode : seq of (char) ==> bool
+  removeNode(name) ==
+    is not yet specified;
+
+  public  findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
+  findPath(source, target, criterion, travelType) ==
     is not yet specified;
 
 

@@ -1,6 +1,8 @@
 class Node
 instance variables
-  node:set of (Node);
-  null:set of (Node);
+  priority:int;
+  coordinateNS:?;
+  coordinateEW:?;
+  location:seq of (char);
 
 end Node
