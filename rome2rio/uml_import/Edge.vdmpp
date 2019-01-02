@@ -13,6 +13,7 @@ operations
 		edgeType := edgeTypes;
 		sourceNode := sN;
 		targetNode := tN;	
+		return self;
 	);
 	
 	public AddEdgeType : EdgeType ==> ()

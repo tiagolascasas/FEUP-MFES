@@ -1,15 +1,28 @@
 class Graph
 instance variables
-  node:set of (Node);
-  priorityQueue:PriorityQueue;
-  edge:set of (Edge);
+  public node:set of (Node);
+  public priorityQueue:PriorityQueue;
+  public edge:set of (Edge);
+  
+  -- invariant: there are no repeated locations
+  inv not exists n1, n2 in set node &
+  			n1 <> n2 and n1.GetLocation = n2.GetLocation;
+  			
+  -- invariant: there are no repeated coordinate pairs (NS, EW)
+  inv not exists n1, n2 in set node &
+        n1 <> n2 and 
+        n1.GetCoordinateNS = n2.GetCoordinateNS and
+				n1.GetCoordinateEW = n2.GetCoordinateEW;
 
 operations	
+	public Graph: () ==> Graph
+	Graph() ==
+		return self;
+		
   public  addNode : seq of (char) * real * real ==> bool
   addNode(name, coordinateNS, coordinateEW) ==
     is not yet specified;
-    --  node union {n};
-
+    
   public  removeNode : seq of (char) ==> bool
   removeNode(name) ==
     is not yet specified;
@@ -17,6 +30,5 @@ operations
   public  findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
   findPath(source, target, criterion, travelType) ==
     is not yet specified;
-
 
 end Graph

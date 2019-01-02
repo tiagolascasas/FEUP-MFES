@@ -2,25 +2,26 @@ class EdgeType
 
 types
   public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
-  public TravelType = <ALL> | <CAR> | <PLANE> | <TRAIN> | <FERRY>;
+  public TravelType = <ALL> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
 
 instance variables
   travelType:TravelType;
-  time:nat;
+  time:nat1;
   -- departureDate:Date;
-  distance:nat;
+  distance:nat1;
   price:real;
   
 operations
 
  -- constructor of EdgeType
-	public EdgeType : TravelType * nat * nat * real ==> EdgeType
+	public EdgeType : TravelType * nat1 * nat1 * real ==> EdgeType
 	EdgeType(tt,tm,dist,p) == 
 	(
 		travelType := tt;
 		time := tm;
 		distance := dist;	
 		price := p;
+		return self;
 	);
   
 	public SetTravelType : TravelType ==> ()
@@ -31,19 +32,19 @@ operations
 	GetTravelType() ==
 		return travelType;
 		
-	public SetTime : nat ==> ()
+	public SetTime : nat1 ==> ()
 	SetTime(tm) ==
 		time := tm;	
 		
-	public GetTime : () ==> nat
+	public GetTime : () ==> nat1
 	GetTime() ==
 		return time;
 	
-	public SetDistance : nat ==> ()
+	public SetDistance : nat1 ==> ()
 	SetDistance(dist) ==
 		distance := dist;	
 		
-	public GetDistance : () ==> nat
+	public GetDistance : () ==> nat1
 	GetDistance() ==
 		return distance;
 	
