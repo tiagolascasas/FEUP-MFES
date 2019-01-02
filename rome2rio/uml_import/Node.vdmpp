@@ -7,7 +7,7 @@ instance variables
   priority:real;
   coordinateNS:real;
   coordinateEW:real;
-  location:Location;
+  public location:Location;
 
 operations
 

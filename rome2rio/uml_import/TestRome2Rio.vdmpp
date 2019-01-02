@@ -1,0 +1,6 @@
+class TestRome2Rio is subclass of MyTestCase
+
+operations
+-- TODO Define operations here
+
+end TestRome2Rio

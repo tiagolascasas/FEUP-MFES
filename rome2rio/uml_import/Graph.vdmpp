@@ -19,17 +19,38 @@ operations
 	Graph() ==
 			return self;
 
-  public  addNode : seq of (char) * real * real ==> bool
+  -- Adds a new node to the graph
+  public addNode : Node`Location * real * real ==> ()
   addNode(name, coordinateNS, coordinateEW) ==
+  	is not yet specified;
+  	
+  -- Adds an edge to two existing unconnected nodes
+  public addEdge : Node`Location * Node`Location * EdgeType ==> ()
+  addEdge(source, target, type) ==
+    is not yet specified;
+  
+  -- Adds an edge type to an existing edge
+  public addEdgeType : Node`Location * Node`Location * EdgeType ==> ()
+  addEdgeType(source, target, type) ==
     is not yet specified;
     
-    --  node union {n};
+  -- Gets a node of the node set by location
+  private findNode : Node`Location ==> Node
+  findNode(location) ==
+  (
+  dcl res: Node;
+  for all n in set node do if n.location = location then res := n;
+  return res;
+  )
+  pre exists1 n in set node & n.location = location;
 
-  public  removeNode : seq of (char) ==> bool
+  -- Removes an existing node from the graph
+  public removeNode : Node`Location ==> bool
   removeNode(name) ==
     is not yet specified;
 
-  public  findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
+  -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
+  public findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
   findPath(source, target, criterion, travelType) ==
     is not yet specified;
 
