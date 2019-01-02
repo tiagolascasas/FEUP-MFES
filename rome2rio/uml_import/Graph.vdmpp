@@ -8,6 +8,7 @@ operations
   public  addNode : seq of (char) * real * real ==> bool
   addNode(name, coordinateNS, coordinateEW) ==
     is not yet specified;
+    --  node union {n};
 
   public  removeNode : seq of (char) ==> bool
   removeNode(name) ==

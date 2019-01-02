@@ -5,4 +5,32 @@ instance variables
   coordinateEW:real;
   location:seq of (char);
 
+operations
+
+  -- constructor of Node
+	public Node : int * real * real * seq of (char) ==> Node
+	Node(p, cdNS, cdEW, loc) ==
+	(
+		priority := p;
+		coordinateNS := cdNS;
+		coordinateEW := cdEW;
+		location := loc;
+	);
+	
+	public GetPriority : () ==> int
+	GetPriority() ==
+		return priority;
+		
+	public GetcoordinateNS : () ==> real
+	GetcoordinateNS() ==
+		return coordinateNS;
+
+	public GetcoordinateEW : () ==> real
+	GetcoordinateEW() ==
+		return coordinateEW;
+		
+	public GetLocation : () ==> seq of (char)
+	GetLocation() ==
+		return location;
+		
 end Node
