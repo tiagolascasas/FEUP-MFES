@@ -2,12 +2,12 @@ class EdgeType
 
 types
   public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
-  public TravelType = <ALL> | <CAR> | <PLANE> | <TRAIN> | <FERRY>;
+  public TravelType = <ALL> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
 
 instance variables
   travelType:TravelType;
-  time:nat;
-  distance:nat;
+  time:nat1;
+  distance:nat1;
   price:real;
   
 operations

@@ -1,35 +1,48 @@
 class Node
+
+types
+	public Location = seq1 of (char)
+
 instance variables
-  priority:int;
+  priority:real;
   coordinateNS:real;
   coordinateEW:real;
-  location:seq of (char);
+  location:Location;
 
 operations
 
   -- constructor of Node
-	public Node : int * real * real * seq of (char) ==> Node
-	Node(p, cdNS, cdEW, loc) ==
+	public Node : real * real * Location ==> Node
+	Node(cdNS, cdEW, loc) ==
 	(
-		priority := p;
+		priority := 9999999999;	--change later
 		coordinateNS := cdNS;
 		coordinateEW := cdEW;
 		location := loc;
-	);
+	)
+	pre cdNS >= -90.0 and
+			 cdNS <= 90.0 and
+			 cdEW >= -180.0 and
+			 cdEW <= 180.0;
 	
-	public GetPriority : () ==> int
+	public SetPriority : real ==> ()
+	SetPriority(pri) ==
+		priority := pri
+	pre pri > 0.0 and pri <= 9999999999;
+	
+	public GetPriority : () ==> real
 	GetPriority() ==
 		return priority;
 		
-	public GetcoordinateNS : () ==> real
-	GetcoordinateNS() ==
+	public GetCoordinateNS : () ==> real
+	GetCoordinateNS() ==
 		return coordinateNS;
 
-	public GetcoordinateEW : () ==> real
-	GetcoordinateEW() ==
+	public GetCoordinateEW : () ==> real
+	GetCoordinateEW() ==
 		return coordinateEW;
 		
-	public GetLocation : () ==> seq of (char)
+	public GetLocation : () ==> Location
 	GetLocation() ==
 		return location;
 		
