@@ -4,4 +4,39 @@ instance variables
   sourceNode:Node;
   targetNode:Node;
 
+operations
+
+ -- constructor of Edge
+	public Edge : set of (EdgeType) * Node * Node ==> Edge
+	Edge(edgeTypes,sN,tN) == 
+	(
+		edgeType := edgeTypes;
+		sourceNode := sN;
+		targetNode := tN;	
+	);
+	
+	public AddEdgeType : EdgeType ==> ()
+	AddEdgeType(edgeT) ==
+		edgeType := edgeType union {edgeT};	
+		
+	public GetEdgeTypes : () ==> set of (EdgeType)
+	GetEdgeTypes() ==
+		return edgeType;
+	
+	public SetSourceNode : Node ==> ()
+	SetSourceNode(node) ==
+		sourceNode := node;	
+		
+	public GetSourceNode : () ==> Node
+	GetSourceNode() ==
+		return sourceNode;
+		
+	public SetTargetNode : Node ==> ()
+	SetTargetNode(node) ==
+		targetNode := node;	
+		
+	public GetTargetNode : () ==> Node
+	GetTargetNode() ==
+		return targetNode;
+
 end Edge

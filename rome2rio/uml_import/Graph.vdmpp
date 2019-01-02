@@ -4,7 +4,7 @@ instance variables
   priorityQueue:PriorityQueue;
   edge:set of (Edge);
 
-operations
+operations	
   public  addNode : seq of (char) * real * real ==> bool
   addNode(name, coordinateNS, coordinateEW) ==
     is not yet specified;

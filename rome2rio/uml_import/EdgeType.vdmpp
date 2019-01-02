@@ -7,10 +7,21 @@ types
 instance variables
   travelType:TravelType;
   time:nat;
+  -- departureDate:Date;
   distance:nat;
   price:real;
   
 operations
+
+ -- constructor of EdgeType
+	public EdgeType : TravelType * nat * nat * real ==> EdgeType
+	EdgeType(tt,tm,dist,p) == 
+	(
+		travelType := tt;
+		time := tm;
+		distance := dist;	
+		price := p;
+	);
   
 	public SetTravelType : TravelType ==> ()
 	SetTravelType(tt) ==
@@ -19,6 +30,14 @@ operations
 	public GetTravelType : () ==> TravelType
 	GetTravelType() ==
 		return travelType;
+		
+	public SetTime : nat ==> ()
+	SetTime(tm) ==
+		time := tm;	
+		
+	public GetTime : () ==> nat
+	GetTime() ==
+		return time;
 	
 	public SetDistance : nat ==> ()
 	SetDistance(dist) ==

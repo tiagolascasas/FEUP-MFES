@@ -3,6 +3,7 @@ instance variables
   graph:Graph;
 
 operations
+	
   public  listLocations : ()  ==> bool
   listLocations() ==
     is not yet specified;
