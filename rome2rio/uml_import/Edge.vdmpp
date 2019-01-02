@@ -1,24 +1,27 @@
 class Edge
 instance variables
-  edgeType:set of (EdgeType);
-  sourceNode:Node;
-  targetNode:Node;
+  public edgeType:set of (EdgeType);
+  public sourceNode:Node;
+  public targetNode:Node;
 
 operations
 
  -- constructor of Edge
-	public Edge : set of (EdgeType) * Node * Node ==> Edge
-	Edge(edgeTypes,sN,tN) == 
+	public Edge : EdgeType * Node * Node ==> Edge
+	Edge(type,sN,tN) == 
 	(
-		edgeType := edgeTypes;
+		edgeType := {type};
 		sourceNode := sN;
 		targetNode := tN;	
 		return self;
-	);
+	)
+	pre sN <> tN;
 	
-	public AddEdgeType : EdgeType ==> ()
-	AddEdgeType(edgeT) ==
-		edgeType := edgeType union {edgeT};	
+	public addEdgeType : EdgeType ==> ()
+	addEdgeType(edgeT) ==
+		edgeType := edgeType union {edgeT}
+	pre not exists e in set edgeType &
+	  e.travelType = edgeT.travelType; 
 		
 	public GetEdgeTypes : () ==> set of (EdgeType)
 	GetEdgeTypes() ==
@@ -26,7 +29,7 @@ operations
 	
 	public SetSourceNode : Node ==> ()
 	SetSourceNode(node) ==
-		sourceNode := node;	
+		sourceNode := node;
 		
 	public GetSourceNode : () ==> Node
 	GetSourceNode() ==

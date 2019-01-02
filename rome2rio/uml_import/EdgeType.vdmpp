@@ -5,11 +5,11 @@ types
   public TravelType = <ALL> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
 
 instance variables
-  travelType:TravelType;
-  time:nat1;
+  public travelType:TravelType;
+  public time:nat1;
   -- departureDate:Date;
-  distance:nat1;
-  price:real;
+  public distance:nat1;
+  public price:real;
   
 operations
 

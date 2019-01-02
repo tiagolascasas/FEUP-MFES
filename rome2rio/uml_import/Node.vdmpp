@@ -4,10 +4,11 @@ types
 	public Location = seq1 of (char)
 
 instance variables
-  priority:real;
-  coordinateNS:real;
-  coordinateEW:real;
+  public priority:real;
+  public coordinateNS:real;
+  public coordinateEW:real;
   public location:Location;
+  public outwardEdges:set of (Edge)
 
 operations
 
@@ -19,6 +20,7 @@ operations
 		coordinateNS := cdNS;
 		coordinateEW := cdEW;
 		location := loc;
+		outwardEdges := {};
 		return self;
 	)
 	pre cdNS >= -90.0 and
@@ -26,25 +28,13 @@ operations
 			 cdEW >= -180.0 and
 			 cdEW <= 180.0;
 	
-	public SetPriority : real ==> ()
-	SetPriority(pri) ==
+	public setPriority : real ==> ()
+	setPriority(pri) ==
 		priority := pri
 	pre pri > 0.0 and pri <= 9999999999;
 	
-	public GetPriority : () ==> real
-	GetPriority() ==
-		return priority;
-		
-	public GetCoordinateNS : () ==> real
-	GetCoordinateNS() ==
-		return coordinateNS;
-
-	public GetCoordinateEW : () ==> real
-	GetCoordinateEW() ==
-		return coordinateEW;
-		
-	public GetLocation : () ==> Location
-	GetLocation() ==
-		return location;
+	public addEdge : Edge ==> ()
+	addEdge(edge) ==
+	  outwardEdges := {edge} union outwardEdges;
 		
 end Node

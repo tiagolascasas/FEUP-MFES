@@ -6,43 +6,74 @@ instance variables
   
   -- invariant: there are no repeated locations
   inv not exists n1, n2 in set node &
-  			n1 <> n2 and n1.GetLocation = n2.GetLocation;
+  			n1 <> n2 and n1.location = n2.location;
   			
   -- invariant: there are no repeated coordinate pairs (NS, EW)
   inv not exists n1, n2 in set node &
         n1 <> n2 and 
-        n1.GetCoordinateNS = n2.GetCoordinateNS and
-				n1.GetCoordinateEW = n2.GetCoordinateEW;
+        n1.coordinateNS = n2.coordinateNS and
+				n1.coordinateEW = n2.coordinateEW;
 
-operations	
+operations
+  -- Constructor
 	public Graph: () ==> Graph
 	Graph() ==
-			return self;
+	(
+		node := {};
+		priorityQueue := new PriorityQueue();
+		edge := {};
+		return self;
+	);
 
   -- Adds a new node to the graph
   public addNode : Node`Location * real * real ==> ()
   addNode(location, coordinateNS, coordinateEW) ==
-  	is not yet specified;
+  (
+  	dcl n: Node := new Node(coordinateNS, coordinateEW, location);
+  	node := {n} union node;
+  );
   	
   -- Adds an edge to two existing unconnected nodes
   public addEdge : Node`Location * Node`Location * EdgeType ==> ()
   addEdge(source, target, type) ==
-    is not yet specified;
+  (
+  	dcl s: Node := findNode(source);
+  	dcl t: Node := findNode(target);
+  	dcl e: Edge := new Edge(type, s, t);
+  	edge := {e} union edge;
+  	s.addEdge(e);
+  )
+  pre not exists e1, e2 in set edge &
+  		e1 <> e2 and e1.sourceNode = e2.sourceNode
+  		 				 and e1.targetNode = e2.targetNode; 
   
   -- Adds an edge type to an existing edge
   public addEdgeType : Node`Location * Node`Location * EdgeType ==> ()
   addEdgeType(source, target, type) ==
-    is not yet specified;
+  (
+  	dcl e: Edge := findEdge(source, target);
+  	e.addEdgeType(type);
+  );
     
   -- Gets a node of the node set by location
-  private findNode : Node`Location ==> Node
+  public findNode : Node`Location ==> Node
   findNode(location) ==
   (
-  dcl res: Node;
-  for all n in set node do if n.location = location then res := n;
-  return res;
+	  dcl res: Node;
+	  for all n in set node do if n.location = location then res := n;
+	  return res;
   )
   pre exists1 n in set node & n.location = location;
+  
+  -- Gets an edge given the source and target
+  public findEdge : Node`Location * Node`Location  ==> Edge
+  findEdge(source, target) ==
+  (
+	  dcl res: Edge;
+	  for all e in set edge do if e.sourceNode.location = source and e.targetNode.location = target then res := e;
+	  return res;
+  )
+  pre exists1 e in set edge & e.sourceNode.location = source and e.targetNode.location = target;
 
   -- Removes an existing node from the graph
   public removeNode : Node`Location ==> bool

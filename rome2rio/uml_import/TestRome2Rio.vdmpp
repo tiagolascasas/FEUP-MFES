@@ -1,6 +1,44 @@
 class TestRome2Rio is subclass of MyTestCase
 
 operations
--- TODO Define operations here
+/** USE CASE SCENARIOS**/
+
+
+/** UNIT TESTS **/
+
+public testAddNodesAndEdges: () ==> ()
+testAddNodesAndEdges() == (
+	dcl graph: Graph := new Graph();
+	
+	graph.addNode("L1", 1.0, 1.0);
+	graph.addNode("L2", 4.0, 2.0);
+	graph.addNode("L3", 5.0, 3.0);
+	assertEqual(3, card graph.node);
+	
+	graph.addEdge("L1", "L2", new EdgeType(<CAR>, 1, 1, 1.0));
+	graph.addEdge("L1", "L3", new EdgeType(<FERRY>, 10, 2, 2.0));
+	assertEqual(2, card graph.findNode("L1").outwardEdges);
+	graph.addEdge("L3", "L2", new EdgeType(<PLANE>, 100, 3, 3.0));
+	graph.addEdge("L2", "L1", new EdgeType(<BUS>, 1000, 4, 4.0));
+	graph.addEdge("L2", "L1", new EdgeType(<TRAIN>, 10000, 5, 5.0));
+	assertEqual(5, card graph.edge);
+	
+	assertEqual("L1", graph.findEdge("L1", "L2").sourceNode.location);
+	assertEqual("L2", graph.findEdge("L1", "L2").targetNode.location);
+	
+	graph.addEdgeType("L1", "L2", new EdgeType(<FERRY>, 1, 1, 1.0));
+	assertEqual(2, card graph.findEdge("L1", "L2").edgeType);
+	graph.addEdgeType("L1", "L2", new EdgeType(<PLANE>, 1, 1, 1.0));
+	assertEqual(3, card graph.findEdge("L1", "L2").edgeType);
+	graph.addEdgeType("L1", "L2", new EdgeType(<BUS>, 1, 1, 1.0));
+	assertEqual(4, card graph.findEdge("L1", "L2").edgeType);
+	graph.addEdgeType("L1", "L2", new EdgeType(<TRAIN>, 1, 1, 1.0));
+	assertEqual(5, card graph.findEdge("L1", "L2").edgeType);
+);
+
+public testAll: () ==> ()
+testAll() == (
+  testAddNodesAndEdges();
+);
 
 end TestRome2Rio
