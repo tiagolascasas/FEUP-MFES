@@ -19,6 +19,7 @@ operations
 		coordinateNS := cdNS;
 		coordinateEW := cdEW;
 		location := loc;
+		return self;
 	)
 	pre cdNS >= -90.0 and
 			 cdNS <= 90.0 and

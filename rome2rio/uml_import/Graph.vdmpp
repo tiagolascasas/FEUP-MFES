@@ -14,14 +14,14 @@ instance variables
         n1.GetCoordinateNS = n2.GetCoordinateNS and
 				n1.GetCoordinateEW = n2.GetCoordinateEW;
 
-operations
+operations	
 	public Graph: () ==> Graph
 	Graph() ==
 			return self;
 
   -- Adds a new node to the graph
   public addNode : Node`Location * real * real ==> ()
-  addNode(name, coordinateNS, coordinateEW) ==
+  addNode(location, coordinateNS, coordinateEW) ==
   	is not yet specified;
   	
   -- Adds an edge to two existing unconnected nodes
@@ -46,13 +46,12 @@ operations
 
   -- Removes an existing node from the graph
   public removeNode : Node`Location ==> bool
-  removeNode(name) ==
+  removeNode(location) ==
     is not yet specified;
 
   -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
   public findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
   findPath(source, target, criterion, travelType) ==
     is not yet specified;
-
 
 end Graph
