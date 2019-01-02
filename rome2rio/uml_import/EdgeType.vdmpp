@@ -6,8 +6,34 @@ types
 
 instance variables
   travelType:TravelType;
-  time:int;
-  distance:int;
+  time:nat;
+  distance:nat;
   price:real;
+  
+operations
+  
+	public SetTravelType : TravelType ==> ()
+	SetTravelType(tt) ==
+		travelType := tt;
+		
+	public GetTravelType : () ==> TravelType
+	GetTravelType() ==
+		return travelType;
+	
+	public SetDistance : nat ==> ()
+	SetDistance(dist) ==
+		distance := dist;	
+		
+	public GetDistance : () ==> nat
+	GetDistance() ==
+		return distance;
+	
+	public SetPrice : real ==> ()
+	SetPrice(p) == 
+		price := p;
+	
+	public GetPrice : () ==> real
+	GetPrice() == 
+		return price;
 
 end EdgeType
