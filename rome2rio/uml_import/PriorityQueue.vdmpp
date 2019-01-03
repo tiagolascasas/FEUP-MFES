@@ -1,12 +1,50 @@
 class PriorityQueue
+
+instance variables
+  public elements: set of (Node)
+
 operations
-  public  addElement : Node ==> bool
+	-- Constructor
+  public PriorityQueue: () ==> PriorityQueue
+  PriorityQueue() ==
+  (
+  	elements := {};
+  	return self;
+  );
+
+	-- Adds a node to the queue, checking if it already exists
+  public addElement : Node ==> ()
   addElement(element) ==
-    is not yet specified;
+    elements := {element}
+  pre element not in set elements
+  post element in set elements;
 
-  public  popHighestPriorityElement : ()  ==> Node
-  popHighestPriorityElement() ==
-    is not yet specified;
+	-- Pops the lowest priority element from the queue, and returns it
+  public pop : ()  ==> Node
+  pop() ==
+  (
+    dcl res: Node;
+    dcl min: nat := 9999999999;
+  	for all e in set elements do 
+  	  if e.priority < min then 
+  	  (
+  	    res := e;
+  	    min := res.priority;
+  	  );
+  	elements := elements \ {res};
+  	return res;
+  ) 
+  pre card elements > 0;
+  
+  -- Checks if the queue is empty
+  public isEmpty : () ==> bool
+  isEmpty() ==
+    return card elements = 0;
 
+	-- Removes all elements from the queue
+  public clear : () ==> ()
+  clear() ==
+    elements := {}
+  post card elements = 0;
 
 end PriorityQueue
