@@ -15,7 +15,7 @@ operations
 	-- Adds a node to the queue, checking if it already exists
   public addElement : Node ==> ()
   addElement(element) ==
-    elements := {element}
+    elements := elements union {element}
   pre element not in set elements
   post element in set elements;
 
@@ -24,13 +24,15 @@ operations
   pop() ==
   (
     dcl res: Node;
-    dcl min: nat := 9999999999;
+    dcl min: real := 9999999999;
   	for all e in set elements do 
+  	(
   	  if e.priority < min then 
   	  (
   	    res := e;
-  	    min := res.priority;
+  	    min := e.priority;
   	  );
+  	);
   	elements := elements \ {res};
   	return res;
   ) 

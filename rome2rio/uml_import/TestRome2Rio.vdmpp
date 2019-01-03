@@ -36,9 +36,39 @@ testAddNodesAndEdges() == (
 	assertEqual(5, card graph.findEdge("L1", "L2").edgeType);
 );
 
+public testPriorityQueue: () ==> ()
+testPriorityQueue() == 
+(
+	dcl pq: PriorityQueue := new PriorityQueue();
+	dcl node1: Node := new Node(5.1, 3.1, "L1");
+	dcl node2: Node := new Node(5.2, 3.2, "L2");
+	dcl node3: Node := new Node(5.3, 3.3, "L3");
+	dcl node4: Node := new Node(5.4, 3.4, "L4");
+	node1.setPriority(50);
+	node2.setPriority(100);
+	node3.setPriority(3);
+	node4.setPriority(20);
+	pq.addElement(node1);
+	pq.addElement(node2);
+	pq.addElement(node3);
+	pq.addElement(node4);
+	assertEqual(4, card pq.elements);
+	assertEqual(node3, pq.pop());
+	assertEqual(node4, pq.pop());
+	assertEqual(node1, pq.pop());
+	assertEqual(node2, pq.pop());
+	assertEqual(true, pq.isEmpty());
+	pq.addElement(node1);
+	pq.addElement(node2);
+	assertEqual(false, pq.isEmpty());
+	pq.clear();
+	assertEqual(true, pq.isEmpty());
+);
+
 public testAll: () ==> ()
 testAll() == (
   testAddNodesAndEdges();
+  testPriorityQueue();
 );
 
 end TestRome2Rio
