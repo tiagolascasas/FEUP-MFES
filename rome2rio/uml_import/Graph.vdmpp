@@ -53,7 +53,11 @@ operations
   (
   	dcl e: Edge := findEdge(source, target);
   	e.addEdgeType(type);
-  );
+  )
+  pre not exists e in set edge 
+  		& e.sourceNode.location = source 
+  		and e.targetNode.location = target
+  		and type in set e.edgeType; 
     
   -- Gets a node of the node set by location
   public findNode : Node`Location ==> Node
@@ -74,6 +78,15 @@ operations
 	  return res;
   )
   pre exists1 e in set edge & e.sourceNode.location = source and e.targetNode.location = target;
+
+  -- Checks if exists an edge given source and target
+  public ExistsEdge : Node`Location * Node`Location  ==> bool
+  ExistsEdge(source, target) ==
+  (
+  	if(exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target)
+  	then return true
+  	else return false
+  ); 
 
   -- Removes an existing node from the graph
   public removeNode : Node`Location ==> bool

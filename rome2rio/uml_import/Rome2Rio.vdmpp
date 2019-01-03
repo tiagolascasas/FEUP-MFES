@@ -1,9 +1,52 @@
 class Rome2Rio
+/*
+  Contains the core model of the Rome2Rio System.
+  Defines the state variables and operations available to the users.
+*/
+
+types
+	public Status=<Administrator> | <User>;
+  public Password = seq of char;
+
 instance variables
-  graph:Graph;
+  public graph:Graph;
+  public status : Status := <Administrator>; 
+  
+  -- Items observable by the administrator:
+  public adminCode : Password := []; 
 
 operations
 	
+	/** ADMINISTRATOR OPERATIONS **/
+	public Rome2Rio : () ==> Rome2Rio
+	Rome2Rio() == 
+	(
+		graph := new Graph();
+		return self;
+	);
+		
+	public setAdministratorPassword : Password ==> ()
+	setAdministratorPassword(pass) ==
+		adminCode := pass
+	pre status = <Administrator>;
+	
+	public addLocation : Node`Location * real * real ==> ()
+	addLocation(location, coordinateNS, coordinateEW) ==
+		graph.addNode(location, coordinateNS, coordinateEW)
+	pre status = <Administrator>;
+	
+	public addWayBetweenLocations : Node`Location *  Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
+	addWayBetweenLocations(source, target, travelType, time, distance, price) ==
+	(
+	  if(graph.ExistsEdge(source, target) = false) then
+			graph.addEdge(source, target, new EdgeType(travelType, time, distance, price))
+		else 
+			graph.addEdgeType(source, target, new EdgeType(travelType, time, distance, price))
+			
+	)
+	pre status = <Administrator>;
+	
+	/** USER OPERATIONS **/
   public  listLocations : ()  ==> bool
   listLocations() ==
     is not yet specified;
