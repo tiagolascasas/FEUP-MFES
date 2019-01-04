@@ -8,7 +8,9 @@ instance variables
   public coordinateNS:real;
   public coordinateEW:real;
   public location:Location;
-  public outwardEdges:set of (Edge)
+  public outwardEdges:set of (Edge);
+  public path:Node;
+  public processed:bool;
 
 operations
 
@@ -21,6 +23,7 @@ operations
 		coordinateEW := cdEW;
 		location := loc;
 		outwardEdges := {};
+		processed := false;
 		return self;
 	)
 	pre cdNS >= -90.0 and
@@ -31,7 +34,15 @@ operations
 	public setPriority : real ==> ()
 	setPriority(pri) ==
 		priority := pri
-	pre pri > 0.0 and pri <= 9999999999;
+	pre pri >= 0.0 and pri <= 9999999999;
+	
+	public setPath : Node ==> ()
+	setPath(n) ==
+	  path := n;
+	  
+	public setProcessed : bool ==> ()
+	setProcessed(p) ==
+	  processed := p;
 	
 	public addEdge : Edge ==> ()
 	addEdge(edge) ==

@@ -2,7 +2,7 @@ class EdgeType
 
 types
   public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
-  public TravelType = <ALL> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
+  public TravelType = <ANY> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
 
 instance variables
   public travelType:TravelType;
@@ -22,7 +22,8 @@ operations
 		distance := dist;	
 		price := p;
 		return self;
-	);
+	)
+	pre tt <> <ANY>;
   
 	public SetTravelType : TravelType ==> ()
 	SetTravelType(tt) ==

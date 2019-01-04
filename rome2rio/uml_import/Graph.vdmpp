@@ -60,7 +60,7 @@ operations
   		and type in set e.edgeType; 
     
   -- Gets a node of the node set by location
-  public findNode : Node`Location ==> Node
+  pure public findNode : Node`Location ==> Node
   findNode(location) ==
   (
 	  dcl res: Node;
@@ -80,7 +80,7 @@ operations
   pre exists1 e in set edge & e.sourceNode.location = source and e.targetNode.location = target;
 
   -- Checks if exists an edge given source and target
-  public ExistsEdge : Node`Location * Node`Location  ==> bool
+  pure public ExistsEdge : Node`Location * Node`Location  ==> bool
   ExistsEdge(source, target) ==
   (
   	if(exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target)
@@ -93,9 +93,95 @@ operations
   removeNode(location) ==
     is not yet specified;
 
+	-- Resets the Dijkstra information on all nodes in order for the algorithm to be run again
+	public resetGraphInformation : () ==> ()
+	resetGraphInformation() ==
+	(
+		for all n in set node do
+		(
+			n.setPriority(9999999999);
+			n.setProcessed(false);
+			n.setPath(n);
+		);
+	)
+	post not exists n in set node & 
+		n.priority <> 9999999999 and 
+		n.processed <> false and 
+		n.path <> n;
+
   -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
-  public findPath : seq of (char) * seq of (char) * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (char)
+  public findPath : Node`Location * Node`Location * EdgeType`CriterionType * EdgeType`TravelType ==> seq of (Node)
   findPath(source, target, criterion, travelType) ==
-    is not yet specified;
+  (
+  	dcl foundTarget: bool := false;
+  	dcl startingNode: Node := findNode(source);
+  	dcl finalPath: seq of (Node) := [];
+  	-- reset priorities, paths and processed information
+  	resetGraphInformation();
+  	-- get the starting node and add it to the queue
+  	startingNode.setPriority(0);
+  	priorityQueue.addElement(startingNode);
+  	-- process nodes until the queue is empty or the target node is found
+  	while priorityQueue.isEmpty() <> true and foundTarget <> true do
+  	(
+  		-- get the lowest priority node
+  		dcl currentNode: Node := priorityQueue.pop();
+  		-- if the node is the target, set the flag to true
+  		if currentNode.location = target then
+  			foundTarget := true
+  		else
+  		(	-- else, go through all the outward edges of this node
+  			for all outwardEdge in set currentNode.outwardEdges do
+  			(
+  				for all type in set outwardEdge.edgeType do
+  				(	
+  				  dcl weight: real := 0;
+  				  dcl destNode: Node := outwardEdge.targetNode;
+  				  -- for each edge, see if it is relevant according to the travel type
+  				  -- if it isn't, the edge is ignored as if it didn't exist
+  					if type.travelType = travelType or travelType = <ANY> then
+  					(	-- get the node weight based on the search criterium
+  						if criterion = <TIME> then weight := type.time
+  						elseif criterion = <DISTANCE> then weight := type.distance
+  						else weight := type.price;
+  						-- if the path from the current node plus weight is lesser than the edge's
+  						-- target weight, replace the edge target's weight by this one and add the 
+  						-- edge's target to the priority queue
+	  					if currentNode.priority + weight < destNode.priority then
+	  					(
+	  						destNode.setPriority(currentNode.priority + weight);
+	  						destNode.setPath(currentNode);
+	  						if destNode.processed = false then
+	  						(
+	  							destNode.setProcessed(true);
+	  							priorityQueue.addElement(destNode);
+	  						);
+	  					);
+  					);
+  				);
+  			);
+  		);
+  	);
+  	-- if the target was found, get the path from target to source
+  	if foundTarget = true then
+  		finalPath := getPathSourceToTarget(source, target);
+    -- returns the path if the target was found, or an empty sequence if it wasn't
+  	return finalPath;
+  )
+  post not exists n in seq RESULT & n.priority = 9999999999;
+  
+  -- Gets a sequence holding the sequence of nodes that form the shortest path between
+  -- the given source and target
+  public getPathSourceToTarget : Node`Location * Node`Location ==> seq of (Node)
+  getPathSourceToTarget(source, target) ==
+	(
+		dcl path: seq of Node := [];
+		dcl currentNode: Node := findNode(target);
+		
+		while currentNode.location <> source do
+			path := [currentNode] ^ path;
+		return path;
+	)
+	post (hd RESULT).location = source and (RESULT(len RESULT)).location = target; 
 
 end Graph

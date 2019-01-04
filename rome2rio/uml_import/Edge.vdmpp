@@ -3,7 +3,10 @@ instance variables
   public edgeType:set of (EdgeType);
   public sourceNode:Node;
   public targetNode:Node;
-
+  
+  -- invariant: there can not be two of the same EdgeTypes for a single edge
+  inv not exists e1, e2 in set edgeType & e1 <> e2 and e1.travelType = e2.travelType;
+  
 operations
 
  -- constructor of Edge
