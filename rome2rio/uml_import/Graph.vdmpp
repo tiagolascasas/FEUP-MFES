@@ -31,7 +31,11 @@ operations
   (
   	dcl n: Node := new Node(coordinateNS, coordinateEW, location);
   	node := {n} union node;
-  );
+  )
+  pre not exists n1 in set node &
+  		n1.location = location 
+  		and n1.coordinateNS = coordinateNS
+  		and n1.coordinateEW = coordinateEW;
   	
   -- Adds an edge to two existing unconnected nodes
   public addEdge : Node`Location * Node`Location * EdgeType ==> ()
@@ -89,9 +93,13 @@ operations
   ); 
 
   -- Removes an existing node from the graph
-  public removeNode : Node`Location ==> bool
+  public removeNode : Node`Location ==> ()
   removeNode(location) ==
-    is not yet specified;
+  (
+  	dcl n: Node := findNode(location);
+  	node := node \ {n};
+  )
+  pre exists n1 in set node & n1.location = location;
 
 	-- Resets the Dijkstra information on all nodes in order for the algorithm to be run again
 	public resetGraphInformation : () ==> ()

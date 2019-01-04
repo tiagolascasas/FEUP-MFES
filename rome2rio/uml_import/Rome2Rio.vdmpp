@@ -47,8 +47,12 @@ operations
 	pre status = <Administrator>;
 	
 	/** USER OPERATIONS **/
-  public  listLocations : ()  ==> bool
+  public  listLocations : ()  ==> set of (Node)
   listLocations() ==
-    is not yet specified;
+    return graph.node;
+    
+  public getRoutesForLocations : Node`Location *  Node`Location ==> ()
+  getRoutesForLocations(sourceLocation, targetLocation) ==
+  	is not yet specified;
 
 end Rome2Rio
