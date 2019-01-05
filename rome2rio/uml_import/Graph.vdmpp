@@ -95,12 +95,24 @@ operations
   	then return true
   	else return false
   ); 
+  
+  
+  pure public FindEdgesWithNode : Node`Location ==> set of (Edge)
+  FindEdgesWithNode(location) ==
+  (
+  	dcl res : set of (Edge);
+  	res := {};
+  	for all e in set edge do if e.sourceNode.location = location or e.targetNode.location = location then res := res union {e};
+  	return res
+  );
 
   -- Removes an existing node from the graph
   public removeNode : Node`Location ==> ()
   removeNode(location) ==
   (
   	dcl n: Node := findNode(location);
+  	dcl edgesWithNode :  set of (Edge) := FindEdgesWithNode(location);
+  	edge := edge \ edgesWithNode;
   	node := node \ {n};
   )
   pre exists n1 in set node & n1.location = location;
