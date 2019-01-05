@@ -24,6 +24,7 @@ operations
 		location := loc;
 		outwardEdges := {};
 		processed := false;
+		path := self;
 		return self;
 	)
 	pre cdNS >= -90.0 and

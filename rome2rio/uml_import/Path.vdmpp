@@ -1,0 +1,48 @@
+class Path
+
+types
+	public PathString = seq1 of (char)
+
+instance variables
+	public path: seq of (Node);
+	public travelType: EdgeType`TravelType;
+	public criteria: Graph`CriterionType;
+	
+operations
+	-- Constructor
+	public Path: EdgeType`TravelType * Graph`CriterionType ==> Path
+	Path(tt, crit) ==
+	(
+		path := [];
+		travelType := tt;
+		criteria := crit;
+	);
+	
+	-- Adds a new node to the head of the path
+	public addNode: Node ==> ()
+	addNode(node) ==
+		path := [node] ^ path
+	post (hd path) = node;
+	
+	-- Gets the total cost of the trip
+	public getTotalCost: () ==> real
+	getTotalCost() ==
+		return (path(len path)).priority;
+
+	-- Returns whether the path is set or not
+	public isPossible: () ==> bool
+	isPossible() ==
+		return (len path) = 0;
+		
+	public print: () ==> ()
+	print() ==
+	(
+		dcl i: nat := 1;
+		while i <= (len path) do
+		(
+			IO`println((path(i).location));
+			i := i + 1;
+		);
+	);
+		
+end Path

@@ -1,7 +1,6 @@
 class EdgeType
 
 types
-  public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
   public TravelType = <ANY> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
 
 instance variables
