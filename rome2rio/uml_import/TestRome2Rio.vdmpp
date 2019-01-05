@@ -1,8 +1,76 @@
 class TestRome2Rio is subclass of MyTestCase
 
+instance variables
+  public r2r: Rome2Rio;
+  
 operations
 /** USE CASE SCENARIOS**/
 
+	public testAdminLogin: () ==> ()
+	testAdminLogin() ==
+	(
+		r2r := new Rome2Rio();
+		assertEqual(false, r2r.changeToAdmin("foo"));
+		assertEqual(true, r2r.changeToAdmin("default"));
+		assertEqual(r2r.status, <Administrator>);
+	);
+	
+	public testAdminPasswordChange: () ==> ()
+	testAdminPasswordChange() ==
+	(
+		r2r.setAdministratorPassword("new_password");
+		assertEqual(r2r.adminCode, "new_password");
+		r2r.changeToClient();
+		assertEqual(r2r.status, <Client>);
+		assertEqual(false, r2r.changeToAdmin("default"));
+		assertEqual(true, r2r.changeToAdmin("new_password"));
+		assertEqual(r2r.status, <Administrator>);
+	);
+	
+	public testAddLocations : () ==> ()
+	testAddLocations() ==
+	(
+		r2r.addLocation("L1", 1.0, 1.0);
+		assertEqual(1, card r2r.graph.node);
+		r2r.addLocation("L2", 2.0, 2.0);
+		assertEqual(2, card r2r.graph.node);
+		r2r.addLocation("L3", 3.0, 3.0);
+		assertEqual(3, card r2r.graph.node);
+	);
+	
+	public testAddConnections: () ==> ()
+	testAddConnections() ==
+	(
+		r2r.addWayBetweenLocations("L1", "L2", <CAR>, 1, 1, 1.0);
+		assertEqual(1, card r2r.graph.edge);
+		r2r.addWayBetweenLocations("L1", "L3", <CAR>, 2, 2, 2.0);
+		assertEqual(2, card r2r.graph.edge);
+		r2r.addWayBetweenLocations("L2", "L3", <CAR>, 3, 3, 3.0);
+		assertEqual(3, card r2r.graph.edge);
+	);
+	
+	public testAddTravelTypes: () ==> ()
+	testAddTravelTypes() ==
+	(
+		r2r.addNewTransportationType("L1", "L2", <PLANE>, 50, 50, 50.5);
+		assertEqual(2, card r2r.graph.findEdge("L1", "L2").edgeType);
+		r2r.addNewTransportationType("L1", "L2", <FERRY>, 30, 30, 30.5);
+		assertEqual(3, card r2r.graph.findEdge("L1", "L2").edgeType);
+		r2r.addNewTransportationType("L2", "L3", <PLANE>, 50, 50, 50.5);
+		assertEqual(2, card r2r.graph.findEdge("L2", "L3").edgeType);
+	);
+	
+	public testListLocations: () ==> ()
+	testListLocations() ==
+		assertEqual(card r2r.graph.node, r2r.listLocations());
+		
+	public testGetRouteWithCriteria: () ==> ()
+	testGetRouteWithCriteria() ==
+		assertEqual(true, true);
+	
+  public testGetBestRouteForCriterion: () ==> ()
+	testGetBestRouteForCriterion() ==
+		assertEqual(true, true);
 
 /** UNIT TESTS **/
 
@@ -188,9 +256,20 @@ testDijkstraCar() ==
 public testAllValidTests: () ==> ()
 testAllValidTests() == 
 (
+	/*UNIT TESTS*/
   testAddNodesAndEdges();
   testPriorityQueue();
   testDijkstraCar();
+  
+  /*USE CASE SCENARIOS*/
+  testAdminLogin();
+  testAdminPasswordChange();
+  testAddLocations();
+  testAddConnections();
+  testAddTravelTypes();
+  testListLocations();
+  testGetRouteWithCriteria();
+  testGetBestRouteForCriterion();
 );
 
 /** UNIT TESTS FOR INVALID INPUTS (run one at a time)**/

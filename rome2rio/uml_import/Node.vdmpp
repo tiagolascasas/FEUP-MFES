@@ -3,6 +3,10 @@ class Node
 types
 	public Location = seq1 of (char)
 
+values
+	public
+  	MIN_PRIORITY = 9999999999
+
 instance variables
   public priority:real;
   public coordinateNS:real;
@@ -18,7 +22,7 @@ operations
 	public Node : real * real * Location ==> Node
 	Node(cdNS, cdEW, loc) ==
 	(
-		priority := 9999999999;	--change later
+		priority := MIN_PRIORITY;	--change later
 		coordinateNS := cdNS;
 		coordinateEW := cdEW;
 		location := loc;
@@ -35,7 +39,7 @@ operations
 	public setPriority : real ==> ()
 	setPriority(pri) ==
 		priority := pri
-	pre pri >= 0.0 and pri <= 9999999999;
+	pre pri >= 0.0 and pri <= MIN_PRIORITY;
 	
 	public setPath : Node ==> ()
 	setPath(n) ==

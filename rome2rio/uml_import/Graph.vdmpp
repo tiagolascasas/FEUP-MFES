@@ -112,13 +112,13 @@ operations
 		priorityQueue.clear();
 		for all n in set node do
 		(
-			n.setPriority(9999999999);
+			n.setPriority(Node`MIN_PRIORITY);
 			n.setProcessed(false);
 			n.setPath(n);
 		);
 	)
 	post not exists n in set node & 
-		n.priority <> 9999999999 and 
+		n.priority <> Node`MIN_PRIORITY and 
 		n.processed <> false and 
 		n.path <> n;
 

@@ -1,40 +1,58 @@
 class Rome2Rio
 /*
   Contains the core model of the Rome2Rio System.
-  Defines the state variables and operations available to the users.
+  Defines the state variables and all the operations
+  required to execute all use cases
 */
 
 types
-	public Status=<Administrator> | <User>;
+	public Status= <Administrator> | <Client>;
   public Password = seq of char;
 
 instance variables
   public graph:Graph;
-  public status : Status := <Administrator>; 
-  
+  public status : Status; 
   -- Items observable by the administrator:
-  public adminCode : Password := []; 
+  public adminCode : Password := "default"; 
 
 operations
-	
-	/** ADMINISTRATOR OPERATIONS **/
+	-- Constructor
 	public Rome2Rio : () ==> Rome2Rio
 	Rome2Rio() == 
 	(
 		graph := new Graph();
+		status := <Client>;
 		return self;
 	);
 		
+	-- Changes the type of user to admin
+	public changeToAdmin : Password ==> bool
+	changeToAdmin(pass) ==
+	(
+		if pass = adminCode then 
+		(
+			status := <Administrator>;
+			return true;
+		)
+		else return false;
+	)
+	pre status = <Client>;
+	
+	/** ADMINISTRATOR OPERATIONS **/
+	
+	-- Changes the admin password
 	public setAdministratorPassword : Password ==> ()
 	setAdministratorPassword(pass) ==
 		adminCode := pass
 	pre status = <Administrator>;
 	
+	-- Adds a new location to the platform
 	public addLocation : Node`Location * real * real ==> ()
 	addLocation(location, coordinateNS, coordinateEW) ==
 		graph.addNode(location, coordinateNS, coordinateEW)
 	pre status = <Administrator>;
 	
+	-- Adds a connection between two locations
 	public addWayBetweenLocations : Node`Location *  Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
 	addWayBetweenLocations(source, target, travelType, time, distance, price) ==
 	(
@@ -46,13 +64,71 @@ operations
 	)
 	pre status = <Administrator>;
 	
-	/** USER OPERATIONS **/
-  public  listLocations : ()  ==> set of (Node)
+	-- Adds a new transportation type to an existing connection
+	public addNewTransportationType : Node`Location * Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
+	addNewTransportationType(source, target, type, time, distance, price) ==
+	(
+		dcl et: EdgeType := new EdgeType(type, time, distance, price);
+		graph.addEdgeType(source, target, et);
+	)
+	pre type <> <ANY>;
+	
+	/** CLIENT OPERATIONS **/
+	
+		-- Changes the type of user to client
+	public changeToClient : () ==> ()
+	changeToClient() ==
+		status := <Client>
+	pre status = <Administrator>;
+	
+  public  listLocations : ()  ==> nat1
   listLocations() ==
-    return graph.node;
-    
-  public getRoutesForLocations : Node`Location *  Node`Location ==> ()
-  getRoutesForLocations(sourceLocation, targetLocation) ==
-  	is not yet specified;
+  (
+  	dcl i: nat := 0;
+  	for all n in set graph.node do
+  	(
+  		IO`print(n.location);
+  		IO`print(" at (");
+  		IO`print(n.coordinateNS);
+  		IO`print(", ");
+  		IO`print(n.coordinateEW);
+  		IO`println(")");
+  		i := i + 1;
+  	);
+  	return i;
+  );
+   
+  public getRouteWithCriteria : Node`Location * Node`Location * EdgeType`TravelType * Graph`CriterionType ==> Path 
+	getRouteWithCriteria(source, target, type, criterion) ==
+		return graph.findPath(source, target, criterion, type);
+   
+  public getBestRouteForCriterion : Node`Location *  Node`Location * Graph`CriterionType ==> Path
+  getBestRouteForCriterion(source, target, criterion) ==
+  (
+  	dcl paths: set of (Path) := {};
+  	dcl path: Path := graph.findPath(source, target, criterion, <ANY>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  	path := graph.findPath(source, target, criterion, <CAR>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  		path := graph.findPath(source, target, criterion, <PLANE>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  		path := graph.findPath(source, target, criterion, <TRAIN>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  		path := graph.findPath(source, target, criterion, <FERRY>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  		path := graph.findPath(source, target, criterion, <BUS>);
+  	if path.isPossible() then
+  		paths := paths union {path};
+  		
+  	for all p in set paths do
+  		if p.getTotalCost() < path.getTotalCost() then path := p;
+  	
+  	return path;
+  );
 
 end Rome2Rio
