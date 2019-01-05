@@ -101,7 +101,7 @@ operations
   public getRouteWithCriteria : Node`Location * Node`Location * EdgeType`TravelType * Graph`CriterionType ==> Path 
 	getRouteWithCriteria(source, target, type, criterion) ==
 		return graph.findPath(source, target, criterion, type);
-   
+   /*
   public getBestRouteForCriterion : Node`Location *  Node`Location * Graph`CriterionType ==> Path
   getBestRouteForCriterion(source, target, criterion) ==
   (
@@ -132,9 +132,11 @@ operations
   		paths := paths union {path};
   		
   	for all p in set paths do
-  		if p.getTotalCost() < path.getTotalCost() then path := p;
+  		if (p.getTotalCost() < path.getTotalCost() and p.getTotalCost() <> -1)
+  			or path.getTotalCost() = -1
+  			 then path := p;
   	
   	return path;
-  );
+  );*/
 
 end Rome2Rio

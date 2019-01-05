@@ -66,11 +66,40 @@ operations
 		
 	public testGetRouteWithCriteria: () ==> ()
 	testGetRouteWithCriteria() ==
-		assertEqual(true, true);
+	(
+		dcl path: Path;
+		
+		-- since we need a few more nodes and edges to make interesting stuff,
+		-- we'll use the graph from the unit tests
+		r2r.graph := makeGraph();
 	
+		-- since we already proved that Dijkstra's algorithm worked with
+		-- different criteria using the unit tests, we'll just test an
+		-- instance with a possible route and another one with an impossible one
+		path := r2r.getRouteWithCriteria("L1", "L15", <CAR>, <TIME>);
+		assertEqual(true, path.isPossible());
+		assertEqual(98, path.getTotalCost());
+		assertEqual(7, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		assertEqual("L15", path.path(7).location);
+		
+		path := r2r.getRouteWithCriteria("L1", "L15", <PLANE>, <TIME>);
+		assertEqual(false, path.isPossible());
+		assertEqual(-1, path.getTotalCost());
+	);
+	/*
   public testGetBestRouteForCriterion: () ==> ()
 	testGetBestRouteForCriterion() ==
-		assertEqual(true, true);
+	(
+		dcl path: Path := r2r.getBestRouteForCriterion("L1", "L13", <TIME>);
+		IO`println(path.getTotalCost());
+		path.print();
+	);*/
 
 /** UNIT TESTS **/
 
@@ -311,7 +340,7 @@ testAllValidTests() ==
   testDijkstraCar();
   testDijkstraPlane();*/
   
-  /*USE CASE SCENARIOS*//*
+  /*USE CASE SCENARIOS*/
   testAdminLogin();
   testAdminPasswordChange();
   testAddLocations();
@@ -319,7 +348,7 @@ testAllValidTests() ==
   testAddTravelTypes();
   testListLocations();
   testGetRouteWithCriteria();
-  testGetBestRouteForCriterion();*/
+  testGetBestRouteForCriterion();
 );
 
 /** UNIT TESTS FOR INVALID INPUTS (run one at a time)**/
