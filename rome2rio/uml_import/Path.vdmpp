@@ -27,12 +27,15 @@ operations
 	-- Gets the total cost of the trip
 	public getTotalCost: () ==> real
 	getTotalCost() ==
-		return (path(len path)).priority;
+	(
+		if (len path) = 0 then return -1
+		else return (path(len path)).priority;
+	);
 
 	-- Returns whether the path is set or not
 	public isPossible: () ==> bool
 	isPossible() ==
-		return (len path) = 0;
+		return (len path) > 0;
 		
 	public print: () ==> ()
 	print() ==

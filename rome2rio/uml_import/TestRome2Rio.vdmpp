@@ -190,6 +190,15 @@ makeGraph() ==
 	graph.addEdge("L13", "L14", new EdgeType(<CAR>, 17, 120, 234.0));
 	graph.addEdge("L14", "L13", new EdgeType(<CAR>, 15, 190, 421.0));
 	
+	graph.addEdgeType("L1", "L2", new EdgeType(<PLANE>, 15, 190, 421.0));
+	graph.addEdgeType("L2", "L5", new EdgeType(<PLANE>, 15, 190, 421.0));
+	graph.addEdgeType("L5", "L9", new EdgeType(<PLANE>, 15, 190, 421.0));
+	graph.addEdgeType("L9", "L10", new EdgeType(<PLANE>, 12, 190, 421.0));
+	graph.addEdgeType("L10", "L12", new EdgeType(<PLANE>, 13, 190, 421.0));
+	graph.addEdgeType("L12", "L11", new EdgeType(<PLANE>, 14, 190, 421.0));
+	graph.addEdgeType("L9", "L11", new EdgeType(<PLANE>, 78, 190, 56.0));
+	graph.addEdgeType("L11", "L13", new EdgeType(<PLANE>, 15, 190, 421.0));
+	
 	return graph;
 );
 
@@ -253,15 +262,56 @@ testDijkstraCar() ==
 	assertEqual("L7", path.path(9).location);
 );
 
+public testDijkstraPlane: () ==> ()
+testDijkstraPlane() ==
+(
+	dcl graph: Graph := makeGraph();
+	dcl path: Path;
+	
+	path := graph.findPath("L1", "L13", <TIME>, <PLANE>);
+	assertEqual(99, path.getTotalCost());
+	assertEqual(8, len path.path);
+	assertEqual("L1", path.path(1).location);
+	assertEqual("L2", path.path(2).location);
+	assertEqual("L5", path.path(3).location);
+	assertEqual("L9", path.path(4).location);
+	assertEqual("L10", path.path(5).location);
+	assertEqual("L12", path.path(6).location);
+	assertEqual("L11", path.path(7).location);
+	assertEqual("L13", path.path(8).location);
+	
+	path := graph.findPath("L1", "L15", <TIME>, <PLANE>);
+	assertEqual(-1, path.getTotalCost());
+	
+	path := graph.findPath("L1", "L13", <PRICE>, <PLANE>);
+	assertEqual(1740, path.getTotalCost());
+	assertEqual(6, len path.path);
+	assertEqual("L1", path.path(1).location);
+	assertEqual("L2", path.path(2).location);
+	assertEqual("L5", path.path(3).location);
+	assertEqual("L9", path.path(4).location);
+	assertEqual("L11", path.path(5).location);
+	assertEqual("L13", path.path(6).location);
+	
+	path := graph.findPath("L5", "L13", <DISTANCE>, <PLANE>);
+	assertEqual(570, path.getTotalCost());
+	assertEqual(4, len path.path);
+	assertEqual("L5", path.path(1).location);
+	assertEqual("L9", path.path(2).location);
+	assertEqual("L11", path.path(3).location);
+	assertEqual("L13", path.path(4).location);
+);
+
 public testAllValidTests: () ==> ()
 testAllValidTests() == 
 (
-	/*UNIT TESTS*/
+	/*UNIT TESTS*//*
   testAddNodesAndEdges();
   testPriorityQueue();
   testDijkstraCar();
+  testDijkstraPlane();*/
   
-  /*USE CASE SCENARIOS*/
+  /*USE CASE SCENARIOS*//*
   testAdminLogin();
   testAdminPasswordChange();
   testAddLocations();
@@ -269,7 +319,7 @@ testAllValidTests() ==
   testAddTravelTypes();
   testListLocations();
   testGetRouteWithCriteria();
-  testGetBestRouteForCriterion();
+  testGetBestRouteForCriterion();*/
 );
 
 /** UNIT TESTS FOR INVALID INPUTS (run one at a time)**/

@@ -106,22 +106,28 @@ operations
   getBestRouteForCriterion(source, target, criterion) ==
   (
   	dcl paths: set of (Path) := {};
+  	
   	dcl path: Path := graph.findPath(source, target, criterion, <ANY>);
   	if path.isPossible() then
   		paths := paths union {path};
+  		
   	path := graph.findPath(source, target, criterion, <CAR>);
   	if path.isPossible() then
   		paths := paths union {path};
-  		path := graph.findPath(source, target, criterion, <PLANE>);
+  		
+  	path := graph.findPath(source, target, criterion, <PLANE>);
   	if path.isPossible() then
   		paths := paths union {path};
-  		path := graph.findPath(source, target, criterion, <TRAIN>);
+  		
+  	path := graph.findPath(source, target, criterion, <TRAIN>);
   	if path.isPossible() then
   		paths := paths union {path};
-  		path := graph.findPath(source, target, criterion, <FERRY>);
+  		
+  	path := graph.findPath(source, target, criterion, <FERRY>);
   	if path.isPossible() then
   		paths := paths union {path};
-  		path := graph.findPath(source, target, criterion, <BUS>);
+  		
+  	path := graph.findPath(source, target, criterion, <BUS>);
   	if path.isPossible() then
   		paths := paths union {path};
   		
