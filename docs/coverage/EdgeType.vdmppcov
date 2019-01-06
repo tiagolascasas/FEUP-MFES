@@ -1,0 +1,30 @@
+-- Class to represent an edge type
+-- On this context, an edge type is a means of transport that exists on a certain
+-- connection (edge), and it holds info about the distance, duration and price
+class EdgeType
+
+types
+	-- All the transportation types, along with a generic type <ANY>
+  public TravelType = <ANY> | <CAR> | <BUS> | <PLANE> | <TRAIN> | <FERRY>;
+
+instance variables
+  public travelType:TravelType;	-- the means of transport
+  public time:nat1;							-- the time in hours
+  public distance:nat1;					-- the distance in km
+  public price:real;						-- the price in euro
+  
+operations
+
+ -- Constructor
+	public EdgeType : TravelType * nat1 * nat1 * real ==> EdgeType
+	EdgeType(tt,tm,dist,p) == 
+	(
+		travelType := tt;
+		time := tm;
+		distance := dist;	
+		price := p;
+		return self;
+	)
+	pre tt <> <ANY>;
+
+end EdgeType
