@@ -138,19 +138,24 @@ public class TopBar extends JMenuBar {
 		changePassword = new JMenuItem("Change Password");
 		changePassword.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	passwordEditCaller(r2r);
+		    	PasswordEditor passcode = new PasswordEditor(new JFrame(""),r2r);
+		    	passcode.createAndShowGUI();	
 		    }
 		});
 		
 		addLocation = new JMenuItem("Add Location");
 		addLocation.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
+		    	AddLocation addLocation = new AddLocation(new JFrame(""),r2r);
+		    	addLocation.createAndShowGUI();
 		    }
 		});
 		
 		addRoute = new JMenuItem("Add Route");
 		addRoute.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
+		    	//AddRoute addRoute = new AddRoute(new JFrame(""),r2r);
+		    	//addRoute.createAndShowGUI();
 		    }
 		});
 		
@@ -159,8 +164,4 @@ public class TopBar extends JMenuBar {
 		loginMenu.add(addRoute);
 	}
 	
-	public void passwordEditCaller(Rome2Rio r2r) {
-    	PasswordEditor passcode = new PasswordEditor(new JFrame(""),r2r,this);
-    	passcode.createAndShowGUI();	
-	}
 }

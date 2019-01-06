@@ -60,7 +60,6 @@ public class MainMenu {
 		mainMenuFrame = new JFrame("Rome2Rio");
 		mainMenuFrame.setResizable(false);
 
-		//mainMenuFrame.setBounds(100, 100, 458, 346);
 		mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainMenuFrame.getContentPane().setLayout(null);
 		mainMenuFrame.setBackground(Color.LIGHT_GRAY);

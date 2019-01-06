@@ -41,10 +41,14 @@ public class Rome2Rio {
 		return false;
 	}
 
-	public void addLocation(
+	public Boolean addLocation(
 			final String location, final Number coordinateNS, final Number coordinateEW) {
 
-		graph.addNode(location, coordinateNS, coordinateEW);
+		if(graph.findNode(location) == null) {
+			graph.addNode(location, coordinateNS, coordinateEW);
+			return true;
+		}
+		return false;
 	}
 
 	public void addWayBetweenLocations(

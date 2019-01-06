@@ -1,17 +1,18 @@
 package gui;
  
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 
 import rome2rio.Rome2Rio;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
+import java.text.NumberFormat;
  
 /* PasswordDemo.java requires no other files. */
  
 @SuppressWarnings("serial")
-public class PasswordEditor extends JPanel
+public class AddLocation extends JPanel
                           implements ActionListener {
 	
 	private Rome2Rio r2r;
@@ -20,29 +21,45 @@ public class PasswordEditor extends JPanel
  
     private JFrame controllingFrame; //needed for dialogs
     public JFrame frame;
-    private JPasswordField passwordField;
+    private JFormattedTextField locationField;
+    private JFormattedTextField coordNS;
+    private JFormattedTextField coordEW;
  
-    public PasswordEditor(JFrame f, Rome2Rio r2r) {
+    public AddLocation(JFrame f, Rome2Rio r2r) {
     	
     	this.r2r = r2r;
     	
         //Use the default FlowLayout.
         controllingFrame = f;
+        
+        NumberFormat longFormat = NumberFormat.getIntegerInstance();
+        NumberFormatter numberFormatter = new NumberFormatter(longFormat);
+        numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
+        numberFormatter.setAllowsInvalid(false); //this is the key!!
+        numberFormatter.setMinimum(0l); //Optional
  
         //Create everything.
-        passwordField = new JPasswordField(10);
-        passwordField.setActionCommand(OK);
-        passwordField.addActionListener(this);
- 
-        JLabel label = new JLabel("Enter the new password: ");
-        label.setLabelFor(passwordField);
+        locationField = new JFormattedTextField();
+        locationField.setColumns(20);
+        
+        coordNS = new JFormattedTextField(numberFormatter);
+        coordNS.setColumns(5);
+        
+        coordEW = new JFormattedTextField(numberFormatter);
+        coordEW.setColumns(5);
+
+        JLabel label = new JLabel("Enter the new location's name, coordinates NS and EW: ");
+        label.setLabelFor(locationField);
  
         JComponent buttonPane = createButtonPanel();
  
         //Lay out everything.
         JPanel textPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+        
         textPane.add(label);
-        textPane.add(passwordField);
+        textPane.add(locationField);
+        textPane.add(coordNS);
+        textPane.add(coordEW);
  
         add(textPane);
         add(buttonPane);
@@ -68,22 +85,22 @@ public class PasswordEditor extends JPanel
         String cmd = e.getActionCommand();
  
         if (OK.equals(cmd)) { //Process the password.
-            char[] input = passwordField.getPassword();
-            if (r2r.setAdministratorPassword(new String(input))) {
+            String inputLoc = locationField.getText();
+            Number inputCNS = Float.parseFloat(coordNS.getText());
+            Number inputCEW = Float.parseFloat(coordEW.getText());
+            
+            if (r2r.addLocation(inputLoc,inputCNS,inputCEW)) {
             	JOptionPane.showMessageDialog(controllingFrame,
-            			"Success! The Password was changed for the Rome2Rio System.");
+            			"Success! The Location " + inputLoc + " is now on the Rome2Rio System.");
             	frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             } else {
                 JOptionPane.showMessageDialog(controllingFrame,
-                    "Invalid password. Try again.",
+                    "Invalid City. Try to change the Name or the coordinates.",
                     "Error Message",
                     JOptionPane.ERROR_MESSAGE);
             }
  
-            //Zero out the possible password, for security.
-            Arrays.fill(input, '0');
- 
-            passwordField.selectAll();
+            locationField.selectAll();
             resetFocus();
         } else { //The user has asked for help.
             JOptionPane.showMessageDialog(controllingFrame,
@@ -96,7 +113,7 @@ public class PasswordEditor extends JPanel
  
     //Must be called from the event dispatch thread.
     protected void resetFocus() {
-        passwordField.requestFocusInWindow();
+    	locationField.requestFocusInWindow();
     }
  
     /**
@@ -107,10 +124,10 @@ public class PasswordEditor extends JPanel
     public void createAndShowGUI() {
     	
         //Create and set up the window.
-        frame = new JFrame("Administrator Password");
+        frame = new JFrame("Add Location To System");
  
         //Create and set up the content pane.
-        final PasswordEditor newContentPane = this;
+        final AddLocation newContentPane = this;
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
  
