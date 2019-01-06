@@ -1,19 +1,33 @@
 package gui;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.text.NumberFormatter;
 
 import rome2rio.Rome2Rio;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.text.NumberFormat;
-
 /* PasswordDemo.java requires no other files. */
 
 @SuppressWarnings("serial")
-public class RemoveRoute extends JPanel
-implements ActionListener {
+public class RemoveRoute extends JPanel implements ActionListener {
 
 	public Rome2Rio r2r;
 	public JFrame controllingFrame;
@@ -32,18 +46,18 @@ implements ActionListener {
 
 	public RemoveRoute(JFrame f, Rome2Rio r2r) {
 
-		this. r2r = r2r;
+		this.r2r = r2r;
 
-		//Use the default FlowLayout.
+		// Use the default FlowLayout.
 		controllingFrame = f;
 
 		NumberFormat longFormat = NumberFormat.getIntegerInstance();
 		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(false); //this is the key!!
-		numberFormatter.setMinimum(0l); //Optional
+		numberFormatter.setValueClass(Long.class); // optional, ensures you will always get a long value
+		numberFormatter.setAllowsInvalid(false); // this is the key!!
+		numberFormatter.setMinimum(0l); // Optional
 
-		//Create everything.
+		// Create everything.
 		locationField1 = new JFormattedTextField();
 		locationField1.setColumns(20);
 
@@ -59,24 +73,24 @@ implements ActionListener {
 		price = new JFormattedTextField(numberFormatter);
 		price.setColumns(5);
 
-		JLabel label = new JLabel("Enter the source and target locations' names, duration (min), distance (Km), price (€) and Transport type:");
-		label.setLabelFor( locationField1);
+		JLabel label = new JLabel(
+				"Enter the source and target locations' names, duration (min), distance (Km), price (€) and Transport type:");
+		label.setLabelFor(locationField1);
 
 		JComponent transpPane = createTransportationPanel();
 
 		JComponent buttonPane = createButtonPanel();
 
-		//Lay out everything.
-		JPanel textPane1 = new JPanel(new GridLayout(1,0));  
+		// Lay out everything.
+		JPanel textPane1 = new JPanel(new GridLayout(1, 0));
 		JPanel textPane2 = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
 		textPane1.add(label);
-		textPane2.add( locationField1);
-		textPane2.add( locationField2);
-		textPane2.add( time);
-		textPane2.add( distance);
-		textPane2.add( price);
-
+		textPane2.add(locationField1);
+		textPane2.add(locationField2);
+		textPane2.add(time);
+		textPane2.add(distance);
+		textPane2.add(price);
 
 		add(textPane1);
 		add(textPane2);
@@ -86,7 +100,7 @@ implements ActionListener {
 	}
 
 	protected JComponent createTransportationPanel() {
-		JPanel p = new JPanel(new GridLayout(1,1));
+		JPanel p = new JPanel(new GridLayout(1, 1));
 
 		JRadioButton busButton = new JRadioButton("Bus");
 		busButton.setMnemonic(KeyEvent.VK_R);
@@ -119,8 +133,8 @@ implements ActionListener {
 		trainButton.setForeground(Color.BLACK);
 		trainButton.setActionCommand("rabbit");
 
-		//Group the radio buttons.
-		transportGroup = new ButtonGroup();    
+		// Group the radio buttons.
+		transportGroup = new ButtonGroup();
 		transportGroup.add(busButton);
 		transportGroup.add(carButton);
 		transportGroup.add(ferryButton);
@@ -137,7 +151,7 @@ implements ActionListener {
 	}
 
 	protected JComponent createButtonPanel() {
-		JPanel p = new JPanel(new GridLayout(0,1));
+		JPanel p = new JPanel(new GridLayout(0, 1));
 		JButton okButton = new JButton("OK");
 		JButton helpButton = new JButton("Help");
 
@@ -152,15 +166,13 @@ implements ActionListener {
 		return p;
 	}
 
-
-
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 
-		if (OK.equals(cmd)) { 
+		if (OK.equals(cmd)) {
 
 			String inputLoc1 = locationField1.getText();
-			String inputLoc2 =  locationField2.getText();
+			String inputLoc2 = locationField2.getText();
 			Number inputTime = ((Number) time.getValue());
 			Number inputDistance = ((Number) distance.getValue());
 			Number inputPrice = ((Number) price.getValue());
@@ -168,7 +180,7 @@ implements ActionListener {
 
 			Object transportType = "";
 
-			switch(transportTypePre) {
+			switch (transportTypePre) {
 			case "Bus":
 				transportType = rome2rio.quotes.BUSQuote.getInstance();
 				break;
@@ -212,8 +224,8 @@ implements ActionListener {
 
 			locationField1.selectAll();
 			resetFocus();
-		} else { //The user has asked for help.
-			JOptionPane.showMessageDialog( controllingFrame,
+		} else { // The user has asked for help.
+			JOptionPane.showMessageDialog(controllingFrame,
 					"You can get the password by searching this example's\n"
 							+ "source code for the string \"correctPassword\".\n"
 							+ "Or look at the section How to Use Password Fields in\n"
@@ -221,36 +233,35 @@ implements ActionListener {
 		}
 	}
 
-	//Must be called from the event dispatch thread.
+	// Must be called from the event dispatch thread.
 	protected void resetFocus() {
 		locationField1.requestFocusInWindow();
 	}
 
 	/**
-	 * Create the GUI and show it.  For thread safety,
-	 * this method should be invoked from the
-	 * event dispatch thread.
+	 * Create the GUI and show it. For thread safety, this method should be invoked
+	 * from the event dispatch thread.
 	 */
 	public void createAndShowGUI() {
 
-		//Create and set up the window.
+		// Create and set up the window.
 		frame = new JFrame("Add Location To System");
 
-		//Create and set up the content pane.
+		// Create and set up the content pane.
 		final RemoveRoute newContentPane = this;
-		newContentPane.setOpaque(true); //content panes must be opaque
+		newContentPane.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(newContentPane);
 
-		//Make sure the focus goes to the right component
-		//whenever the frame is initially given the focus.
+		// Make sure the focus goes to the right component
+		// whenever the frame is initially given the focus.
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
 				newContentPane.resetFocus();
 			}
 		});
 
-		//Display the window.
-		frame.setSize(800,180);
+		// Display the window.
+		frame.setSize(800, 180);
 		frame.setVisible(true);
 	}
 

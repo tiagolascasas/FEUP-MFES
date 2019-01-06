@@ -5,73 +5,63 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class Node {
-  public static final Number MIN_PRIORITY = 9999999999L;
-  public Number priority;
-  public Number coordinateNS;
-  public Number coordinateEW;
-  public String location;
-  public VDMSet outwardEdges;
-  public Node path;
-  public Boolean processed;
+	public static final Number MIN_PRIORITY = 9999999999L;
+	public Number priority;
+	public Number coordinateNS;
+	public Number coordinateEW;
+	public String location;
+	public String country;
+	public VDMSet outwardEdges;
+	public Node path;
+	public Boolean processed;
 
-  public void cg_init_Node_1(final Number cdNS, final Number cdEW, final String loc) {
+	public void cg_init_Node_1(final Number cdNS, final Number cdEW, final String loc, final String con) {
 
-    priority = Node.MIN_PRIORITY;
-    coordinateNS = cdNS;
-    coordinateEW = cdEW;
-    location = loc;
-    outwardEdges = SetUtil.set();
-    processed = false;
-    path = this;
-    return;
-  }
+		priority = Node.MIN_PRIORITY;
+		coordinateNS = cdNS;
+		coordinateEW = cdEW;
+		location = loc;
+		country = con;
+		outwardEdges = SetUtil.set();
+		processed = false;
+		path = this;
+		return;
+	}
 
-  public Node(final Number cdNS, final Number cdEW, final String loc) {
+	public Node(final Number cdNS, final Number cdEW, final String loc, final String con) {
 
-    cg_init_Node_1(cdNS, cdEW, loc);
-  }
+		cg_init_Node_1(cdNS, cdEW, loc, con);
+	}
 
-  public void setPriority(final Number pri) {
+	public void setPriority(final Number pri) {
 
-    priority = pri;
-  }
+		priority = pri;
+	}
 
-  public void setPath(final Node n) {
+	public void setPath(final Node n) {
 
-    path = n;
-  }
+		path = n;
+	}
 
-  public void setProcessed(final Boolean p) {
+	public void setProcessed(final Boolean p) {
 
-    processed = p;
-  }
+		processed = p;
+	}
 
-  public void addEdge(final Edge edge) {
+	public void addEdge(final Edge edge) {
 
-    outwardEdges = SetUtil.union(SetUtil.set(edge), Utils.copy(outwardEdges));
-  }
+		outwardEdges = SetUtil.union(SetUtil.set(edge), Utils.copy(outwardEdges));
+	}
 
-  public Node() {}
+	public Node() {
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "Node{"
-        + "MIN_PRIORITY = "
-        + Utils.toString(MIN_PRIORITY)
-        + ", priority := "
-        + Utils.toString(priority)
-        + ", coordinateNS := "
-        + Utils.toString(coordinateNS)
-        + ", coordinateEW := "
-        + Utils.toString(coordinateEW)
-        + ", location := "
-        + Utils.toString(location)
-        + ", outwardEdges := "
-        + Utils.toString(outwardEdges)
-        + ", path := "
-        + Utils.toString(path)
-        + ", processed := "
-        + Utils.toString(processed)
-        + "}";
-  }
+		return "Node{" + "MIN_PRIORITY = " + Utils.toString(MIN_PRIORITY) + ", priority := " + Utils.toString(priority)
+				+ ", coordinateNS := " + Utils.toString(coordinateNS) + ", coordinateEW := "
+				+ Utils.toString(coordinateEW) + ", location := " + Utils.toString(location) + ", country := "
+				+ Utils.toString(country) + ", outwardEdges := " + Utils.toString(outwardEdges) + ", path := "
+				+ Utils.toString(path) + ", processed := " + Utils.toString(processed) + "}";
+	}
 }

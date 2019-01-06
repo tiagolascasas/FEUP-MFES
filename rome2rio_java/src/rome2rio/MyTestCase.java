@@ -5,26 +5,27 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class MyTestCase {
-  protected void assertTrue(final Boolean arg) {
+	protected void assertTrue(final Boolean arg) {
 
-    return;
-  }
+		return;
+	}
 
-  protected void assertEqual(final Object expected, final Object actual) {
+	protected void assertEqual(final Object expected, final Object actual) {
 
-    if (!(Utils.equals(expected, actual))) {
-      IO.print("Actual value (");
-      IO.print(((Object) actual));
-      IO.print(") different from expected (");
-      IO.print(((Object) expected));
-      IO.println(")\n");
-    }
-  }
+		if (!(Utils.equals(expected, actual))) {
+			IO.print("Actual value (");
+			IO.print(((Object) actual));
+			IO.print(") different from expected (");
+			IO.print(((Object) expected));
+			IO.println(")\n");
+		}
+	}
 
-  public MyTestCase() {}
+	public MyTestCase() {
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "MyTestCase{}";
-  }
+		return "MyTestCase{}";
+	}
 }

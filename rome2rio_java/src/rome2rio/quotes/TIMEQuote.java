@@ -4,37 +4,37 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class TIMEQuote {
-  private static int hc = 0;
-  private static TIMEQuote instance = null;
+	private static int hc = 0;
+	private static TIMEQuote instance = null;
 
-  public TIMEQuote() {
+	public TIMEQuote() {
 
-    if (Utils.equals(hc, 0)) {
-      hc = super.hashCode();
-    }
-  }
+		if (Utils.equals(hc, 0)) {
+			hc = super.hashCode();
+		}
+	}
 
-  public static TIMEQuote getInstance() {
+	public static TIMEQuote getInstance() {
 
-    if (Utils.equals(instance, null)) {
-      instance = new TIMEQuote();
-    }
+		if (Utils.equals(instance, null)) {
+			instance = new TIMEQuote();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  public int hashCode() {
+	public int hashCode() {
 
-    return hc;
-  }
+		return hc;
+	}
 
-  public boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 
-    return obj instanceof TIMEQuote;
-  }
+		return obj instanceof TIMEQuote;
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "<TIME>";
-  }
+		return "<TIME>";
+	}
 }

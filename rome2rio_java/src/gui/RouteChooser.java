@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -24,11 +23,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import rome2rio.Rome2Rio;
-import java.awt.BorderLayout;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class RouteChooser extends JPanel {
@@ -169,60 +167,64 @@ public class RouteChooser extends JPanel {
 		panel2.setBackground(Color.BLACK);
 
 		panel2.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
-		//panel.setPreferredSize(new Dimension(550, panel.getHeight()));
+		// panel.setPreferredSize(new Dimension(550, panel.getHeight()));
 		panel2.add(panel);
-				panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-				
-				Image img = null;
-				
-				JPanel panel_2 = new JPanel();
-				panel_2.setBackground(Color.BLACK);
-				panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Source", TitledBorder.LEADING, TitledBorder.TOP, null, Color.LIGHT_GRAY));
-				panel.add(panel_2);
-				
-				JFormattedTextField locationField1 = new JFormattedTextField();
-				panel_2.add(locationField1);
-				locationField1.setColumns(15);
-				locationField1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-				locationField1.setPreferredSize(new Dimension(locationField1.getWidth(), 60));
-				
-				JButton searchLocation1 = new JButton("");
-				searchLocation1.setPreferredSize(new Dimension(60, 60));
-				panel_2.add(searchLocation1);
-				searchLocation1.setIcon(new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
-				searchLocation1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-					}
-				});
-				searchLocation1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-				
-				JPanel panel_1 = new JPanel();
-				panel_1.setBackground(Color.BLACK);
-				panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Target", TitledBorder.LEADING, TitledBorder.TOP, null, Color.LIGHT_GRAY));
-				panel.add(panel_1);
-				//searchLocation1.setPreferredSize(new Dimension(130, 60));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-				JFormattedTextField locationField2 = new JFormattedTextField();
-				panel_1.add(locationField2);
-				locationField2.setColumns(15);
-				locationField2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-				locationField2.setPreferredSize(new Dimension(locationField2.getWidth(), 60));
-				
-				JButton searchLocation2 = new JButton("");
-				searchLocation2.setPreferredSize(new Dimension(60, 60));
-				panel_1.add(searchLocation2);
-				searchLocation2.setIcon(new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
-				searchLocation2.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-					}
-				});
-				searchLocation2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-				//searchLocation1.setPreferredSize(new Dimension(130, 60));
+		Image img = null;
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.BLACK);
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Source",
+				TitledBorder.LEADING, TitledBorder.TOP, null, Color.LIGHT_GRAY));
+		panel.add(panel_2);
+
+		JFormattedTextField locationField1 = new JFormattedTextField();
+		panel_2.add(locationField1);
+		locationField1.setColumns(15);
+		locationField1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		locationField1.setPreferredSize(new Dimension(locationField1.getWidth(), 60));
+
+		JButton searchLocation1 = new JButton("");
+		searchLocation1.setPreferredSize(new Dimension(60, 60));
+		panel_2.add(searchLocation1);
+		searchLocation1.setIcon(
+				new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
+		searchLocation1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		searchLocation1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.BLACK);
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Target",
+				TitledBorder.LEADING, TitledBorder.TOP, null, Color.LIGHT_GRAY));
+		panel.add(panel_1);
+		// searchLocation1.setPreferredSize(new Dimension(130, 60));
+
+		JFormattedTextField locationField2 = new JFormattedTextField();
+		panel_1.add(locationField2);
+		locationField2.setColumns(15);
+		locationField2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		locationField2.setPreferredSize(new Dimension(locationField2.getWidth(), 60));
+
+		JButton searchLocation2 = new JButton("");
+		searchLocation2.setPreferredSize(new Dimension(60, 60));
+		panel_1.add(searchLocation2);
+		searchLocation2.setIcon(
+				new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
+		searchLocation2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		searchLocation2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		// searchLocation1.setPreferredSize(new Dimension(130, 60));
 
 		JButton searchRoute = new JButton("Find Transport");
 		searchRoute.addActionListener(new ActionListener() {
@@ -297,35 +299,27 @@ public class RouteChooser extends JPanel {
 		searchRoute.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		searchRoute.setPreferredSize(new Dimension(130, 60));
 		panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		
-				
+
 		panel2.add(searchRoute);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
+				groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout
+						.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panel2, GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
-							.addContainerGap())
+								.addComponent(panel2, GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE).addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(p, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 784, GroupLayout.PREFERRED_SIZE)
-								.addComponent(panel1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE))
-							.addGap(0))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(panel1, GroupLayout.PREFERRED_SIZE, 59, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(p, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(14)
-					.addComponent(panel2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-					.addGap(47))
-		);
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(p, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 784,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(panel1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 807,
+												Short.MAX_VALUE))
+								.addGap(0)))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
+				.createSequentialGroup().addComponent(panel1, GroupLayout.PREFERRED_SIZE, 59, Short.MAX_VALUE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(p, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGap(14).addComponent(panel2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+				.addGap(47)));
 		setLayout(groupLayout);
 	}
 

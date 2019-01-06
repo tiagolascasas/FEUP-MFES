@@ -4,37 +4,37 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class ClientQuote {
-  private static int hc = 0;
-  private static ClientQuote instance = null;
+	private static int hc = 0;
+	private static ClientQuote instance = null;
 
-  public ClientQuote() {
+	public ClientQuote() {
 
-    if (Utils.equals(hc, 0)) {
-      hc = super.hashCode();
-    }
-  }
+		if (Utils.equals(hc, 0)) {
+			hc = super.hashCode();
+		}
+	}
 
-  public static ClientQuote getInstance() {
+	public static ClientQuote getInstance() {
 
-    if (Utils.equals(instance, null)) {
-      instance = new ClientQuote();
-    }
+		if (Utils.equals(instance, null)) {
+			instance = new ClientQuote();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  public int hashCode() {
+	public int hashCode() {
 
-    return hc;
-  }
+		return hc;
+	}
 
-  public boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 
-    return obj instanceof ClientQuote;
-  }
+		return obj instanceof ClientQuote;
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "<Client>";
-  }
+		return "<Client>";
+	}
 }

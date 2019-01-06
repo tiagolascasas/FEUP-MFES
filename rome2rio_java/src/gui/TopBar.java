@@ -34,167 +34,164 @@ public class TopBar extends JMenuBar {
 	public JMenuItem addRoute = null;
 	public JMenuItem removeLocation = null;
 	public JMenuItem removeRoute = null;
-	
+
 	public TopBar() {
-		
-		this.add(Box.createRigidArea(new Dimension(this.getWidth(),40)));
-		
+
+		this.add(Box.createRigidArea(new Dimension(this.getWidth(), 40)));
+
 		this.setUI(new BasicMenuBarUI() {
 
-	        @Override
-	        public void paint(Graphics g, JComponent c) {
-	            g.setColor(Color.black);
-	            g.fillRect(0, 0, c.getWidth(), c.getHeight());
-	        }
-	    });		
-		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));		
+			@Override
+			public void paint(Graphics g, JComponent c) {
+				g.setColor(Color.black);
+				g.fillRect(0, 0, c.getWidth(), c.getHeight());
+			}
+		});
+		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
 		this.setForeground(Color.WHITE);
-		
+
 		addLogoOnMenu();
 
 	}
 
 	private void addLogoOnMenu() {
-		
-		try {		
-			
+
+		try {
+
 			JMenu menu = new JMenu("");
 			Image logo = new ImageIcon(ImageIO.read(new File("images/rome2rio_logo.png"))).getImage();
-			menu.setIcon(new ImageIcon(logo.getScaledInstance(140, 40,  java.awt.Image.SCALE_SMOOTH)));
+			menu.setIcon(new ImageIcon(logo.getScaledInstance(140, 40, java.awt.Image.SCALE_SMOOTH)));
 			menu.setBackground(Color.black);
 			menu.setOpaque(false);
 			this.add(menu);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public JMenu administratorMenu() {
-		
+
 		JMenu adminMenu = new JMenu("Administrator");
 		adminMenu.setFont(new Font("American Typewriter", Font.PLAIN, 13));
 		adminMenu.setOpaque(false);
 		adminMenu.setMnemonic(KeyEvent.VK_A);
-		adminMenu.getAccessibleContext().setAccessibleDescription(
-				"Administrator Menu");
+		adminMenu.getAccessibleContext().setAccessibleDescription("Administrator Menu");
 		loginMenu = adminMenu;
 		return adminMenu;
-		
+
 	}
-	
+
 	public void loginAsAdministrator(Rome2Rio r2r) {
-		
+
 		removeButtonsWhenClient();
-		
+
 		login = new JMenuItem("Login");
 		login.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if(r2r.status == rome2rio.quotes.ClientQuote.getInstance())
-		        	passwordCaller(r2r);
-		    }
+			public void actionPerformed(ActionEvent e) {
+				if (r2r.status == rome2rio.quotes.ClientQuote.getInstance())
+					passwordCaller(r2r);
+			}
 		});
 		loginMenu.add(login);
 	}
 
 	private void removeButtonsWhenClient() {
-		
-		if(login != null) {
+
+		if (login != null) {
 			loginMenu.remove(login);
 			login = null;
 		}
-		if(changePassword != null) {
+		if (changePassword != null) {
 			loginMenu.remove(changePassword);
 			changePassword = null;
 		}
-		if(addLocation != null) {
+		if (addLocation != null) {
 			loginMenu.remove(addLocation);
 			addLocation = null;
 		}
-		if(addRoute != null) {
+		if (addRoute != null) {
 			loginMenu.remove(addRoute);
 			addRoute = null;
 		}
-		if(removeLocation != null) {
+		if (removeLocation != null) {
 			loginMenu.remove(removeLocation);
 			removeLocation = null;
 		}
-		if(removeRoute != null) {
+		if (removeRoute != null) {
 			loginMenu.remove(removeRoute);
 			removeRoute = null;
 		}
 	}
-	
+
 	public void passwordCaller(Rome2Rio r2r) {
-    	PasswordPanel passcode = new PasswordPanel(new JFrame(""),r2r,this);
-    	passcode.createAndShowGUI();	
+		PasswordPanel passcode = new PasswordPanel(new JFrame(""), r2r, this);
+		passcode.createAndShowGUI();
 	}
-	
+
 	public void logoutAsAdministrator(Rome2Rio r2r) {
-		
+
 		loginMenu.remove(login);
 		addAdminCalls(r2r);
-		
+
 		login = new JMenuItem("Logout");
 		login.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (r2r.status == rome2rio.quotes.AdministratorQuote.getInstance()) {
-		        	r2r.changeToClient();
-		        	loginAsAdministrator(r2r);
-		        }
-		    }
+			public void actionPerformed(ActionEvent e) {
+				if (r2r.status == rome2rio.quotes.AdministratorQuote.getInstance()) {
+					r2r.changeToClient();
+					loginAsAdministrator(r2r);
+				}
+			}
 		});
 		loginMenu.add(login);
 	}
-	
+
 	public void addAdminCalls(Rome2Rio r2r) {
-		
+
 		changePassword = new JMenuItem("Change Password");
 		changePassword.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	PasswordEditor passcode = new PasswordEditor(new JFrame(""),r2r);
-		    	passcode.createAndShowGUI();	
-		    }
+			public void actionPerformed(ActionEvent e) {
+				PasswordEditor passcode = new PasswordEditor(new JFrame(""), r2r);
+				passcode.createAndShowGUI();
+			}
 		});
-		
+
 		addLocation = new JMenuItem("Add Location");
 		addLocation.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	AddLocation addLocation = new AddLocation(new JFrame(""),r2r);
-		    	addLocation.createAndShowGUI();
-		    }
+			public void actionPerformed(ActionEvent e) {
+				AddLocation addLocation = new AddLocation(new JFrame(""), r2r);
+				addLocation.createAndShowGUI();
+			}
 		});
-		
+
 		addRoute = new JMenuItem("Add Route");
 		addRoute.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	AddRoute addRoute = new AddRoute(new JFrame(""),r2r);
-		    	addRoute.createAndShowGUI();
-		    }
+			public void actionPerformed(ActionEvent e) {
+				AddRoute addRoute = new AddRoute(new JFrame(""), r2r);
+				addRoute.createAndShowGUI();
+			}
 		});
-		
-		
+
 		removeLocation = new JMenuItem("Remove Location");
 		removeLocation.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	RemoveLocation removeLocation = new RemoveLocation(new JFrame(""),r2r);
-		    	removeLocation.createAndShowGUI();
-		    }
+			public void actionPerformed(ActionEvent e) {
+				RemoveLocation removeLocation = new RemoveLocation(new JFrame(""), r2r);
+				removeLocation.createAndShowGUI();
+			}
 		});
-		
+
 		removeRoute = new JMenuItem("Remove Route");
 		removeRoute.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	RemoveRoute removeRoute = new RemoveRoute(new JFrame(""),r2r);
-		    	removeRoute.createAndShowGUI();
-		    }
+			public void actionPerformed(ActionEvent e) {
+				RemoveRoute removeRoute = new RemoveRoute(new JFrame(""), r2r);
+				removeRoute.createAndShowGUI();
+			}
 		});
-		
-		
+
 		loginMenu.add(changePassword);
 		loginMenu.add(addLocation);
 		loginMenu.add(addRoute);
 	}
-	
+
 }
