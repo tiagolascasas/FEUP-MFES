@@ -8,7 +8,6 @@ import rome2rio.Rome2Rio;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.NumberFormat;
-import java.util.Enumeration;
 
 /* PasswordDemo.java requires no other files. */
 

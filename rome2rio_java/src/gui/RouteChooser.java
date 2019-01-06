@@ -7,11 +7,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +29,10 @@ public class RouteChooser extends JPanel {
 	private static final int LAST_X = 800;
 	private static final int INIT_CORD = 100;
 	
+	private ButtonGroup criteriaChoice;
+	private ButtonGroup transportGroup;
+	
+	private Rome2Rio r2r;
 	
 	public RouteChooser(Rome2Rio r2r) {
 		
@@ -33,15 +41,17 @@ public class RouteChooser extends JPanel {
 		this.setBackground(Color.BLACK);
 		this.setOpaque(true);
 		
-		criteriaPanel();
+		this.r2r = r2r;
 		
+		criteriaPanel();
+		createTransportationPanel();
 		routePanel();
 	}
 	
 	private void criteriaPanel() {
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBorder(new EmptyBorder(50, 5, 10, 10));
+		panel1.setBorder(new EmptyBorder(20, 5, 10, 10));
 		panel1.setBackground(Color.BLACK);
 		
 		JLabel criteria = new JLabel("<html><font color='white'>Order Criteria:</font></html>", JLabel.LEFT);
@@ -67,55 +77,136 @@ public class RouteChooser extends JPanel {
 	    priceButton.setForeground(Color.WHITE);
 	    priceButton.setActionCommand("dog");
 
-	    JRadioButton noneButton = new JRadioButton("None");
-	    noneButton.setMnemonic(KeyEvent.VK_R);
-	    noneButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-	    noneButton.setForeground(Color.WHITE);
-	    noneButton.setActionCommand("rabbit");
-
 	    //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
-	    group.add(distanceButton);
-	    group.add(durationButton);
-	    group.add(priceButton);
-	    group.add(noneButton);
+	    criteriaChoice = new ButtonGroup();
+	    criteriaChoice.add(distanceButton);
+	    criteriaChoice.add(durationButton);
+	    criteriaChoice.add(priceButton);
 	    
 	    panel1.add(criteria);
 	    panel1.add(distanceButton);
 	    panel1.add(durationButton);
 	    panel1.add(priceButton);
-	    panel1.add(noneButton);
 	    
 		this.add(panel1);
 	}
+	
+	protected void createTransportationPanel() {
+		JPanel p = new JPanel(new GridLayout(1,1));
+		p.setBackground(Color.BLACK);
+
+		JRadioButton busButton = new JRadioButton("Bus");
+		busButton.setMnemonic(KeyEvent.VK_R);
+		busButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		busButton.setForeground(Color.BLACK);
+		busButton.setActionCommand("rabbit");
+
+		JRadioButton carButton = new JRadioButton("Car");
+		carButton.setMnemonic(KeyEvent.VK_B);
+		carButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		carButton.setForeground(Color.BLACK);
+		carButton.setActionCommand("Bird");
+		carButton.setSelected(true);
+
+		JRadioButton ferryButton = new JRadioButton("Ferry");
+		ferryButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		ferryButton.setForeground(Color.BLACK);
+		ferryButton.setMnemonic(KeyEvent.VK_C);
+		ferryButton.setActionCommand("cat");
+
+		JRadioButton planeButton = new JRadioButton("Plane");
+		planeButton.setMnemonic(KeyEvent.VK_D);
+		planeButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		planeButton.setForeground(Color.BLACK);
+		planeButton.setActionCommand("dog");
+
+		JRadioButton trainButton = new JRadioButton("Train");
+		trainButton.setMnemonic(KeyEvent.VK_R);
+		trainButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		trainButton.setForeground(Color.BLACK);
+		trainButton.setActionCommand("rabbit");
+
+		//Group the radio buttons.
+		transportGroup = new ButtonGroup();    
+		transportGroup.add(busButton);
+		transportGroup.add(carButton);
+		transportGroup.add(ferryButton);
+		transportGroup.add(planeButton);
+		transportGroup.add(trainButton);
+
+		p.add(busButton);
+		p.add(carButton);
+		p.add(ferryButton);
+		p.add(planeButton);
+		p.add(trainButton);
+
+		this.add(p);
+	}
+
 
 	private void routePanel() {
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.BLACK);
-
 		
-		JFormattedTextField local1 = new JFormattedTextField();
-		local1.setColumns(20);
-		local1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-		local1.setPreferredSize(new Dimension(local1.getWidth(),60));
+		JFormattedTextField locationField1 = new JFormattedTextField();
+		locationField1.setColumns(20);
+		locationField1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		locationField1.setPreferredSize(new Dimension(locationField1.getWidth(),60));
 		
-		JFormattedTextField local2 = new JFormattedTextField();
-		local2.setColumns(20);
-		local2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-		local2.setPreferredSize(new Dimension(local2.getWidth(),60));
+		JFormattedTextField locationField2 = new JFormattedTextField();
+		locationField2.setColumns(20);
+		locationField2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		locationField2.setPreferredSize(new Dimension(locationField2.getWidth(),60));
 		
 		JButton searchRoute = new JButton("Find Transport");
 		searchRoute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: call function to search and pass for next panel
+				
+				String inputLoc1 = locationField1.getText();
+				String inputLoc2 =  locationField2.getText();
+				
+				if(r2r.graph.findNode(inputLoc1) == null) {
+					JOptionPane.showMessageDialog(new JFrame("Warning:"), 
+							inputLoc1 + " doesn't exist on the Rome2Rio System");
+					return;
+				}
+				if(r2r.graph.findNode(inputLoc2) == null) {
+					JOptionPane.showMessageDialog(new JFrame("Warning:"), 
+							inputLoc2 + " doesn't exist on the Rome2Rio System");
+					return;
+				}
+				if(r2r.graph.ExistsEdge(inputLoc1,inputLoc2) == false) {
+					JOptionPane.showMessageDialog(new JFrame("Warning:"),  
+							"Doesn't exist any Route with location " + inputLoc1 
+							+ " as source and location " + inputLoc2 
+							+ " as target on the Rome2Rio System");
+					return;
+				}
+					
+				String criteriaPre = GuiUtils.getSelectedButtonText(criteriaChoice);
+
+				switch(criteriaPre) {
+				case "Lowest Distance":
+					r2r.getBestRouteForCriterion(inputLoc1,inputLoc2,rome2rio.quotes.DISTANCEQuote.getInstance());
+					break;
+				case "Lowest Duration":
+					r2r.getBestRouteForCriterion(inputLoc1,inputLoc2,rome2rio.quotes.TIMEQuote.getInstance());
+					break;
+				case "Cheapest Price":
+					r2r.getBestRouteForCriterion(inputLoc1,inputLoc2,rome2rio.quotes.PRICEQuote.getInstance());
+					break;
+				default:
+					break;
+				}
+				
 			}
 		});
 		searchRoute.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		searchRoute.setPreferredSize(new Dimension(130,60));
 
-		panel2.add(local1);
-		panel2.add(local2);
+		panel2.add(locationField1);
+		panel2.add(locationField2);
 		panel2.add(searchRoute);
 		
 		this.add(panel2);
