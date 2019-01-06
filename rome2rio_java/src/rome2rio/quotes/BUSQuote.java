@@ -4,37 +4,37 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class BUSQuote {
-  private static int hc = 0;
-  private static BUSQuote instance = null;
+	private static int hc = 0;
+	private static BUSQuote instance = null;
 
-  public BUSQuote() {
+	public BUSQuote() {
 
-    if (Utils.equals(hc, 0)) {
-      hc = super.hashCode();
-    }
-  }
+		if (Utils.equals(hc, 0)) {
+			hc = super.hashCode();
+		}
+	}
 
-  public static BUSQuote getInstance() {
+	public static BUSQuote getInstance() {
 
-    if (Utils.equals(instance, null)) {
-      instance = new BUSQuote();
-    }
+		if (Utils.equals(instance, null)) {
+			instance = new BUSQuote();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  public int hashCode() {
+	public int hashCode() {
 
-    return hc;
-  }
+		return hc;
+	}
 
-  public boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 
-    return obj instanceof BUSQuote;
-  }
+		return obj instanceof BUSQuote;
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "<BUS>";
-  }
+		return "<BUS>";
+	}
 }

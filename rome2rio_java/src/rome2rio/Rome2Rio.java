@@ -41,10 +41,11 @@ public class Rome2Rio {
 		return false;
 	}
 
-	public Boolean addLocation(final String location, final Number coordinateNS, final Number coordinateEW) {
+	public Boolean addLocation(final String location, final String country, final Number coordinateNS,
+			final Number coordinateEW) {
 
 		if (graph.findNode(location) == null) {
-			graph.addNode(location, coordinateNS, coordinateEW);
+			graph.addNode(location, country, coordinateNS, coordinateEW);
 			return true;
 		}
 		return false;
@@ -69,9 +70,10 @@ public class Rome2Rio {
 		return true;
 	}
 
-	public void removeLocation(final String loc) {
+	public boolean removeLocation(final String loc) {
 
 		graph.removeNode(loc);
+		return true;
 	}
 
 	public void changeToClient() {
@@ -95,14 +97,17 @@ public class Rome2Rio {
 		return i;
 	}
 
-	public ArrayList<String> listLocationsStrings() {
+	public ArrayList<List<String>> listLocationsStrings() {
 
 		Number i = 0L;
-		ArrayList<String> locations = new ArrayList<String>();
+		ArrayList<List<String>> locations = new ArrayList<List<String>>();
 
 		for (Iterator iterator_16 = graph.node.iterator(); iterator_16.hasNext();) {
 			Node n = (Node) iterator_16.next();
-			locations.add(n.location);
+			ArrayList<String> countryCity = new ArrayList<String>();
+			countryCity.add(n.location);
+			countryCity.add(n.country);
+			locations.add(countryCity);
 			i = i.longValue() + 1L;
 		}
 		return locations;
@@ -113,180 +118,54 @@ public class Rome2Rio {
 
 		return graph.findPath(source, target, ((Object) criterion), ((Object) type));
 	}
-	
+
 	public VDMSet getBestRoutesForAllCriteria(final String source, final String target) {
 
-	    VDMSet paths = SetUtil.set();
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.ANYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.ANYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.ANYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.CARQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.CARQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.CARQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.BUSQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.BUSQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.BUSQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.PLANEQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.PLANEQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.PLANEQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.FERRYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.FERRYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.FERRYQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.PRICEQuote.getInstance(),
-	                    rome2rio.quotes.TRAINQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.DISTANCEQuote.getInstance(),
-	                    rome2rio.quotes.TRAINQuote.getInstance())));
-	    paths =
-	        SetUtil.union(
-	            Utils.copy(paths),
-	            SetUtil.set(
-	                graph.findPath(
-	                    source,
-	                    target,
-	                    rome2rio.quotes.TIMEQuote.getInstance(),
-	                    rome2rio.quotes.TRAINQuote.getInstance())));
-	    for (Iterator iterator_18 = paths.iterator(); iterator_18.hasNext(); ) {
-	      Path p = (Path) iterator_18.next();
-	      if (!(p.isPossible())) {
-	        paths = SetUtil.diff(Utils.copy(paths), SetUtil.set(p));
-	      }
-	    }
-	    return Utils.copy(paths);
-	  }
+		VDMSet paths = SetUtil.set();
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.ANYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.ANYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.ANYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.CARQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.CARQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.CARQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.BUSQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.BUSQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.BUSQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.PLANEQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.PLANEQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.PLANEQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.FERRYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.FERRYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.FERRYQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.PRICEQuote.getInstance(), rome2rio.quotes.TRAINQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.TRAINQuote.getInstance())));
+		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
+				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.TRAINQuote.getInstance())));
+		for (Iterator iterator_18 = paths.iterator(); iterator_18.hasNext();) {
+			Path p = (Path) iterator_18.next();
+			if (!(p.isPossible())) {
+				paths = SetUtil.diff(Utils.copy(paths), SetUtil.set(p));
+			}
+		}
+		return Utils.copy(paths);
+	}
 
 	public String toString() {
 

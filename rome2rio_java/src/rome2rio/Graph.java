@@ -22,9 +22,10 @@ public class Graph {
 		cg_init_Graph_1();
 	}
 
-	public void addNode(final String location, final Number coordinateNS, final Number coordinateEW) {
+	public void addNode(final String location, final String country, final Number coordinateNS,
+			final Number coordinateEW) {
 
-		Node n = new Node(coordinateNS, coordinateEW, location);
+		Node n = new Node(coordinateNS, coordinateEW, location, country);
 		node = SetUtil.union(SetUtil.set(n), Utils.copy(node));
 	}
 
@@ -46,7 +47,7 @@ public class Graph {
 	public Node findNode(final String location) {
 
 		Node res = null;
-		for (Iterator iterator_10 = node.iterator(); iterator_10.hasNext(); ) {
+		for (Iterator iterator_10 = node.iterator(); iterator_10.hasNext();) {
 			Node n = (Node) iterator_10.next();
 			if (Utils.equals(n.location, location)) {
 				res = n;
@@ -58,7 +59,7 @@ public class Graph {
 	public Edge findEdge(final String source, final String target) {
 
 		Edge res = null;
-		for (Iterator iterator_11 = edge.iterator(); iterator_11.hasNext(); ) {
+		for (Iterator iterator_11 = edge.iterator(); iterator_11.hasNext();) {
 			Edge e = (Edge) iterator_11.next();
 			Boolean andResult_7 = false;
 
@@ -79,7 +80,7 @@ public class Graph {
 
 		Boolean existsExpResult_5 = false;
 		VDMSet set_7 = Utils.copy(edge);
-		for (Iterator iterator_7 = set_7.iterator(); iterator_7.hasNext() && !(existsExpResult_5); ) {
+		for (Iterator iterator_7 = set_7.iterator(); iterator_7.hasNext() && !(existsExpResult_5);) {
 			Edge e = ((Edge) iterator_7.next());
 			Boolean andResult_8 = false;
 
@@ -98,7 +99,7 @@ public class Graph {
 
 		VDMSet res = null;
 		res = SetUtil.set();
-		for (Iterator iterator_12 = edge.iterator(); iterator_12.hasNext(); ) {
+		for (Iterator iterator_12 = edge.iterator(); iterator_12.hasNext();) {
 			Edge e = (Edge) iterator_12.next();
 			Boolean orResult_1 = false;
 
@@ -126,7 +127,7 @@ public class Graph {
 	public void resetGraphInformation() {
 
 		priorityQueue.clear();
-		for (Iterator iterator_12 = node.iterator(); iterator_12.hasNext(); ) {
+		for (Iterator iterator_12 = node.iterator(); iterator_12.hasNext();) {
 			Node n = (Node) iterator_12.next();
 			n.setPriority(Node.MIN_PRIORITY);
 			n.setProcessed(false);
@@ -134,8 +135,7 @@ public class Graph {
 		}
 	}
 
-	public Path findPath(
-			final String source, final String target, final Object criterion, final Object travelType) {
+	public Path findPath(final String source, final String target, final Object criterion, final Object travelType) {
 
 		Boolean foundTarget = false;
 		Node startingNode = findNode(source);
@@ -163,11 +163,9 @@ public class Graph {
 				if (Utils.equals(currentNode.location, target)) {
 					foundTarget = true;
 				} else {
-					for (Iterator iterator_14 = currentNode.outwardEdges.iterator();
-							iterator_14.hasNext();
-							) {
+					for (Iterator iterator_14 = currentNode.outwardEdges.iterator(); iterator_14.hasNext();) {
 						Edge outwardEdge = (Edge) iterator_14.next();
-						for (Iterator iterator_15 = outwardEdge.edgeType.iterator(); iterator_15.hasNext(); ) {
+						for (Iterator iterator_15 = outwardEdge.edgeType.iterator(); iterator_15.hasNext();) {
 							EdgeType type = (EdgeType) iterator_15.next();
 							Number weight = 0L;
 							Node destNode = outwardEdge.targetNode;
@@ -188,8 +186,8 @@ public class Graph {
 									weight = type.price;
 								}
 
-								if (currentNode.priority.doubleValue() + weight.doubleValue()
-								< destNode.priority.doubleValue()) {
+								if (currentNode.priority.doubleValue() + weight.doubleValue() < destNode.priority
+										.doubleValue()) {
 									destNode.setPriority(currentNode.priority.doubleValue() + weight.doubleValue());
 									destNode.setPath(currentNode);
 									if (Utils.equals(destNode.processed, false)) {
@@ -212,8 +210,8 @@ public class Graph {
 		}
 	}
 
-	public Path getPathSourceToTarget(
-			final String source, final String target, final Object type, final Object criterion) {
+	public Path getPathSourceToTarget(final String source, final String target, final Object type,
+			final Object criterion) {
 
 		Node currentNode = findNode(target);
 		Path path = new Path(((Object) type), ((Object) criterion), currentNode.priority);
@@ -236,13 +234,7 @@ public class Graph {
 
 	public String toString() {
 
-		return "Graph{"
-				+ "node := "
-				+ Utils.toString(node)
-				+ ", priorityQueue := "
-				+ Utils.toString(priorityQueue)
-				+ ", edge := "
-				+ Utils.toString(edge)
-				+ "}";
+		return "Graph{" + "node := " + Utils.toString(node) + ", priorityQueue := " + Utils.toString(priorityQueue)
+				+ ", edge := " + Utils.toString(edge) + "}";
 	}
 }

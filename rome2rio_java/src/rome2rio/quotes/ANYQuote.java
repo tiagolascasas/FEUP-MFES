@@ -4,37 +4,37 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class ANYQuote {
-  private static int hc = 0;
-  private static ANYQuote instance = null;
+	private static int hc = 0;
+	private static ANYQuote instance = null;
 
-  public ANYQuote() {
+	public ANYQuote() {
 
-    if (Utils.equals(hc, 0)) {
-      hc = super.hashCode();
-    }
-  }
+		if (Utils.equals(hc, 0)) {
+			hc = super.hashCode();
+		}
+	}
 
-  public static ANYQuote getInstance() {
+	public static ANYQuote getInstance() {
 
-    if (Utils.equals(instance, null)) {
-      instance = new ANYQuote();
-    }
+		if (Utils.equals(instance, null)) {
+			instance = new ANYQuote();
+		}
 
-    return instance;
-  }
+		return instance;
+	}
 
-  public int hashCode() {
+	public int hashCode() {
 
-    return hc;
-  }
+		return hc;
+	}
 
-  public boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 
-    return obj instanceof ANYQuote;
-  }
+		return obj instanceof ANYQuote;
+	}
 
-  public String toString() {
+	public String toString() {
 
-    return "<ANY>";
-  }
+		return "<ANY>";
+	}
 }
