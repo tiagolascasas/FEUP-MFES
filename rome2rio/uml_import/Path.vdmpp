@@ -7,15 +7,17 @@ instance variables
 	public path: seq of (Node);
 	public travelType: EdgeType`TravelType;
 	public criteria: Graph`CriterionType;
+	public cost: real;
 	
 operations
 	-- Constructor
-	public Path: EdgeType`TravelType * Graph`CriterionType ==> Path
-	Path(tt, crit) ==
+	public Path: EdgeType`TravelType * Graph`CriterionType * real ==> Path
+	Path(tt, crit, c) ==
 	(
 		path := [];
 		travelType := tt;
 		criteria := crit;
+		cost := c;
 	);
 	
 	-- Adds a new node to the head of the path
@@ -23,20 +25,13 @@ operations
 	addNode(node) ==
 		path := [node] ^ path
 	post (hd path) = node;
-	
-	-- Gets the total cost of the trip
-	public getTotalCost: () ==> real
-	getTotalCost() ==
-	(
-		if (len path) = 0 then return -1
-		else return (path(len path)).priority;
-	);
 
 	-- Returns whether the path is set or not
 	public isPossible: () ==> bool
 	isPossible() ==
-		return (len path) > 0;
-		
+		return (len path) > 1;
+	
+	-- Prints the path
 	public print: () ==> ()
 	print() ==
 	(

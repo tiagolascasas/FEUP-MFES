@@ -198,7 +198,7 @@ operations
   	-- returns the path if the target was found, or an empty sequence if it wasn't
   	if foundTarget = true then
   		return getPathSourceToTarget(source, target, travelType, criterion)
-  	else return new Path(travelType, criterion);
+  	else return new Path(travelType, criterion, -1);
   );
   
   -- Gets a sequence holding the sequence of nodes that form the shortest path between
@@ -206,8 +206,8 @@ operations
   public getPathSourceToTarget : Node`Location * Node`Location * EdgeType`TravelType * CriterionType ==> Path
   getPathSourceToTarget(source, target, type, criterion) ==
 	(
-		dcl path: Path := new Path(type, criterion);
 		dcl currentNode: Node := findNode(target);
+		dcl path: Path := new Path(type, criterion, currentNode.priority);
 		
 		while currentNode.location <> source do
 		(
