@@ -29,6 +29,8 @@ public class TopBar extends JMenuBar {
 
 	public JMenu loginMenu = null;
 	public JMenuItem login = null;
+	public JMenuItem addLocation = null;
+	public JMenuItem addRoute = null;
 	
 	public TopBar() {
 		
@@ -81,8 +83,19 @@ public class TopBar extends JMenuBar {
 	
 	public void loginAsAdministrator(Rome2Rio r2r) {
 		
-		if(login != null)
+		if(login != null) {
 			loginMenu.remove(login);
+			login = null;
+		}
+		if(addLocation != null) {
+			loginMenu.remove(addLocation);
+			addLocation = null;
+		}
+		if(addRoute != null) {
+			loginMenu.remove(addRoute);
+			addRoute = null;
+		}
+		
 		login = new JMenuItem("Login");
 		login.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -101,6 +114,8 @@ public class TopBar extends JMenuBar {
 	public void logoutAsAdministrator(Rome2Rio r2r) {
 		
 		loginMenu.remove(login);
+		addAdminCalls(r2r);
+		
 		login = new JMenuItem("Logout");
 		login.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -111,5 +126,23 @@ public class TopBar extends JMenuBar {
 		    }
 		});
 		loginMenu.add(login);
+	}
+	
+	public void addAdminCalls(Rome2Rio r2r) {
+		
+		addLocation = new JMenuItem("Add Location");
+		addLocation.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    }
+		});
+		
+		addRoute = new JMenuItem("Add Route");
+		addRoute.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    }
+		});
+		
+		loginMenu.add(addLocation);
+		loginMenu.add(addRoute);
 	}
 }

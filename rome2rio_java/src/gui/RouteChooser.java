@@ -41,10 +41,10 @@ public class RouteChooser extends JPanel {
 	private void criteriaPanel() {
 		
 		JPanel panel1 = new JPanel();
-		panel1.setBorder(new EmptyBorder(50, 10, 10, 10));
+		panel1.setBorder(new EmptyBorder(50, 5, 10, 10));
 		panel1.setBackground(Color.BLACK);
 		
-		JLabel criteria = new JLabel("<html><font color='white'>Order Criteria:</font></html>", JLabel.CENTER);
+		JLabel criteria = new JLabel("<html><font color='white'>Order Criteria:</font></html>", JLabel.LEFT);
 		criteria.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		criteria.setForeground(Color.white);
 		
@@ -109,6 +109,7 @@ public class RouteChooser extends JPanel {
 		JButton searchRoute = new JButton("Find Transport");
 		searchRoute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//TODO: call function to search and pass for next panel
 			}
 		});
 		searchRoute.setFont(new Font("American Typewriter", Font.PLAIN, 15));

@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 import rome2rio.Rome2Rio;
@@ -23,6 +24,7 @@ public class MainMenu {
 	public TopBar menuBar;
 	public JMenu adminMenu;
 	public JPasswordField passwordField;
+	public JPanel panelInEdition;
 
 	public MainMenu() {
 		initialize();
@@ -76,20 +78,21 @@ public class MainMenu {
 		
 		setAdministratorMenu();
 		
-		setUserMenu();
+		panelInEdition = setUserMenu();
 	}
 	
 	private void setAdministratorMenu() {
+		
 		adminMenu = menuBar.administratorMenu();
 		menuBar.loginAsAdministrator(r2r);
 		menuBar.add(adminMenu);
+		
 	}
-
-
 	
-	private void setUserMenu() {
+	private JPanel setUserMenu() {
 		RouteChooser routeChooser = new RouteChooser(r2r);
 		mainMenuFrame.add(routeChooser);
+		return routeChooser;
 	}
 
 }
