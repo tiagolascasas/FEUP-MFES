@@ -32,6 +32,8 @@ public class TopBar extends JMenuBar {
 	public JMenuItem changePassword = null;
 	public JMenuItem addLocation = null;
 	public JMenuItem addRoute = null;
+	public JMenuItem removeLocation = null;
+	public JMenuItem removeRoute = null;
 	
 	public TopBar() {
 		
@@ -84,6 +86,20 @@ public class TopBar extends JMenuBar {
 	
 	public void loginAsAdministrator(Rome2Rio r2r) {
 		
+		removeButtonsWhenClient();
+		
+		login = new JMenuItem("Login");
+		login.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if(r2r.status == rome2rio.quotes.ClientQuote.getInstance())
+		        	passwordCaller(r2r);
+		    }
+		});
+		loginMenu.add(login);
+	}
+
+	private void removeButtonsWhenClient() {
+		
 		if(login != null) {
 			loginMenu.remove(login);
 			login = null;
@@ -100,15 +116,14 @@ public class TopBar extends JMenuBar {
 			loginMenu.remove(addRoute);
 			addRoute = null;
 		}
-		
-		login = new JMenuItem("Login");
-		login.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if(r2r.status == rome2rio.quotes.ClientQuote.getInstance())
-		        	passwordCaller(r2r);
-		    }
-		});
-		loginMenu.add(login);
+		if(removeLocation != null) {
+			loginMenu.remove(removeLocation);
+			removeLocation = null;
+		}
+		if(removeRoute != null) {
+			loginMenu.remove(removeRoute);
+			removeRoute = null;
+		}
 	}
 	
 	public void passwordCaller(Rome2Rio r2r) {
@@ -158,6 +173,24 @@ public class TopBar extends JMenuBar {
 		    	addRoute.createAndShowGUI();
 		    }
 		});
+		
+		
+		removeLocation = new JMenuItem("Remove Location");
+		removeLocation.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	RemoveLocation removeLocation = new RemoveLocation(new JFrame(""),r2r);
+		    	removeLocation.createAndShowGUI();
+		    }
+		});
+		
+		removeRoute = new JMenuItem("Remove Route");
+		removeRoute.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	RemoveRoute removeRoute = new RemoveRoute(new JFrame(""),r2r);
+		    	removeRoute.createAndShowGUI();
+		    }
+		});
+		
 		
 		loginMenu.add(changePassword);
 		loginMenu.add(addLocation);
