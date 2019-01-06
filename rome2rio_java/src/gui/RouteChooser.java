@@ -5,7 +5,6 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -39,6 +38,9 @@ public class RouteChooser extends JPanel {
 	private Rome2Rio r2r;
 	private JPanel panel1;
 	private JPanel p;
+	
+	JFormattedTextField locationField1;
+	JFormattedTextField locationField2;
 
 	public RouteChooser(Rome2Rio r2r) {
 
@@ -51,6 +53,14 @@ public class RouteChooser extends JPanel {
 		criteriaPanel();
 		createTransportationPanel();
 		routePanel();
+	}
+	
+	public void setLocationField1(String location) {
+		locationField1.setValue(location);
+	}
+	
+	public void setLocationField2(String location) {
+		locationField2.setValue(location);
 	}
 
 	private void criteriaPanel() {
@@ -159,6 +169,11 @@ public class RouteChooser extends JPanel {
 		transportGroup.add(anyButton);
 		p.add(anyButton);
 	}
+	
+	private void callList(int inputCalling) {
+		ListLocationsToChoose list = new ListLocationsToChoose(new JFrame(""), r2r, this, inputCalling);
+		list.createAndShowGUI();
+	}
 
 	private void routePanel() {
 
@@ -170,11 +185,8 @@ public class RouteChooser extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
-		// panel.setPreferredSize(new Dimension(550, panel.getHeight()));
 		panel2.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		Image img = null;
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.BLACK);
@@ -182,7 +194,7 @@ public class RouteChooser extends JPanel {
 				TitledBorder.LEADING, TitledBorder.TOP, null, Color.LIGHT_GRAY));
 		panel.add(panel_2);
 
-		JFormattedTextField locationField1 = new JFormattedTextField();
+		locationField1 = new JFormattedTextField();
 		panel_2.add(locationField1);
 		locationField1.setColumns(15);
 		locationField1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
@@ -195,7 +207,7 @@ public class RouteChooser extends JPanel {
 				new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
 		searchLocation1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				callList(1);
 			}
 		});
 		searchLocation1.setFont(new Font("American Typewriter", Font.PLAIN, 15));
@@ -207,7 +219,7 @@ public class RouteChooser extends JPanel {
 		panel.add(panel_1);
 		// searchLocation1.setPreferredSize(new Dimension(130, 60));
 
-		JFormattedTextField locationField2 = new JFormattedTextField();
+		locationField2 = new JFormattedTextField();
 		panel_1.add(locationField2);
 		locationField2.setColumns(15);
 		locationField2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
@@ -220,11 +232,10 @@ public class RouteChooser extends JPanel {
 				new ImageIcon("/Users/nadiacarvalho/Documents/Github/MFES-trabalho/rome2rio_java/images/search.png"));
 		searchLocation2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				callList(2);
 			}
 		});
 		searchLocation2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-		// searchLocation1.setPreferredSize(new Dimension(130, 60));
 
 		JButton searchRoute = new JButton("Find Transport");
 		searchRoute.addActionListener(new ActionListener() {

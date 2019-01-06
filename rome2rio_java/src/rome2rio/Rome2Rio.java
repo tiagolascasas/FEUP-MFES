@@ -97,10 +97,10 @@ public class Rome2Rio {
 		return i;
 	}
 
-	public ArrayList<List<String>> listLocationsStrings() {
+	public ArrayList<ArrayList<String>> listLocationsStrings() {
 
 		Number i = 0L;
-		ArrayList<List<String>> locations = new ArrayList<List<String>>();
+		ArrayList<ArrayList<String>> locations = new ArrayList<ArrayList<String>>();
 
 		for (Iterator iterator_16 = graph.node.iterator(); iterator_16.hasNext();) {
 			Node n = (Node) iterator_16.next();
@@ -110,6 +110,14 @@ public class Rome2Rio {
 			locations.add(countryCity);
 			i = i.longValue() + 1L;
 		}
+		
+		Collections.sort(locations, new Comparator<ArrayList<String>>() {    
+	        @Override
+	        public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+	            return o1.get(0).compareTo(o2.get(0));
+	        }               
+		});
+		
 		return locations;
 	}
 
