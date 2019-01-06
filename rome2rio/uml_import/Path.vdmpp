@@ -30,17 +30,5 @@ operations
 	public isPossible: () ==> bool
 	isPossible() ==
 		return (len path) > 1;
-	
-	-- Prints the path
-	public print: () ==> ()
-	print() ==
-	(
-		dcl i: nat := 1;
-		while i <= (len path) do
-		(
-			IO`println((path(i).location));
-			i := i + 1;
-		);
-	);
 		
 end Path

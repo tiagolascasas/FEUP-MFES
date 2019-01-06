@@ -53,7 +53,7 @@ operations
   )
   pre not exists e1 in set edge &
   	source = e1.sourceNode.location and
-  	target = e1.targetNode.location; 
+  	target = e1.targetNode.location;
   
   -- Adds an edge type to an existing edge
   public addEdgeType : Node`Location * Node`Location * EdgeType ==> ()
@@ -92,8 +92,8 @@ operations
   existsEdge(source, target) ==
   	return (exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target);
   
-  pure public FindEdgesWithNode : Node`Location ==> set of (Edge)
-  FindEdgesWithNode(location) ==
+  pure public findEdgesWithNode : Node`Location ==> set of (Edge)
+  findEdgesWithNode(location) ==
   (
   	dcl res : set of (Edge);
   	res := {};
@@ -106,7 +106,7 @@ operations
   removeNode(location) ==
   (
   	dcl n: Node := findNode(location);
-  	dcl edgesWithNode :  set of (Edge) := FindEdgesWithNode(location);
+  	dcl edgesWithNode :  set of (Edge) := findEdgesWithNode(location);
   	edge := edge \ edgesWithNode;
   	node := node \ {n};
   )
@@ -194,11 +194,12 @@ operations
   	if foundTarget = true then
   		return getPathSourceToTarget(source, target, travelType, criterion)
   	else return new Path(travelType, criterion, -1);
-  );
+  )
+  pre exists n1, n2 in set node & n1.location = target and n2.location = source;
   
   -- Gets a sequence holding the sequence of nodes that form the shortest path between
   -- the given source and target
-  public getPathSourceToTarget : Node`Location * Node`Location * EdgeType`TravelType * CriterionType ==> Path
+  private getPathSourceToTarget : Node`Location * Node`Location * EdgeType`TravelType * CriterionType ==> Path
   getPathSourceToTarget(source, target, type, criterion) ==
 	(
 		dcl currentNode: Node := findNode(target);

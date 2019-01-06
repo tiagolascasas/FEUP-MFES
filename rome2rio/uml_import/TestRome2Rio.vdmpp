@@ -417,6 +417,72 @@ operations
 		assertEqual(-1, path.cost);
 	);
 	
+	/** UNIT TEST FOR ERRORS (FAILING INVARIANTS, PRE AND POST CONDITIONS)**/
+	
+	-- uncomment each line and run to see the respective error
+	-- (only one at a time)
+	public testErrors: () ==> ()
+	testErrors() ==
+	(
+		dcl graph: Graph := new Graph();
+		dcl node: Node;
+		dcl edge: Edge;
+		dcl et: EdgeType;
+		dcl pq: PriorityQueue := new PriorityQueue();
+		dcl r2r: Rome2Rio := new Rome2Rio();
+		graph.addNode("L1", "C1", 1, 1);
+		
+		-- out-of-bounds coordinate (pre-condition)
+		--graph.addNode("L2", "C2", 200, 1);
+		--graph.addNode("L2", "C2", -200, 1);
+		--graph.addNode("L2", "C2", 1, 200);
+		--graph.addNode("L2", "C2", 1, -200);
+		
+		-- duplicate location (invariant)
+		-- graph.addNode("L1", "C1", 5, 5);
+		
+		-- duplicate coordinate (invariant)
+		--graph.addNode("L2", "C1", 1, 1);
+		
+		graph.addNode("L2", "C1", 5, 5);
+		graph.addEdge("L1", "L2", new EdgeType(<CAR>, 1, 1, 1));
+		
+		-- duplicate edge (pre-condition)
+		--graph.addEdge("L1", "L2", new EdgeType(<TRAIN>, 1, 1, 1));
+		
+		-- duplicate edge type (invariant)
+		--graph.addEdgeType("L1", "L2", new EdgeType(<CAR>, 1, 1, 1));
+		
+		-- find non-existing node (pre-condition)
+		--node := graph.findNode("L55");
+		
+		-- find non-existing edge (pre-condition)
+		--edge := graph.findEdge("L1", "L55");
+		--edge := graph.findEdge("L55", "L1");
+		--edge := graph.findEdge("L55", "L88");
+		
+		node := new Node(1, 1, "A", "B");
+		pq.addElement(node);
+		-- duplicate node in priority queue (pre-condition)
+		--pq.addElement(node);
+		
+		-- token <ANY> on EdgeType (pre-condition)
+		--et := new EdgeType(<ANY>, 1, 1, 1);
+		
+		-- remove non-existing node (pre-condition)
+		--graph.removeNode("L13");
+		
+		-- admin operations without being an admin (pre-condition)
+		--r2r.setAdministratorPassword("foo");
+		--r2r.addLocation("foo", "bar", 1, 1);
+		--r2r.addWayBetweenLocations("foo", "bar", <CAR>, 1, 1, 1);
+		--r2r.addNewTransportationType("foo", "bar", <BUS>, 1, 1, 1);
+		--r2r.removeLocation("foo");
+		--r2r.changeToClient();
+	);
+	
+	/** ENTRY POINT FOR THE TEST SUITE**/
+	
   public testGetAllRoutes : () ==> ()
 	testGetAllRoutes() ==
 	(
@@ -430,8 +496,8 @@ operations
 			assertEqual(true, p.isPossible());
 	);
 
-	public testAllValidTests: () ==> ()
-	testAllValidTests() == 
+	public testAll: () ==> ()
+	testAll() == 
 	(
 		/*UNIT TESTS*/
 	  testAddNodesAndEdges();
@@ -451,30 +517,9 @@ operations
 	  testListLocations();
 	  testGetRouteWithCriteria();
 	  testGetAllRoutes();
+	  
+	  /*ERROR CHECKING*/
+	  testErrors();
 	);
 
-	/** UNIT TEST FOR ERRORS(FAILING PRE AND POST CONDITIONS)**/
-	/** UNCOMMENT EACH ASSERT TO PRODUCE THE ERROR, ONE AT A TIME**/
-	public testErrors: () ==> ()
-	testErrors() ==
-	(
-		dcl graph: Graph = new Graph();
-		graph.addNode(1, 1, "L1", "C1");
-		
-		-- out-of-bounds coordinate
-		--graph.addNode(200, 1, "L2", "C2");
-		--graph.addNode(-200, 1, "L2", "C2");
-		--graph.addNode(1, 200, "L2", "C2");
-		--graph.addNode(1, -200, "L2", "C2");
-		
-		-- duplicate location
-		--graph.addNode(5, 5, "L1", "C1");
-		
-		-- duplicate coordinate
-		--graph.addNode(1, 1, "L2", "C1");
-		
-		
-		
-	);
-	
 end TestRome2Rio
