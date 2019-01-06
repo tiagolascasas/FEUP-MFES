@@ -188,16 +188,26 @@ implements ActionListener {
 				break;
 			}
 
-
-			if ( r2r.addWayBetweenLocations(inputLoc1,inputLoc2,transportType,inputTime,inputDistance,inputPrice)) {
-				JOptionPane.showMessageDialog( controllingFrame,
-						"Success! The Route between " + inputLoc1 + " and " + inputLoc2 + " is now on the Rome2Rio System.");
-				frame.dispatchEvent(new WindowEvent( frame, WindowEvent.WINDOW_CLOSING));
+			if (r2r.graph.ExistsEdge(inputLoc1, inputLoc2) == false) {
+				if (r2r.addWayBetweenLocations(inputLoc1, inputLoc2, transportType, inputTime, inputDistance,
+						inputPrice)) {
+					JOptionPane.showMessageDialog(controllingFrame, "Success! The Route between " + inputLoc1 + " and "
+							+ inputLoc2 + " is now on the Rome2Rio System.");
+					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				} else {
+					JOptionPane.showMessageDialog(controllingFrame, "Invalid Route.", "Error Message",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			} else {
-				JOptionPane.showMessageDialog( controllingFrame,
-						"Invalid Route.",
-						"Error Message",
-						JOptionPane.ERROR_MESSAGE);
+				if (r2r.addNewTransportationType(inputLoc1, inputLoc2, transportType, inputTime, inputDistance,
+						inputPrice)) {
+					JOptionPane.showMessageDialog(controllingFrame, "Success! The Route between " + inputLoc1 + " and "
+							+ inputLoc2 + " is now on the Rome2Rio System.");
+					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				} else {
+					JOptionPane.showMessageDialog(controllingFrame, "Invalid Route.", "Error Message",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 
 			locationField1.selectAll();
