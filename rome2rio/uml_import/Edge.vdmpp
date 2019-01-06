@@ -25,25 +25,5 @@ operations
 		edgeType := edgeType union {edgeT}
 	pre not exists e in set edgeType &
 	  e.travelType = edgeT.travelType; 
-		
-	public GetEdgeTypes : () ==> set of (EdgeType)
-	GetEdgeTypes() ==
-		return edgeType;
-	
-	public SetSourceNode : Node ==> ()
-	SetSourceNode(node) ==
-		sourceNode := node;
-		
-	public GetSourceNode : () ==> Node
-	GetSourceNode() ==
-		return sourceNode;
-		
-	public SetTargetNode : Node ==> ()
-	SetTargetNode(node) ==
-		targetNode := node;	
-		
-	public GetTargetNode : () ==> Node
-	GetTargetNode() ==
-		return targetNode;
 
 end Edge
