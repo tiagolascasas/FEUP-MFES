@@ -67,7 +67,7 @@ public class Rome2Rio {
 		return true;
 	}
 
-	public void addNewTransportationType(
+	public Boolean addNewTransportationType(
 			final String source,
 			final String target,
 			final Object type,
@@ -77,6 +77,8 @@ public class Rome2Rio {
 
 		EdgeType et = new EdgeType(((Object) type), time, distance, price);
 		graph.addEdgeType(source, target, et);
+		
+		return true;
 	}
 
 	public void changeToClient() {
