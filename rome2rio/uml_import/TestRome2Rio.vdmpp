@@ -291,6 +291,17 @@ operations
 		assertEqual(2, card r2r.graph.findEdge("L2", "L3").edgeType);
 	);
 	
+	public testRemoveLocations: () ==> ()
+	testRemoveLocations() ==
+	(
+		dcl edgeCount: nat := card r2r.graph.edge;
+		dcl nodeCount: nat := card r2r.graph.node;
+		r2r.removeLocation("L1");
+		assertEqual(edgeCount - 2, card r2r.graph.edge);
+		assertEqual(nodeCount - 1, card r2r.graph.node);
+		r2r.graph := makeGraph();
+	);
+	
 	public testListLocations: () ==> ()
 	testListLocations() ==
 		assertEqual(card r2r.graph.node, r2r.listLocations());
@@ -346,11 +357,11 @@ operations
 	public testAllValidTests: () ==> ()
 	testAllValidTests() == 
 	(
-		/*UNIT TESTS*/
+		/*UNIT TESTS*//*
 	  testAddNodesAndEdges();
 	  testPriorityQueue();
 	  testDijkstraCar();
-	  testDijkstraPlane();
+	  testDijkstraPlane();*/
 	  
 	  /*USE CASE SCENARIOS*/
 	  testAdminLogin();
@@ -358,6 +369,7 @@ operations
 	  testAddLocations();
 	  testAddConnections();
 	  testAddTravelTypes();
+	  testRemoveLocations();
 	  testListLocations();
 	  testGetRouteWithCriteria();
 	  testGetAllRoutes();

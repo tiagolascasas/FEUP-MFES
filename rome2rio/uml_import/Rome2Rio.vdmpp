@@ -71,7 +71,13 @@ operations
 		dcl et: EdgeType := new EdgeType(type, time, distance, price);
 		graph.addEdgeType(source, target, et);
 	)
-	pre type <> <ANY>;
+	pre type <> <ANY> and status = <Administrator>;
+	
+	-- Removes a location, along with all its connections
+	public removeLocation : Node`Location ==> ()
+	removeLocation(loc) ==
+		graph.removeNode(loc)
+	pre status = <Administrator>;
 	
 	/** CLIENT OPERATIONS **/
 	
