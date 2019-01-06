@@ -1,15 +1,16 @@
+-- Class to represent a directed edge in the travel graph
+-- On this context, an edge is a connection between two locations
 class Edge
 instance variables
-  public edgeType:set of (EdgeType);
-  public sourceNode:Node;
-  public targetNode:Node;
+  public edgeType:set of (EdgeType);	-- a set for all the types of the edge
+  public sourceNode:Node;							-- the source node
+  public targetNode:Node;							-- the target node
   
   -- invariant: there can not be two of the same EdgeTypes for a single edge
   inv not exists e1, e2 in set edgeType & e1 <> e2 and e1.travelType = e2.travelType;
   
 operations
-
- -- constructor of Edge
+ -- Constructor
 	public Edge : EdgeType * Node * Node ==> Edge
 	Edge(type,sN,tN) == 
 	(
@@ -20,6 +21,7 @@ operations
 	)
 	pre sN <> tN;
 	
+	-- Adds a type to this edge
 	public addEdgeType : EdgeType ==> ()
 	addEdgeType(edgeT) ==
 		edgeType := edgeType union {edgeT}

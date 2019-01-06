@@ -6,14 +6,15 @@ instance variables
 operations
 	/** UNIT TESTS **/
 	
+	-- Tests the insertion of nodes, edges and edge types on the graph
 	public testAddNodesAndEdges: () ==> ()
 	testAddNodesAndEdges() == 
 	(
 		dcl graph: Graph := new Graph();
 		
 		graph.addNode("L1", "C1", 1.0, 1.0);
-		graph.addNode("L2", "C2", 4.0, 2.0);
-		graph.addNode("L3", "C2", 5.0, 3.0);
+		graph.addNode("L2", "C2", 1.0, 2.0);
+		graph.addNode("L3", "C2", 5.0, 2.0);
 		assertEqual(3, card graph.node);
 		
 		graph.addEdge("L1", "L2", new EdgeType(<CAR>, 1, 1, 1.0));
@@ -37,6 +38,7 @@ operations
 		assertEqual(5, card graph.findEdge("L1", "L2").edgeType);
 	);
 	
+	-- Tests the devised priority queue 
 	public testPriorityQueue: () ==> ()
 	testPriorityQueue() == 
 	(
@@ -66,6 +68,8 @@ operations
 		assertEqual(true, pq.isEmpty());
 	);
 	
+	-- (Not a test) builds a graph with enough information to run the 
+	-- shortest path algorithm using multiple criteria and travel types
 	public makeGraph: () ==> Graph
 	makeGraph() ==
 	(
@@ -151,7 +155,7 @@ operations
 		
 		graph.addEdgeType("L1", "L2", new EdgeType(<BUS>, 14, 51, 4.0));
 		graph.addEdgeType("L2", "L5", new EdgeType(<BUS>, 12, 264, 7.0));
-		graph.addEdgeType("L5", "L9", new EdgeType(<BUS>, 266, 191, 2.0));
+		--graph.addEdgeType("L5", "L9", new EdgeType(<BUS>, 266, 191, 2.0));
 		graph.addEdgeType("L9", "L10", new EdgeType(<BUS>, 51, 191, 1.0));
 		graph.addEdgeType("L10", "L12", new EdgeType(<BUS>, 166, 134, 5.0));
 		graph.addEdgeType("L12", "L11", new EdgeType(<BUS>, 81, 12, 6.0));
@@ -161,6 +165,7 @@ operations
 		return graph;
 	);
 	
+	-- Tests the path building and validation
 	public testPath : () ==> ()
 	testPath() ==
 	(
@@ -180,6 +185,7 @@ operations
 		assertEqual(true, path.isPossible());
 	);
 	
+	-- Tests Dijkstra's algorithm for car only trips using all criteria
 	public testDijkstraCar: () ==> ()
 	testDijkstraCar() ==
 	(
@@ -236,6 +242,7 @@ operations
 		assertEqual("L7", path.path(9).location);
 	);
 	
+	-- Tests Dijkstra's algorithm for plane only trips using all criteria
 	public testDijkstraPlane: () ==> ()
 	testDijkstraPlane() ==
 	(
@@ -275,7 +282,8 @@ operations
 		assertEqual("L11", path.path(3).location);
 		assertEqual("L13", path.path(4).location);
 	);
-			  
+	
+	-- Tests Dijkstra's algorithm for other travel types trips using the time criterion
 	public testDijkstraOthers: () ==> ()
 	testDijkstraOthers() ==
 	(
@@ -310,13 +318,12 @@ operations
 		assertEqual(6, len path.path);
 		
 		path := graph.findPath("L1", "L13", <TIME>, <BUS>);
-		assertEqual(true, path.isPossible());
-		assertEqual(890, path.cost);
-		assertEqual(6, len path.path);
+		assertEqual(false, path.isPossible());
 	);
 
 	/** USE CASE SCENARIOS**/
 
+	-- Tests use case R1
 	public testAdminLogin: () ==> ()
 	testAdminLogin() ==
 	(
@@ -326,6 +333,7 @@ operations
 		assertEqual(r2r.status, <Administrator>);
 	);
 	
+	-- Tests use case R2 and R7
 	public testAdminPasswordChange: () ==> ()
 	testAdminPasswordChange() ==
 	(
@@ -338,6 +346,7 @@ operations
 		assertEqual(r2r.status, <Administrator>);
 	);
 	
+	-- Tests use case R3
 	public testAddLocations : () ==> ()
 	testAddLocations() ==
 	(
@@ -351,6 +360,7 @@ operations
 		assertEqual(4, card r2r.graph.node);
 	);
 	
+	-- Tests use case R4
 	public testAddConnections: () ==> ()
 	testAddConnections() ==
 	(
@@ -362,6 +372,7 @@ operations
 		assertEqual(3, card r2r.graph.edge);
 	);
 	
+	-- Tests use case R5
 	public testAddTravelTypes: () ==> ()
 	testAddTravelTypes() ==
 	(
@@ -373,6 +384,7 @@ operations
 		assertEqual(2, card r2r.graph.findEdge("L2", "L3").edgeType);
 	);
 	
+	-- Tests use case R6
 	public testRemoveLocations: () ==> ()
 	testRemoveLocations() ==
 	(
@@ -384,10 +396,12 @@ operations
 		r2r.graph := makeGraph();
 	);
 	
+	-- Tests use case R8
 	public testListLocations: () ==> ()
 	testListLocations() ==
 		assertEqual(card r2r.graph.node, r2r.listLocations());
 		
+	-- Tests use case R9
 	public testGetRouteWithCriteria: () ==> ()
 	testGetRouteWithCriteria() ==
 	(
@@ -415,6 +429,20 @@ operations
 		path := r2r.getRouteWithCriteria("L1", "L15", <PLANE>, <TIME>);
 		assertEqual(false, path.isPossible());
 		assertEqual(-1, path.cost);
+	);
+	
+	-- Tests use case R10
+	public testGetAllRoutes : () ==> ()
+	testGetAllRoutes() ==
+	(
+		dcl paths: set of (Path) := {};
+		r2r := new Rome2Rio();
+		r2r.graph := makeGraph();
+		paths := r2r.getBestRoutesForAllCriteria("L1", "L13");
+		assertEqual(card paths, 15);
+		
+		for all p in set paths do 
+			assertEqual(true, p.isPossible());
 	);
 	
 	/** UNIT TEST FOR ERRORS (FAILING INVARIANTS, PRE AND POST CONDITIONS)**/
@@ -482,19 +510,6 @@ operations
 	);
 	
 	/** ENTRY POINT FOR THE TEST SUITE**/
-	
-  public testGetAllRoutes : () ==> ()
-	testGetAllRoutes() ==
-	(
-		dcl paths: set of (Path) := {};
-		r2r := new Rome2Rio();
-		r2r.graph := makeGraph();
-		paths := r2r.getBestRoutesForAllCriteria("L1", "L13");
-		assertEqual(card paths, 18);
-		
-		for all p in set paths do 
-			assertEqual(true, p.isPossible());
-	);
 
 	public testAll: () ==> ()
 	testAll() == 

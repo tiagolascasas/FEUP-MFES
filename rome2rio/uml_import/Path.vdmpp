@@ -1,13 +1,13 @@
+-- Class to represent a path made of nodes and edges
+-- On this context, it is the shortest path from A to B
+-- and in which the "distance" is based on specified criteria
 class Path
 
-types
-	public PathString = seq1 of (char)
-
 instance variables
-	public path: seq of (Node);
-	public travelType: EdgeType`TravelType;
-	public criteria: Graph`CriterionType;
-	public cost: real;
+	public path: seq of (Node);							-- sequence with the path nodes
+	public travelType: EdgeType`TravelType;	-- method of transportation
+	public criteria: Graph`CriterionType;		-- edge weight criterion
+	public cost: real;											-- final cost of the path
 	
 operations
 	-- Constructor

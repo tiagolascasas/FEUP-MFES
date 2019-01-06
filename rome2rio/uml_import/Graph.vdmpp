@@ -1,12 +1,13 @@
 class Graph
 
 types
+	-- variable to minimize in the shortest path algorithm
 	public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
 
 instance variables
-  public node:set of (Node);
-  public priorityQueue:PriorityQueue;
-  public edge:set of (Edge);
+  public node:set of (Node);					-- set with all nodes
+  public priorityQueue:PriorityQueue;	-- priority queue for Dijkstra's algorithm
+  public edge:set of (Edge);					-- set with all edges
   
   -- invariant: there are no repeated locations
   inv not exists n1, n2 in set node &
@@ -14,9 +15,9 @@ instance variables
   			
   -- invariant: there are no repeated coordinate pairs (NS, EW)
   inv not exists n1, n2 in set node &
-        n1 <> n2 and 
-        n1.coordinateNS = n2.coordinateNS and
-				n1.coordinateEW = n2.coordinateEW;
+        (n1 <> n2 and 
+        	n1.coordinateNS = n2.coordinateNS and
+					n1.coordinateEW = n2.coordinateEW);
 
 operations
   -- Constructor
@@ -35,11 +36,7 @@ operations
   (
   	dcl n: Node := new Node(coordinateNS, coordinateEW, location, country);
   	node := {n} union node;
-  )
-  pre not exists n in set node &
-  		n.location = location 
-  		and n.coordinateNS = coordinateNS
-  		and n.coordinateEW = coordinateEW;
+  );
   	
   -- Adds an edge to two existing unconnected nodes
   public addEdge : Node`Location * Node`Location * EdgeType ==> ()
@@ -92,6 +89,7 @@ operations
   existsEdge(source, target) ==
   	return (exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target);
   
+  -- Finds all edges that come to or from the given nodes
   pure public findEdgesWithNode : Node`Location ==> set of (Edge)
   findEdgesWithNode(location) ==
   (
@@ -125,9 +123,9 @@ operations
 		);
 	)
 	post not exists n in set node & 
-		n.priority <> Node`MIN_PRIORITY and 
-		n.processed <> false and 
-		n.path <> n;
+		(n.priority < Node`MIN_PRIORITY and 
+			n.processed and 
+			n.path.location <> n.location);
 
   -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
   public findPath : Node`Location * Node`Location * CriterionType * EdgeType`TravelType ==> Path

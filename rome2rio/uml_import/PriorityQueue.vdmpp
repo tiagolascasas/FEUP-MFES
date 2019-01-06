@@ -1,3 +1,6 @@
+-- Class to represent a priority queue
+-- On this context, it always pops the node with the smallest priority,
+-- as Dijkstra's algorithm always picks the node with the least weight
 class PriorityQueue
 
 instance variables
