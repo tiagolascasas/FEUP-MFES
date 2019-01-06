@@ -1,7 +1,8 @@
 class Node
 
 types
-	public Location = seq1 of (char)
+	public Location = seq1 of (char);
+	public Country = seq1 of (char)
 
 values
 	public
@@ -12,6 +13,7 @@ instance variables
   public coordinateNS:real;
   public coordinateEW:real;
   public location:Location;
+  public country:Country;
   public outwardEdges:set of (Edge);
   public path:Node;
   public processed:bool;
@@ -19,13 +21,14 @@ instance variables
 operations
 
   -- constructor of Node
-	public Node : real * real * Location ==> Node
-	Node(cdNS, cdEW, loc) ==
+	public Node : real * real * Location * Country ==> Node
+	Node(cdNS, cdEW, loc, con) ==
 	(
-		priority := MIN_PRIORITY;	--change later
+		priority := MIN_PRIORITY;
 		coordinateNS := cdNS;
 		coordinateEW := cdEW;
 		location := loc;
+		country := con;
 		outwardEdges := {};
 		processed := false;
 		path := self;

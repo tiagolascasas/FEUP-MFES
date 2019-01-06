@@ -47,20 +47,17 @@ operations
 	pre status = <Administrator>;
 	
 	-- Adds a new location to the platform
-	public addLocation : Node`Location * real * real ==> ()
-	addLocation(location, coordinateNS, coordinateEW) ==
-		graph.addNode(location, coordinateNS, coordinateEW)
+	public addLocation : Node`Location * Node`Country * real * real ==> ()
+	addLocation(location, country, coordinateNS, coordinateEW) ==
+		graph.addNode(location, country, coordinateNS, coordinateEW)
 	pre status = <Administrator>;
 	
 	-- Adds a connection between two locations
 	public addWayBetweenLocations : Node`Location *  Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
 	addWayBetweenLocations(source, target, travelType, time, distance, price) ==
 	(
-	  if(graph.ExistsEdge(source, target) = false) then
-			graph.addEdge(source, target, new EdgeType(travelType, time, distance, price))
-		else 
-			graph.addEdgeType(source, target, new EdgeType(travelType, time, distance, price))
-			
+	  if(graph.existsEdge(source, target) = false) then
+			graph.addEdge(source, target, new EdgeType(travelType, time, distance, price))			
 	)
 	pre status = <Administrator>;
 	

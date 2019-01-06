@@ -6,7 +6,6 @@ types
 instance variables
   public travelType:TravelType;
   public time:nat1;
-  -- departureDate:Date;
   public distance:nat1;
   public price:real;
   
@@ -23,37 +22,5 @@ operations
 		return self;
 	)
 	pre tt <> <ANY>;
-  
-	public SetTravelType : TravelType ==> ()
-	SetTravelType(tt) ==
-		travelType := tt;
-		
-	public GetTravelType : () ==> TravelType
-	GetTravelType() ==
-		return travelType;
-		
-	public SetTime : nat1 ==> ()
-	SetTime(tm) ==
-		time := tm;	
-		
-	public GetTime : () ==> nat1
-	GetTime() ==
-		return time;
-	
-	public SetDistance : nat1 ==> ()
-	SetDistance(dist) ==
-		distance := dist;	
-		
-	public GetDistance : () ==> nat1
-	GetDistance() ==
-		return distance;
-	
-	public SetPrice : real ==> ()
-	SetPrice(p) == 
-		price := p;
-	
-	public GetPrice : () ==> real
-	GetPrice() == 
-		return price;
 
 end EdgeType

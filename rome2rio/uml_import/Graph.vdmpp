@@ -30,10 +30,10 @@ operations
 	);
 
   -- Adds a new node to the graph
-  public addNode : Node`Location * real * real ==> ()
-  addNode(location, coordinateNS, coordinateEW) ==
+  public addNode : Node`Location * Node`Country * real * real ==> ()
+  addNode(location, country, coordinateNS, coordinateEW) ==
   (
-  	dcl n: Node := new Node(coordinateNS, coordinateEW, location);
+  	dcl n: Node := new Node(coordinateNS, coordinateEW, location, country);
   	node := {n} union node;
   )
   pre not exists n in set node &
@@ -88,14 +88,9 @@ operations
   pre exists1 e in set edge & e.sourceNode.location = source and e.targetNode.location = target;
 
   -- Checks if exists an edge given source and target
-  pure public ExistsEdge : Node`Location * Node`Location  ==> bool
-  ExistsEdge(source, target) ==
-  (
-  	if(exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target)
-  	then return true
-  	else return false
-  ); 
-  
+  pure public existsEdge : Node`Location * Node`Location  ==> bool
+  existsEdge(source, target) ==
+  	return (exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target);
   
   pure public FindEdgesWithNode : Node`Location ==> set of (Edge)
   FindEdgesWithNode(location) ==
