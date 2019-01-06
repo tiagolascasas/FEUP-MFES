@@ -101,6 +101,19 @@ public class Rome2Rio {
 		}
 		return i;
 	}
+	
+	public ArrayList<String> listLocationsStrings() {
+
+		Number i = 0L;
+		ArrayList<String> locations = new ArrayList<String>();
+		
+		for (Iterator iterator_16 = graph.node.iterator(); iterator_16.hasNext(); ) {
+			Node n = (Node) iterator_16.next();
+			locations.add(n.location);
+			i = i.longValue() + 1L;
+		}
+		return locations;
+	}
 
 	public Path getRouteWithCriteria(
 			final String source, final String target, final Object type, final Object criterion) {

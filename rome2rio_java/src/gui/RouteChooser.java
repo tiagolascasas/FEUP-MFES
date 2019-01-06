@@ -7,11 +7,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -92,6 +91,7 @@ public class RouteChooser extends JPanel {
 	}
 	
 	protected void createTransportationPanel() {
+		
 		JPanel p = new JPanel(new GridLayout(1,1));
 		p.setBackground(Color.BLACK);
 
@@ -148,6 +148,8 @@ public class RouteChooser extends JPanel {
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.BLACK);
+		
+		ArrayList<String> locationFieldArray = r2r.listLocationsStrings();
 		
 		JFormattedTextField locationField1 = new JFormattedTextField();
 		locationField1.setColumns(20);
