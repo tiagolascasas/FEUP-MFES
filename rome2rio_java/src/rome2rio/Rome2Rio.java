@@ -51,7 +51,7 @@ public class Rome2Rio {
 		return false;
 	}
 
-	public void addWayBetweenLocations(
+	public Boolean addWayBetweenLocations(
 			final String source,
 			final String target,
 			final Object travelType,
@@ -64,6 +64,7 @@ public class Rome2Rio {
 		} else {
 			graph.addEdgeType(source, target, new EdgeType(((Object) travelType), time, distance, price));
 		}
+		return true;
 	}
 
 	public void addNewTransportationType(

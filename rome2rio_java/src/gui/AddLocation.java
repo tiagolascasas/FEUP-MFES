@@ -86,8 +86,8 @@ public class AddLocation extends JPanel
  
         if (OK.equals(cmd)) { //Process the password.
             String inputLoc = locationField.getText();
-            Number inputCNS = Float.parseFloat(coordNS.getText());
-            Number inputCEW = Float.parseFloat(coordEW.getText());
+            Number inputCNS = ((Number)coordNS.getValue());
+            Number inputCEW = ((Number)coordEW.getValue());
             
             if (r2r.addLocation(inputLoc,inputCNS,inputCEW)) {
             	JOptionPane.showMessageDialog(controllingFrame,

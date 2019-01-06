@@ -154,8 +154,8 @@ public class TopBar extends JMenuBar {
 		addRoute = new JMenuItem("Add Route");
 		addRoute.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	//AddRoute addRoute = new AddRoute(new JFrame(""),r2r);
-		    	//addRoute.createAndShowGUI();
+		    	AddRoute addRoute = new AddRoute(new JFrame(""),r2r);
+		    	addRoute.createAndShowGUI();
 		    }
 		});
 		
