@@ -27,31 +27,6 @@ public class Edge {
     edgeType = SetUtil.union(Utils.copy(edgeType), SetUtil.set(edgeT));
   }
 
-  public VDMSet GetEdgeTypes() {
-
-    return Utils.copy(edgeType);
-  }
-
-  public void SetSourceNode(final Node node) {
-
-    sourceNode = node;
-  }
-
-  public Node GetSourceNode() {
-
-    return sourceNode;
-  }
-
-  public void SetTargetNode(final Node node) {
-
-    targetNode = node;
-  }
-
-  public Node GetTargetNode() {
-
-    return targetNode;
-  }
-
   public Edge() {}
 
   public String toString() {

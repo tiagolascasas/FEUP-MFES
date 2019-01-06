@@ -8,17 +8,19 @@ public class Path {
   public VDMSeq path;
   public Object travelType;
   public Object criteria;
+  public Number cost;
 
-  public void cg_init_Path_1(final Object tt, final Object crit) {
+  public void cg_init_Path_1(final Object tt, final Object crit, final Number c) {
 
     path = SeqUtil.seq();
     travelType = tt;
     criteria = crit;
+    cost = c;
   }
 
-  public Path(final Object tt, final Object crit) {
+  public Path(final Object tt, final Object crit, final Number c) {
 
-    cg_init_Path_1(tt, crit);
+    cg_init_Path_1(tt, crit, c);
   }
 
   public void addNode(final Node node) {
@@ -26,14 +28,9 @@ public class Path {
     path = SeqUtil.conc(SeqUtil.seq(node), Utils.copy(path));
   }
 
-  public Number getTotalCost() {
-
-    return ((Node) Utils.get(path, path.size())).priority;
-  }
-
   public Boolean isPossible() {
 
-    return Utils.equals(path.size(), 0L);
+    return path.size() > 1L;
   }
 
   public void print() {
@@ -64,6 +61,8 @@ public class Path {
         + Utils.toString(travelType)
         + ", criteria := "
         + Utils.toString(criteria)
+        + ", cost := "
+        + Utils.toString(cost)
         + "}";
   }
 }

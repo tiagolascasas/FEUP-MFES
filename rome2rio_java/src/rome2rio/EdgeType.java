@@ -25,46 +25,6 @@ public class EdgeType {
     cg_init_EdgeType_1(tt, tm, dist, p);
   }
 
-  public void SetTravelType(final Object tt) {
-
-    travelType = tt;
-  }
-
-  public Object GetTravelType() {
-
-    return travelType;
-  }
-
-  public void SetTime(final Number tm) {
-
-    time = tm;
-  }
-
-  public Number GetTime() {
-
-    return time;
-  }
-
-  public void SetDistance(final Number dist) {
-
-    distance = dist;
-  }
-
-  public Number GetDistance() {
-
-    return distance;
-  }
-
-  public void SetPrice(final Number p) {
-
-    price = p;
-  }
-
-  public Number GetPrice() {
-
-    return price;
-  }
-
   public EdgeType() {}
 
   public String toString() {

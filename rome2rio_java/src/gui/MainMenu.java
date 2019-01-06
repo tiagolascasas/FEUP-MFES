@@ -48,11 +48,10 @@ public class MainMenu {
 	private void initialize() {
 		
 		r2r = new Rome2Rio();
+		GuiUtils.populateLocationsAndRoutes(r2r);
 		
 		//menu with functionalities
 		setMainMenuFrame();
-		
-
 	}
 
 	private void setMainMenuFrame() {

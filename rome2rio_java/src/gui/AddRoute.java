@@ -166,7 +166,7 @@ implements ActionListener {
 			Number inputPrice = ((Number) price.getValue());
 			String transportTypePre = GuiUtils.getSelectedButtonText(transportGroup);
 
-			Object transportType = "";
+			Object transportType = null;
 
 			switch(transportTypePre) {
 			case "Bus":
@@ -188,7 +188,7 @@ implements ActionListener {
 				break;
 			}
 
-			if (r2r.graph.ExistsEdge(inputLoc1, inputLoc2) == false) {
+			if (r2r.graph.existsEdge(inputLoc1, inputLoc2) == false) {
 				if (r2r.addWayBetweenLocations(inputLoc1, inputLoc2, transportType, inputTime, inputDistance,
 						inputPrice)) {
 					JOptionPane.showMessageDialog(controllingFrame, "Success! The Route between " + inputLoc1 + " and "
