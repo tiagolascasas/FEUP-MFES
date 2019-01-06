@@ -122,10 +122,10 @@ operations
 			n.setPath(n);
 		);
 	)
-	post not exists n in set node & 
-		(n.priority < Node`MIN_PRIORITY and 
-			n.processed and 
-			n.path.location <> n.location);
+	post forall n in set node & 
+		(n.priority = Node`MIN_PRIORITY and 
+			not n.processed and 
+			n.path.location = n.location);
 
   -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
   public findPath : Node`Location * Node`Location * CriterionType * EdgeType`TravelType ==> Path
@@ -193,7 +193,9 @@ operations
   		return getPathSourceToTarget(source, target, travelType, criterion)
   	else return new Path(travelType, criterion, -1);
   )
-  pre exists n1, n2 in set node & n1.location = target and n2.location = source;
+  pre exists n1, n2 in set node & n1.location = target and n2.location = source
+  post forall n in seq RESULT.path & 
+  				n.priority <> Node`MIN_PRIORITY;	-- non-trivial post condition		
   
   -- Gets a sequence holding the sequence of nodes that form the shortest path between
   -- the given source and target
@@ -211,6 +213,8 @@ operations
 		path.addNode(currentNode);
 		
 		return path;
-	);
-
+	)
+	post exists1 n in seq RESULT.path &
+			n.path = n;								-- non-trivial post-condition:
+																-- the starting node is its own path
 end Graph
