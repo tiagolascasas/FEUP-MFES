@@ -104,7 +104,6 @@ public class RouteChooser extends JPanel {
 		local2.setColumns(20);
 		local2.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		local2.setPreferredSize(new Dimension(local2.getWidth(),60));
-
 		
 		JButton searchRoute = new JButton("Find Transport");
 		searchRoute.addActionListener(new ActionListener() {
