@@ -71,7 +71,13 @@ operations
 		dcl et: EdgeType := new EdgeType(type, time, distance, price);
 		graph.addEdgeType(source, target, et);
 	)
-	pre type <> <ANY>;
+	pre type <> <ANY> and status = <Administrator>;
+	
+	-- Removes a location, along with all its connections
+	public removeLocation : Node`Location ==> ()
+	removeLocation(loc) ==
+		graph.removeNode(loc)
+	pre status = <Administrator>;
 	
 	/** CLIENT OPERATIONS **/
 	
@@ -101,42 +107,40 @@ operations
   public getRouteWithCriteria : Node`Location * Node`Location * EdgeType`TravelType * Graph`CriterionType ==> Path 
 	getRouteWithCriteria(source, target, type, criterion) ==
 		return graph.findPath(source, target, criterion, type);
-   /*
-  public getBestRouteForCriterion : Node`Location *  Node`Location * Graph`CriterionType ==> Path
-  getBestRouteForCriterion(source, target, criterion) ==
+  
+  public getBestRoutesForAllCriteria : Node`Location *  Node`Location ==> set of (Path)
+  getBestRoutesForAllCriteria(source, target) ==
   (
   	dcl paths: set of (Path) := {};
-  	
-  	dcl path: Path := graph.findPath(source, target, criterion, <ANY>);
-  	if path.isPossible() then
-  		paths := paths union {path};
   		
-  	path := graph.findPath(source, target, criterion, <CAR>);
-  	if path.isPossible() then
-  		paths := paths union {path};
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <ANY>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <ANY>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <ANY>)};	
   		
-  	path := graph.findPath(source, target, criterion, <PLANE>);
-  	if path.isPossible() then
-  		paths := paths union {path};
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <CAR>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <CAR>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <CAR>)};	
   		
-  	path := graph.findPath(source, target, criterion, <TRAIN>);
-  	if path.isPossible() then
-  		paths := paths union {path};
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <BUS>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <BUS>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <BUS>)};	
   		
-  	path := graph.findPath(source, target, criterion, <FERRY>);
-  	if path.isPossible() then
-  		paths := paths union {path};
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <PLANE>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <PLANE>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <PLANE>)};	
   		
-  	path := graph.findPath(source, target, criterion, <BUS>);
-  	if path.isPossible() then
-  		paths := paths union {path};
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <FERRY>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <FERRY>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <FERRY>)};	
   		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <TRAIN>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <TRAIN>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <TRAIN>)};	
+
   	for all p in set paths do
-  		if (p.getTotalCost() < path.getTotalCost() and p.getTotalCost() <> -1)
-  			or path.getTotalCost() = -1
-  			 then path := p;
-  	
-  	return path;
-  );*/
+  		if not p.isPossible() then paths := paths \ {p};
+  		
+  	return paths;
+  );
 
 end Rome2Rio
