@@ -453,6 +453,28 @@ operations
 	  testGetAllRoutes();
 	);
 
-	/** UNIT TESTS FOR INVALID INPUTS (run one at a time)**/
-
+	/** UNIT TEST FOR ERRORS(FAILING PRE AND POST CONDITIONS)**/
+	/** UNCOMMENT EACH ASSERT TO PRODUCE THE ERROR, ONE AT A TIME**/
+	public testErrors: () ==> ()
+	testErrors() ==
+	(
+		dcl graph: Graph = new Graph();
+		graph.addNode(1, 1, "L1", "C1");
+		
+		-- out-of-bounds coordinate
+		--graph.addNode(200, 1, "L2", "C2");
+		--graph.addNode(-200, 1, "L2", "C2");
+		--graph.addNode(1, 200, "L2", "C2");
+		--graph.addNode(1, -200, "L2", "C2");
+		
+		-- duplicate location
+		--graph.addNode(5, 5, "L1", "C1");
+		
+		-- duplicate coordinate
+		--graph.addNode(1, 1, "L2", "C1");
+		
+		
+		
+	);
+	
 end TestRome2Rio
