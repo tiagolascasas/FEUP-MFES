@@ -33,7 +33,6 @@ public class TopBar extends JMenuBar {
 	public JMenuItem addLocation = null;
 	public JMenuItem addRoute = null;
 	public JMenuItem removeLocation = null;
-	public JMenuItem removeRoute = null;
 
 	public TopBar(MainMenu mm) {
 
@@ -63,7 +62,7 @@ public class TopBar extends JMenuBar {
 			menu.setIcon(new ImageIcon(logo.getScaledInstance(140, 40, java.awt.Image.SCALE_SMOOTH)));
 			menu.setBackground(Color.black);
 			menu.setOpaque(false);
-			
+
 			JMenuItem returnToChooser = new JMenuItem("Return To Main Menu");
 			returnToChooser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -71,7 +70,7 @@ public class TopBar extends JMenuBar {
 				}
 			});
 			menu.add(returnToChooser);
-			
+
 			this.add(menu);
 
 		} catch (IOException e) {
@@ -128,10 +127,6 @@ public class TopBar extends JMenuBar {
 			loginMenu.remove(removeLocation);
 			removeLocation = null;
 		}
-		if (removeRoute != null) {
-			loginMenu.remove(removeRoute);
-			removeRoute = null;
-		}
 	}
 
 	public void passwordCaller(Rome2Rio r2r) {
@@ -187,14 +182,6 @@ public class TopBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				RemoveLocation removeLocation = new RemoveLocation(new JFrame(""), r2r);
 				removeLocation.createAndShowGUI();
-			}
-		});
-
-		removeRoute = new JMenuItem("Remove Route");
-		removeRoute.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RemoveRoute removeRoute = new RemoveRoute(new JFrame(""), r2r);
-				removeRoute.createAndShowGUI();
 			}
 		});
 

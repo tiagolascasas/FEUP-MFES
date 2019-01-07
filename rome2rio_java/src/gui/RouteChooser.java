@@ -132,12 +132,12 @@ public class RouteChooser extends JPanel {
 		trainButton.setMnemonic(KeyEvent.VK_R);
 		trainButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		trainButton.setForeground(Color.WHITE);
-		
+
 		JRadioButton planeButton = new JRadioButton("Plane");
 		planeButton.setMnemonic(KeyEvent.VK_D);
 		planeButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
 		planeButton.setForeground(Color.WHITE);
-		
+
 		JRadioButton anyButton = new JRadioButton("Any");
 		anyButton.setMnemonic(KeyEvent.VK_R);
 		anyButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
@@ -282,19 +282,22 @@ public class RouteChooser extends JPanel {
 
 				switch (criteriaPre) {
 				case "Lowest Distance":
-					mm.setResultsPanel(r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
-							rome2rio.quotes.DISTANCEQuote.getInstance()),
-							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2),inputLoc1,inputLoc2);
+					mm.setResultsPanel(
+							r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
+									rome2rio.quotes.DISTANCEQuote.getInstance()),
+							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2), inputLoc1, inputLoc2);
 					break;
 				case "Lowest Duration":
-					mm.setResultsPanel(r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
-							rome2rio.quotes.TIMEQuote.getInstance()),
-							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2),inputLoc1,inputLoc2);
+					mm.setResultsPanel(
+							r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
+									rome2rio.quotes.TIMEQuote.getInstance()),
+							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2), inputLoc1, inputLoc2);
 					break;
 				case "Cheapest Price":
-					mm.setResultsPanel(r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
-							rome2rio.quotes.PRICEQuote.getInstance()),
-							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2),inputLoc1,inputLoc2);
+					mm.setResultsPanel(
+							r2r.getRouteWithCriteria(inputLoc1, inputLoc2, transportType,
+									rome2rio.quotes.PRICEQuote.getInstance()),
+							r2r.getBestRoutesForAllCriteria(inputLoc1, inputLoc2), inputLoc1, inputLoc2);
 					break;
 				default:
 					break;

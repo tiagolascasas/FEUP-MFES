@@ -100,30 +100,29 @@ public class MainMenu {
 		RouteChooser routeChooser = new RouteChooser(r2r, this);
 		panelInEdition = routeChooser;
 		mainMenuFrame.add(panelInEdition);
-		
+
 		mainMenuFrame.revalidate();
 		mainMenuFrame.repaint();
 	}
 
 	public void setResultsPanel(Path bestPath, VDMSet vdmSet, String source, String target) {
 
-
 		if (panelInEdition != null) {
 			mainMenuFrame.remove(panelInEdition);
 			panelInEdition = null;
 		}
-		
+
 		Path[] paths = new Path[vdmSet.size()];
 		int i = 0;
 		for (Iterator<?> iterator_18 = vdmSet.iterator(); iterator_18.hasNext();) {
 			paths[i] = (Path) iterator_18.next();
 			i++;
 		}
-		
+
 		RouteSearchResults routeSearchResults = new RouteSearchResults(r2r, bestPath, paths, source, target);
 		panelInEdition = routeSearchResults;
 		mainMenuFrame.add(panelInEdition);
-		
+
 		mainMenuFrame.revalidate();
 		mainMenuFrame.repaint();
 	}
