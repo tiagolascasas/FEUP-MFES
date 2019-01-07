@@ -27,8 +27,8 @@ public class PriorityQueue {
 
 		Node res = null;
 		Number min = 9999999999L;
-		for (Iterator iterator_15 = elements.iterator(); iterator_15.hasNext();) {
-			Node e = (Node) iterator_15.next();
+		for (Iterator iterator_17 = elements.iterator(); iterator_17.hasNext();) {
+			Node e = (Node) iterator_17.next();
 			if (e.priority.doubleValue() < min.doubleValue()) {
 				res = e;
 				min = e.priority;

@@ -16,7 +16,6 @@ import javax.swing.ListSelectionModel;
 
 import rome2rio.Rome2Rio;
 
-
 @SuppressWarnings("serial")
 public class ListLocationsToChoose extends JPanel implements ActionListener {
 
@@ -29,7 +28,7 @@ public class ListLocationsToChoose extends JPanel implements ActionListener {
 	public int inputCalling;
 	public JList<String> locationsList;
 	public JScrollPane listScroller;
-	
+
 	public Rome2Rio r2r;
 
 	public ListLocationsToChoose(JFrame f, Rome2Rio r2r, RouteChooser rC, int inputCalling) {
@@ -47,48 +46,48 @@ public class ListLocationsToChoose extends JPanel implements ActionListener {
 
 		ArrayList<ArrayList<String>> locationsOnSystem = r2r.listLocationsStrings();
 		String[] locationsStrings = null;
-		if(!locationsOnSystem.isEmpty()) {
+		if (!locationsOnSystem.isEmpty()) {
 			locationsStrings = new String[locationsOnSystem.size()];
 			for (int i = 0; i < locationsStrings.length; i++) {
 				locationsStrings[i] = locationsOnSystem.get(i).get(0) + ", " + locationsOnSystem.get(i).get(1);
 			}
-		}	
-	
+		}
+
 		locationsList = new JList<String>(locationsStrings);
-		
-		locationsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+		locationsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		locationsList.setSelectedIndex(0);
 		locationsList.setLayoutOrientation(JList.VERTICAL);
 		locationsList.setVisibleRowCount(15);
 		locationsList.setSize(300, 400);
-		
+
 		listScroller = new JScrollPane(locationsList);
 		textPane.add(listScroller);
-		
+
 		JButton okButton = new JButton("OK");
 		textPane.add(okButton, "flowx,cell 0 5");
-		
+
 		okButton.setActionCommand(OK);
 		JButton helpButton = new JButton("Help");
 		textPane.add(helpButton, "cell 0 5");
 		helpButton.setActionCommand(HELP);
 		helpButton.addActionListener(this);
-		okButton.addActionListener(this);		
+		okButton.addActionListener(this);
 	}
-	
 
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 
-		if (OK.equals(cmd)) { 
-			
-			String[] inputLoc = locationsList.getSelectedValue().split("\\,");;
-			
-			 if(inputCalling == 1)
+		if (OK.equals(cmd)) {
+
+			String[] inputLoc = locationsList.getSelectedValue().split("\\,");
+			;
+
+			if (inputCalling == 1)
 				rC.setLocationField1(inputLoc[0]);
-			else 
+			else
 				rC.setLocationField2(inputLoc[0]);
-			
+
 			resetFocus();
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 

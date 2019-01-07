@@ -35,7 +35,7 @@ public class TopBar extends JMenuBar {
 	public JMenuItem removeLocation = null;
 	public JMenuItem removeRoute = null;
 
-	public TopBar() {
+	public TopBar(MainMenu mm) {
 
 		this.add(Box.createRigidArea(new Dimension(this.getWidth(), 40)));
 
@@ -50,11 +50,11 @@ public class TopBar extends JMenuBar {
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
 		this.setForeground(Color.WHITE);
 
-		addLogoOnMenu();
+		addLogoOnMenu(mm);
 
 	}
 
-	private void addLogoOnMenu() {
+	private void addLogoOnMenu(MainMenu mm) {
 
 		try {
 
@@ -63,6 +63,15 @@ public class TopBar extends JMenuBar {
 			menu.setIcon(new ImageIcon(logo.getScaledInstance(140, 40, java.awt.Image.SCALE_SMOOTH)));
 			menu.setBackground(Color.black);
 			menu.setOpaque(false);
+			
+			JMenuItem returnToChooser = new JMenuItem("Return To Main Menu");
+			returnToChooser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mm.setUserMenu();
+				}
+			});
+			menu.add(returnToChooser);
+			
 			this.add(menu);
 
 		} catch (IOException e) {

@@ -56,6 +56,9 @@ public class GuiUtils {
 
 		r2r.addWayBetweenLocations("Boston", "Cape Town", rome2rio.quotes.PLANEQuote.getInstance(), 12, 123, 400);
 
+		r2r.addWayBetweenLocations("Pretoria","Boston",rome2rio.quotes.BUSQuote.getInstance(), 2, 120, 5);
+		r2r.addNewTransportationType("Boston","Cape Town",rome2rio.quotes.BUSQuote.getInstance(), 2, 130, 5);
+		
 		r2r.addWayBetweenLocations("Pretoria", "Cape Town", rome2rio.quotes.BUSQuote.getInstance(), 2, 12, 35);
 		r2r.addNewTransportationType("Pretoria", "Cape Town", rome2rio.quotes.TRAINQuote.getInstance(), 1, 12, 60);
 		r2r.addNewTransportationType("Pretoria", "Cape Town", rome2rio.quotes.CARQuote.getInstance(), 1, 12, 70);

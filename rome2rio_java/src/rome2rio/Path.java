@@ -42,7 +42,6 @@ public class Path {
 			if (!(whileCond_3)) {
 				break;
 			}
-
 			{
 				IO.println(((Node) Utils.get(path, i)).location);
 				i = i.longValue() + 1L;
