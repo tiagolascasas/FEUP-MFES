@@ -20,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 
-import rome2rio.Rome2Rio;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
+import rome2rio.Rome2Rio;
 
 /* PasswordDemo.java requires no other files. */
 
@@ -97,62 +97,63 @@ public class AddRoute extends JPanel implements ActionListener {
 
 		add(textPane1, "cell 0 0 2 1,alignx center,aligny top");
 		add(textPane2, "cell 0 1 2 1,alignx left,aligny top");
-		
+
 		JPanel panel = new JPanel();
 		add(panel, "cell 0 2 2 1,grow");
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Transports", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Transports",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.setLayout(new MigLayout("", "[513px]", "[]"));
-		
-				JRadioButton trainButton = new JRadioButton("Train");
-				panel.add(trainButton, "cell 0 0");
-				trainButton.setMnemonic(KeyEvent.VK_R);
-				trainButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-				trainButton.setForeground(Color.BLACK);
-				trainButton.setActionCommand("rabbit");
-				transportGroup.add(trainButton);
-				
-						JRadioButton planeButton = new JRadioButton("Plane");
-						panel.add(planeButton, "cell 0 0");
-						planeButton.setMnemonic(KeyEvent.VK_D);
-						planeButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-						planeButton.setForeground(Color.BLACK);
-						planeButton.setActionCommand("dog");
-						transportGroup.add(planeButton);
-						
-								JRadioButton ferryButton = new JRadioButton("Ferry");
-								panel.add(ferryButton, "cell 0 0");
-								ferryButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-								ferryButton.setForeground(Color.BLACK);
-								ferryButton.setMnemonic(KeyEvent.VK_C);
-								ferryButton.setActionCommand("cat");
-								transportGroup.add(ferryButton);
-								
-										JRadioButton carButton = new JRadioButton("Car");
-										panel.add(carButton, "cell 0 0");
-										carButton.setMnemonic(KeyEvent.VK_B);
-										carButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-										carButton.setForeground(Color.BLACK);
-										carButton.setActionCommand("Bird");
-										carButton.setSelected(true);
-										transportGroup.add(carButton);
-										
-												JRadioButton busButton = new JRadioButton("Bus");
-												panel.add(busButton, "cell 0 0");
-												busButton.setMnemonic(KeyEvent.VK_R);
-												busButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
-												busButton.setForeground(Color.BLACK);
-												busButton.setActionCommand("rabbit");
-												transportGroup.add(busButton);
+
+		JRadioButton trainButton = new JRadioButton("Train");
+		panel.add(trainButton, "cell 0 0");
+		trainButton.setMnemonic(KeyEvent.VK_R);
+		trainButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		trainButton.setForeground(Color.BLACK);
+		trainButton.setActionCommand("rabbit");
+		transportGroup.add(trainButton);
+
+		JRadioButton planeButton = new JRadioButton("Plane");
+		panel.add(planeButton, "cell 0 0");
+		planeButton.setMnemonic(KeyEvent.VK_D);
+		planeButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		planeButton.setForeground(Color.BLACK);
+		planeButton.setActionCommand("dog");
+		transportGroup.add(planeButton);
+
+		JRadioButton ferryButton = new JRadioButton("Ferry");
+		panel.add(ferryButton, "cell 0 0");
+		ferryButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		ferryButton.setForeground(Color.BLACK);
+		ferryButton.setMnemonic(KeyEvent.VK_C);
+		ferryButton.setActionCommand("cat");
+		transportGroup.add(ferryButton);
+
+		JRadioButton carButton = new JRadioButton("Car");
+		panel.add(carButton, "cell 0 0");
+		carButton.setMnemonic(KeyEvent.VK_B);
+		carButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		carButton.setForeground(Color.BLACK);
+		carButton.setActionCommand("Bird");
+		carButton.setSelected(true);
+		transportGroup.add(carButton);
+
+		JRadioButton busButton = new JRadioButton("Bus");
+		panel.add(busButton, "cell 0 0");
+		busButton.setMnemonic(KeyEvent.VK_R);
+		busButton.setFont(new Font("American Typewriter", Font.PLAIN, 15));
+		busButton.setForeground(Color.BLACK);
+		busButton.setActionCommand("rabbit");
+		transportGroup.add(busButton);
 		JButton okButton = new JButton("OK");
 		add(okButton, "flowx,cell 1 3");
-		
-				okButton.setActionCommand(OK);
-				okButton.addActionListener(this);
+
+		okButton.setActionCommand(OK);
+		okButton.addActionListener(this);
 		add(transpPane, "cell 0 7,alignx right,aligny center");
-										JButton helpButton = new JButton("Help");
-										add(helpButton, "cell 1 3");
-										helpButton.setActionCommand(HELP);
-										helpButton.addActionListener(this);
+		JButton helpButton = new JButton("Help");
+		add(helpButton, "cell 1 3");
+		helpButton.setActionCommand(HELP);
+		helpButton.addActionListener(this);
 
 	}
 

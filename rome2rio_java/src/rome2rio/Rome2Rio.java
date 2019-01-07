@@ -110,14 +110,14 @@ public class Rome2Rio {
 			locations.add(countryCity);
 			i = i.longValue() + 1L;
 		}
-		
-		Collections.sort(locations, new Comparator<ArrayList<String>>() {    
-	        @Override
-	        public int compare(ArrayList<String> o1, ArrayList<String> o2) {
-	            return o1.get(0).compareTo(o2.get(0));
-	        }               
+
+		Collections.sort(locations, new Comparator<ArrayList<String>>() {
+			@Override
+			public int compare(ArrayList<String> o1, ArrayList<String> o2) {
+				return o1.get(0).compareTo(o2.get(0));
+			}
 		});
-		
+
 		return locations;
 	}
 
@@ -166,8 +166,8 @@ public class Rome2Rio {
 				rome2rio.quotes.DISTANCEQuote.getInstance(), rome2rio.quotes.TRAINQuote.getInstance())));
 		paths = SetUtil.union(Utils.copy(paths), SetUtil.set(graph.findPath(source, target,
 				rome2rio.quotes.TIMEQuote.getInstance(), rome2rio.quotes.TRAINQuote.getInstance())));
-		for (Iterator iterator_18 = paths.iterator(); iterator_18.hasNext();) {
-			Path p = (Path) iterator_18.next();
+		for (Iterator iterator_19 = paths.iterator(); iterator_19.hasNext();) {
+			Path p = (Path) iterator_19.next();
 			if (!(p.isPossible())) {
 				paths = SetUtil.diff(Utils.copy(paths), SetUtil.set(p));
 			}

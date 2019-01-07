@@ -78,21 +78,21 @@ public class Graph {
 
 	public Boolean existsEdge(final String source, final String target) {
 
-		Boolean existsExpResult_5 = false;
-		VDMSet set_7 = Utils.copy(edge);
-		for (Iterator iterator_7 = set_7.iterator(); iterator_7.hasNext() && !(existsExpResult_5);) {
-			Edge e = ((Edge) iterator_7.next());
-			Boolean andResult_8 = false;
+		Boolean existsExpResult_3 = false;
+		VDMSet set_5 = Utils.copy(edge);
+		for (Iterator iterator_5 = set_5.iterator(); iterator_5.hasNext() && !(existsExpResult_3);) {
+			Edge e = ((Edge) iterator_5.next());
+			Boolean andResult_6 = false;
 
 			if (Utils.equals(e.sourceNode.location, source)) {
 				if (Utils.equals(e.targetNode.location, target)) {
-					andResult_8 = true;
+					andResult_6 = true;
 				}
 			}
 
-			existsExpResult_5 = andResult_8;
+			existsExpResult_3 = andResult_6;
 		}
-		return existsExpResult_5;
+		return existsExpResult_3;
 	}
 
 	public VDMSet FindEdgesWithNode(final String location) {
@@ -144,15 +144,15 @@ public class Graph {
 		priorityQueue.addElement(startingNode);
 		Boolean whileCond_1 = true;
 		while (whileCond_1) {
-			Boolean andResult_11 = false;
+			Boolean andResult_10 = false;
 
 			if (!(Utils.equals(priorityQueue.isEmpty(), true))) {
 				if (!(Utils.equals(foundTarget, true))) {
-					andResult_11 = true;
+					andResult_10 = true;
 				}
 			}
 
-			whileCond_1 = andResult_11;
+			whileCond_1 = andResult_10;
 
 			if (!(whileCond_1)) {
 				break;
@@ -163,10 +163,10 @@ public class Graph {
 				if (Utils.equals(currentNode.location, target)) {
 					foundTarget = true;
 				} else {
-					for (Iterator iterator_14 = currentNode.outwardEdges.iterator(); iterator_14.hasNext();) {
-						Edge outwardEdge = (Edge) iterator_14.next();
-						for (Iterator iterator_15 = outwardEdge.edgeType.iterator(); iterator_15.hasNext();) {
-							EdgeType type = (EdgeType) iterator_15.next();
+					for (Iterator iterator_15 = currentNode.outwardEdges.iterator(); iterator_15.hasNext();) {
+						Edge outwardEdge = (Edge) iterator_15.next();
+						for (Iterator iterator_16 = outwardEdge.edgeType.iterator(); iterator_16.hasNext();) {
+							EdgeType type = (EdgeType) iterator_16.next();
 							Number weight = 0L;
 							Node destNode = outwardEdge.targetNode;
 							Boolean orResult_2 = false;
@@ -210,7 +210,7 @@ public class Graph {
 		}
 	}
 
-	public Path getPathSourceToTarget(final String source, final String target, final Object type,
+	private Path getPathSourceToTarget(final String source, final String target, final Object type,
 			final Object criterion) {
 
 		Node currentNode = findNode(target);

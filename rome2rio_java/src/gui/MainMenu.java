@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -14,6 +15,9 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
+import org.overture.codegen.runtime.VDMSet;
+
+import rome2rio.Path;
 import rome2rio.Rome2Rio;
 
 public class MainMenu {
@@ -72,12 +76,11 @@ public class MainMenu {
 			e.printStackTrace();
 		}
 
-		menuBar = new TopBar();
+		menuBar = new TopBar(this);
 		mainMenuFrame.setJMenuBar(menuBar);
 
 		setAdministratorMenu();
-
-		panelInEdition = setUserMenu();
+		setUserMenu();
 	}
 
 	private void setAdministratorMenu() {
@@ -85,13 +88,44 @@ public class MainMenu {
 		adminMenu = menuBar.administratorMenu();
 		menuBar.loginAsAdministrator(r2r);
 		menuBar.add(adminMenu);
-
 	}
 
-	private JPanel setUserMenu() {
-		RouteChooser routeChooser = new RouteChooser(r2r);
-		mainMenuFrame.add(routeChooser);
-		return routeChooser;
+	public void setUserMenu() {
+
+		if (panelInEdition != null) {
+			mainMenuFrame.remove(panelInEdition);
+			panelInEdition = null;
+		}
+
+		RouteChooser routeChooser = new RouteChooser(r2r, this);
+		panelInEdition = routeChooser;
+		mainMenuFrame.add(panelInEdition);
+		
+		mainMenuFrame.revalidate();
+		mainMenuFrame.repaint();
+	}
+
+	public void setResultsPanel(Path bestPath, VDMSet vdmSet, String source, String target) {
+
+
+		if (panelInEdition != null) {
+			mainMenuFrame.remove(panelInEdition);
+			panelInEdition = null;
+		}
+		
+		Path[] paths = new Path[vdmSet.size()];
+		int i = 0;
+		for (Iterator<?> iterator_18 = vdmSet.iterator(); iterator_18.hasNext();) {
+			paths[i] = (Path) iterator_18.next();
+			i++;
+		}
+		
+		RouteSearchResults routeSearchResults = new RouteSearchResults(r2r, bestPath, paths, source, target);
+		panelInEdition = routeSearchResults;
+		mainMenuFrame.add(panelInEdition);
+		
+		mainMenuFrame.revalidate();
+		mainMenuFrame.repaint();
 	}
 
 }

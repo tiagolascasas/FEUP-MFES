@@ -11,8 +11,8 @@ public class TestRome2Rio extends MyTestCase {
 
     Graph graph = new Graph();
     graph.addNode("L1", "C1", 1.0, 1.0);
-    graph.addNode("L2", "C2", 4.0, 2.0);
-    graph.addNode("L3", "C2", 5.0, 3.0);
+    graph.addNode("L2", "C2", 1.0, 2.0);
+    graph.addNode("L3", "C2", 5.0, 2.0);
     assertEqual(3L, graph.node.size());
     graph.addEdge("L1", "L2", new EdgeType(rome2rio.quotes.CARQuote.getInstance(), 1L, 1L, 1.0));
     graph.addEdge("L1", "L3", new EdgeType(rome2rio.quotes.FERRYQuote.getInstance(), 10L, 2L, 2.0));
@@ -204,8 +204,6 @@ public class TestRome2Rio extends MyTestCase {
         "L1", "L2", new EdgeType(rome2rio.quotes.BUSQuote.getInstance(), 14L, 51L, 4.0));
     graph.addEdgeType(
         "L2", "L5", new EdgeType(rome2rio.quotes.BUSQuote.getInstance(), 12L, 264L, 7.0));
-    graph.addEdgeType(
-        "L5", "L9", new EdgeType(rome2rio.quotes.BUSQuote.getInstance(), 266L, 191L, 2.0));
     graph.addEdgeType(
         "L9", "L10", new EdgeType(rome2rio.quotes.BUSQuote.getInstance(), 51L, 191L, 1.0));
     graph.addEdgeType(
@@ -418,9 +416,7 @@ public class TestRome2Rio extends MyTestCase {
             "L13",
             rome2rio.quotes.TIMEQuote.getInstance(),
             rome2rio.quotes.BUSQuote.getInstance());
-    assertEqual(true, path.isPossible());
-    assertEqual(890L, path.cost);
-    assertEqual(6L, path.path.size());
+    assertEqual(false, path.isPossible());
   }
 
   public void testAdminLogin() {
@@ -528,14 +524,29 @@ public class TestRome2Rio extends MyTestCase {
     r2r = new Rome2Rio();
     r2r.graph = makeGraph();
     paths = r2r.getBestRoutesForAllCriteria("L1", "L13");
-    assertEqual(paths.size(), 18L);
-    for (Iterator iterator_19 = paths.iterator(); iterator_19.hasNext(); ) {
-      Path p = (Path) iterator_19.next();
+    assertEqual(paths.size(), 15L);
+    for (Iterator iterator_20 = paths.iterator(); iterator_20.hasNext(); ) {
+      Path p = (Path) iterator_20.next();
       assertEqual(true, p.isPossible());
     }
   }
 
-  public void testAllValidTests() {
+  public void testErrors() {
+
+    Graph graph = new Graph();
+    Node node = null;
+    Edge edge = null;
+    EdgeType et = null;
+    PriorityQueue pq = new PriorityQueue();
+    Rome2Rio r2r_1 = new Rome2Rio();
+    graph.addNode("L1", "C1", 1L, 1L);
+    graph.addNode("L2", "C1", 5L, 5L);
+    graph.addEdge("L1", "L2", new EdgeType(rome2rio.quotes.CARQuote.getInstance(), 1L, 1L, 1L));
+    node = new Node(1L, 1L, "A", "B");
+    pq.addElement(node);
+  }
+
+  public void testAll() {
 
     testAddNodesAndEdges();
     testPriorityQueue();
@@ -552,6 +563,7 @@ public class TestRome2Rio extends MyTestCase {
     testListLocations();
     testGetRouteWithCriteria();
     testGetAllRoutes();
+    testErrors();
   }
 
   public TestRome2Rio() {}
@@ -560,4 +572,5 @@ public class TestRome2Rio extends MyTestCase {
 
     return "TestRome2Rio{" + "r2r := " + Utils.toString(r2r) + "}";
   }
+
 }
