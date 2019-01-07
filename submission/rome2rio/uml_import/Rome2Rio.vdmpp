@@ -1,0 +1,145 @@
+class Rome2Rio
+/*
+  Contains the core model of the Rome2Rio System.
+  Defines the state variables and all the operations
+  required to execute all use cases
+*/
+types
+	public Status= <Administrator> | <Client>;	-- types of user
+  public Password = seq of char;							-- type for the admin password
+
+instance variables
+  public graph:Graph;													-- the travel graph
+  public status : Status; 										-- the current user's type
+  -- Items observable by the administrator:
+  public adminCode : Password := "default"; 	-- the current admin password
+
+operations
+	-- Constructor
+	public Rome2Rio : () ==> Rome2Rio
+	Rome2Rio() == 
+	(
+		graph := new Graph();
+		status := <Client>;
+		return self;
+	);
+		
+	-- UC1: Changes the type of user to admin
+	public changeToAdmin : Password ==> bool
+	changeToAdmin(pass) ==
+	(
+		if pass = adminCode then 
+		(
+			status := <Administrator>;
+			return true;
+		)
+		else return false;
+	)
+	pre status = <Client>;
+	
+	/** ADMINISTRATOR OPERATIONS **/
+	
+	-- UC2: Changes the admin password
+	public setAdministratorPassword : Password ==> ()
+	setAdministratorPassword(pass) ==
+		adminCode := pass
+	pre status = <Administrator>;
+	
+	-- UC3: Adds a new location to the platform
+	public addLocation : Node`Location * Node`Country * real * real ==> ()
+	addLocation(location, country, coordinateNS, coordinateEW) ==
+		graph.addNode(location, country, coordinateNS, coordinateEW)
+	pre status = <Administrator>;
+	
+	-- UC4: Adds a connection between two locations
+	public addWayBetweenLocations : Node`Location *  Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
+	addWayBetweenLocations(source, target, travelType, time, distance, price) ==
+	(
+	  if(graph.existsEdge(source, target) = false) then
+			graph.addEdge(source, target, new EdgeType(travelType, time, distance, price))			
+	)
+	pre status = <Administrator>;
+	
+	-- UC5: Adds a new transportation type to an existing connection
+	public addNewTransportationType : Node`Location * Node`Location * EdgeType`TravelType * nat1 * nat1 * real ==> ()
+	addNewTransportationType(source, target, type, time, distance, price) ==
+	(
+		dcl et: EdgeType := new EdgeType(type, time, distance, price);
+		graph.addEdgeType(source, target, et);
+	)
+	pre type <> <ANY> and status = <Administrator>;
+	
+	-- UC6: Removes a location, along with all its connections
+	public removeLocation : Node`Location ==> ()
+	removeLocation(loc) ==
+		graph.removeNode(loc)
+	pre status = <Administrator>;
+	
+	/** CLIENT OPERATIONS **/
+	
+	-- UC7: Changes the type of user to client
+	public changeToClient : () ==> ()
+	changeToClient() ==
+		status := <Client>
+	pre status = <Administrator>;
+	
+	-- UC8: Lists all available locations
+  public  listLocations : ()  ==> nat1
+  listLocations() ==
+  (
+  	dcl i: nat := 0;
+  	for all n in set graph.node do
+  	(
+  		IO`print(n.location);
+  		IO`print(" at (");
+  		IO`print(n.coordinateNS);
+  		IO`print(", ");
+  		IO`print(n.coordinateEW);
+  		IO`println(")");
+  		i := i + 1;
+  	);
+  	return i;
+  );
+  
+  -- UC9: calculates the best route given the travel type and optimization criterion
+  public getRouteWithCriteria : Node`Location * Node`Location * EdgeType`TravelType * Graph`CriterionType ==> Path 
+	getRouteWithCriteria(source, target, type, criterion) ==
+		return graph.findPath(source, target, criterion, type);
+  
+  -- UC10: gets the best paths using each of the availabe criteria and travel types
+  public getBestRoutesForAllCriteria : Node`Location *  Node`Location ==> set of (Path)
+  getBestRoutesForAllCriteria(source, target) ==
+  (
+  	dcl paths: set of (Path) := {};
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <ANY>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <ANY>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <ANY>)};	
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <CAR>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <CAR>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <CAR>)};	
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <BUS>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <BUS>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <BUS>)};	
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <PLANE>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <PLANE>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <PLANE>)};	
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <FERRY>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <FERRY>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <FERRY>)};	
+  		
+  	paths := paths union {graph.findPath(source, target, <PRICE>, <TRAIN>)};	
+  	paths := paths union {graph.findPath(source, target, <DISTANCE>, <TRAIN>)};	
+  	paths := paths union {graph.findPath(source, target, <TIME>, <TRAIN>)};	
+
+  	for all p in set paths do
+  		if not p.isPossible() then paths := paths \ {p};
+  		
+  	return paths;
+  );
+
+end Rome2Rio

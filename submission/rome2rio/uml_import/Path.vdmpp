@@ -1,0 +1,34 @@
+-- Class to represent a path made of nodes and edges
+-- On this context, it is the shortest path from A to B
+-- and in which the "distance" is based on specified criteria
+class Path
+
+instance variables
+	public path: seq of (Node);							-- sequence with the path nodes
+	public travelType: EdgeType`TravelType;	-- method of transportation
+	public criteria: Graph`CriterionType;		-- edge weight criterion
+	public cost: real;											-- final cost of the path
+	
+operations
+	-- Constructor
+	public Path: EdgeType`TravelType * Graph`CriterionType * real ==> Path
+	Path(tt, crit, c) ==
+	(
+		path := [];
+		travelType := tt;
+		criteria := crit;
+		cost := c;
+	);
+	
+	-- Adds a new node to the head of the path
+	public addNode: Node ==> ()
+	addNode(node) ==
+		path := [node] ^ path
+	post (hd path) = node;
+
+	-- Returns whether the path is set or not
+	public isPossible: () ==> bool
+	isPossible() ==
+		return (len path) > 1;
+		
+end Path

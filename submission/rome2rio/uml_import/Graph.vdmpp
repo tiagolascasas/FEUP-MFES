@@ -1,0 +1,218 @@
+class Graph
+
+types
+	-- variable to minimize in the shortest path algorithm
+	public CriterionType = <DISTANCE> | <TIME> | <PRICE>;
+
+instance variables
+  public node:set of (Node);					-- set with all nodes
+  public priorityQueue:PriorityQueue;	-- priority queue for Dijkstra's algorithm
+  public edge:set of (Edge);					-- set with all edges
+  
+  -- invariant: there are no repeated locations
+  inv not exists n1, n2 in set node &
+  			n1 <> n2 and n1.location = n2.location;
+  			
+  -- invariant: there are no repeated coordinate pairs (NS, EW)
+  inv not exists n1, n2 in set node &
+        (n1 <> n2 and 
+        	n1.coordinateNS = n2.coordinateNS and
+					n1.coordinateEW = n2.coordinateEW);
+
+operations
+  -- Constructor
+	public Graph: () ==> Graph
+	Graph() ==
+	(
+		node := {};
+		priorityQueue := new PriorityQueue();
+		edge := {};
+		return self;
+	);
+
+  -- Adds a new node to the graph
+  public addNode : Node`Location * Node`Country * real * real ==> ()
+  addNode(location, country, coordinateNS, coordinateEW) ==
+  (
+  	dcl n: Node := new Node(coordinateNS, coordinateEW, location, country);
+  	node := {n} union node;
+  );
+  	
+  -- Adds an edge to two existing unconnected nodes
+  public addEdge : Node`Location * Node`Location * EdgeType ==> ()
+  addEdge(source, target, type) ==
+  (
+  	dcl s: Node := findNode(source);
+  	dcl t: Node := findNode(target);
+  	dcl e: Edge := new Edge(type, s, t);
+  	edge := {e} union edge;
+  	s.addEdge(e);
+  )
+  pre not exists e1 in set edge &
+  	source = e1.sourceNode.location and
+  	target = e1.targetNode.location;
+  
+  -- Adds an edge type to an existing edge
+  public addEdgeType : Node`Location * Node`Location * EdgeType ==> ()
+  addEdgeType(source, target, type) ==
+  (
+  	dcl e: Edge := findEdge(source, target);
+  	e.addEdgeType(type);
+  )
+  pre not exists e in set edge 
+  		& e.sourceNode.location = source 
+  		and e.targetNode.location = target
+  		and type in set e.edgeType; 
+    
+  -- Gets a node of the node set by location
+  pure public findNode : Node`Location ==> Node
+  findNode(location) ==
+  (
+	  dcl res: Node;
+	  for all n in set node do if n.location = location then res := n;
+	  return res;
+  )
+  pre exists1 n in set node & n.location = location;
+  
+  -- Gets an edge given the source and target
+  public findEdge : Node`Location * Node`Location  ==> Edge
+  findEdge(source, target) ==
+  (
+	  dcl res: Edge;
+	  for all e in set edge do if e.sourceNode.location = source and e.targetNode.location = target then res := e;
+	  return res;
+  )
+  pre exists1 e in set edge & e.sourceNode.location = source and e.targetNode.location = target;
+
+  -- Checks if exists an edge given source and target
+  pure public existsEdge : Node`Location * Node`Location  ==> bool
+  existsEdge(source, target) ==
+  	return (exists e in set edge & e.sourceNode.location = source and e.targetNode.location = target);
+  
+  -- Finds all edges that come to or from the given nodes
+  pure public findEdgesWithNode : Node`Location ==> set of (Edge)
+  findEdgesWithNode(location) ==
+  (
+  	dcl res : set of (Edge);
+  	res := {};
+  	for all e in set edge do if e.sourceNode.location = location or e.targetNode.location = location then res := res union {e};
+  	return res
+  );
+
+  -- Removes an existing node from the graph
+  public removeNode : Node`Location ==> ()
+  removeNode(location) ==
+  (
+  	dcl n: Node := findNode(location);
+  	dcl edgesWithNode :  set of (Edge) := findEdgesWithNode(location);
+  	edge := edge \ edgesWithNode;
+  	node := node \ {n};
+  )
+  pre exists n1 in set node & n1.location = location;
+
+	-- Resets the Dijkstra information on all nodes in order for the algorithm to be run again
+	public resetGraphInformation : () ==> ()
+	resetGraphInformation() ==
+	(
+		priorityQueue.clear();
+		for all n in set node do
+		(
+			n.setPriority(Node`MIN_PRIORITY);
+			n.setProcessed(false);
+			n.setPath(n);
+		);
+	)
+	post forall n in set node & 
+		(n.priority = Node`MIN_PRIORITY and 
+			not n.processed and 
+			n.path.location = n.location);
+
+  -- Finds the shortest path between two nodes using the specified criteria using Dijkstra's Shortest Path algorithm
+  public findPath : Node`Location * Node`Location * CriterionType * EdgeType`TravelType ==> Path
+  findPath(source, target, criterion, travelType) ==
+  (
+  	dcl foundTarget: bool := false;
+  	dcl startingNode: Node := findNode(source);
+  	
+  	-- reset priorities, paths and processed information
+  	resetGraphInformation();
+  	
+  	-- get the starting node and add it to the queue
+  	startingNode.setPriority(0);
+  	priorityQueue.addElement(startingNode);
+  	
+  	-- process nodes until the queue is empty or the target node is found
+  	while priorityQueue.isEmpty() <> true and foundTarget <> true do
+  	(
+  		-- get the lowest priority node
+  		dcl currentNode: Node := priorityQueue.pop();
+  		
+  		-- if the node is the target, set the flag to true
+  		if currentNode.location = target then
+  			foundTarget := true
+  		else
+  		(	
+  			-- else, go through all the outward edges of this node
+  			for all outwardEdge in set currentNode.outwardEdges do
+  			(
+  				for all type in set outwardEdge.edgeType do
+  				(	
+  				  dcl weight: real := 0;
+  				  dcl destNode: Node := outwardEdge.targetNode;
+  				  
+  				  -- for each edge, see if it is relevant according to the travel type
+  				  -- if it isn't, the edge is ignored as if it didn't exist
+  					if type.travelType = travelType or travelType = <ANY> then
+  					(	
+  						-- get the node weight based on the search criterium
+  						if criterion = <TIME> then weight := type.time
+  						elseif criterion = <DISTANCE> then weight := type.distance
+  						else weight := type.price;
+  						
+  						-- if the path from the current node plus weight is lesser than the edge's
+  						-- target weight, replace the edge target's weight by this one and add the 
+  						-- edge's target to the priority queue
+	  					if currentNode.priority + weight < destNode.priority then
+	  					(
+	  						destNode.setPriority(currentNode.priority + weight);
+	  						destNode.setPath(currentNode);
+	  						if destNode.processed = false then
+	  						(
+	  							destNode.setProcessed(true);
+	  							priorityQueue.addElement(destNode);
+	  						);
+	  					);
+  					);
+  				);
+  			);
+  		);
+  	);
+  	-- if the target was found, get the path from target to source
+  	-- returns the path if the target was found, or an empty sequence if it wasn't
+  	if foundTarget = true then
+  		return getPathSourceToTarget(source, target, travelType, criterion)
+  	else return new Path(travelType, criterion, -1);
+  )
+  pre exists n1, n2 in set node & n1.location = target and n2.location = source
+  post forall n in seq RESULT.path & 
+  				n.priority <> Node`MIN_PRIORITY;	-- non-trivial post condition		
+  
+  -- Gets a sequence holding the sequence of nodes that form the shortest path between
+  -- the given source and target
+  private getPathSourceToTarget : Node`Location * Node`Location * EdgeType`TravelType * CriterionType ==> Path
+  getPathSourceToTarget(source, target, type, criterion) ==
+	(
+		dcl currentNode: Node := findNode(target);
+		dcl path: Path := new Path(type, criterion, currentNode.priority);
+		
+		while currentNode.location <> source do
+		(
+			path.addNode(currentNode);
+			currentNode := currentNode.path;
+		);
+		path.addNode(currentNode);
+		
+		return path;
+	);
+	
+end Graph

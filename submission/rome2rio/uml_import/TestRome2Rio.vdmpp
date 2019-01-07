@@ -1,0 +1,542 @@
+class TestRome2Rio is subclass of MyTestCase
+
+instance variables
+  public r2r: Rome2Rio;
+  
+operations
+	/** UNIT TESTS **/
+	
+	-- Tests the insertion of nodes, edges and edge types on the graph
+	public testAddNodesAndEdges: () ==> ()
+	testAddNodesAndEdges() == 
+	(
+		dcl graph: Graph := new Graph();
+		
+		graph.addNode("L1", "C1", 1.0, 1.0);
+		graph.addNode("L2", "C2", 1.0, 2.0);
+		graph.addNode("L3", "C2", 5.0, 2.0);
+		assertEqual(3, card graph.node);
+		
+		graph.addEdge("L1", "L2", new EdgeType(<CAR>, 1, 1, 1.0));
+		graph.addEdge("L1", "L3", new EdgeType(<FERRY>, 10, 2, 2.0));
+		assertEqual(2, card graph.findNode("L1").outwardEdges);
+		graph.addEdge("L3", "L2", new EdgeType(<PLANE>, 100, 3, 3.0));
+		graph.addEdge("L2", "L1", new EdgeType(<BUS>, 1000, 4, 4.0));
+		graph.addEdge("L2", "L3", new EdgeType(<TRAIN>, 10000, 5, 5.0));
+		assertEqual(5, card graph.edge);
+		
+		assertEqual("L1", graph.findEdge("L1", "L2").sourceNode.location);
+		assertEqual("L2", graph.findEdge("L1", "L2").targetNode.location);
+		
+		graph.addEdgeType("L1", "L2", new EdgeType(<FERRY>, 1, 1, 1.0));
+		assertEqual(2, card graph.findEdge("L1", "L2").edgeType);
+		graph.addEdgeType("L1", "L2", new EdgeType(<PLANE>, 1, 1, 1.0));
+		assertEqual(3, card graph.findEdge("L1", "L2").edgeType);
+		graph.addEdgeType("L1", "L2", new EdgeType(<BUS>, 1, 1, 1.0));
+		assertEqual(4, card graph.findEdge("L1", "L2").edgeType);
+		graph.addEdgeType("L1", "L2", new EdgeType(<TRAIN>, 1, 1, 1.0));
+		assertEqual(5, card graph.findEdge("L1", "L2").edgeType);
+	);
+	
+	-- Tests the devised priority queue 
+	public testPriorityQueue: () ==> ()
+	testPriorityQueue() == 
+	(
+		dcl pq: PriorityQueue := new PriorityQueue();
+		dcl node1: Node := new Node(5.1, 3.1, "L1", "C1");
+		dcl node2: Node := new Node(5.2, 3.2, "L2", "C1");
+		dcl node3: Node := new Node(5.3, 3.3, "L3", "C2");
+		dcl node4: Node := new Node(5.4, 3.4, "L4", "C2");
+		node1.setPriority(50);
+		node2.setPriority(100);
+		node3.setPriority(3);
+		node4.setPriority(20);
+		pq.addElement(node1);
+		pq.addElement(node2);
+		pq.addElement(node3);
+		pq.addElement(node4);
+		assertEqual(4, card pq.elements);
+		assertEqual(node3, pq.pop());
+		assertEqual(node4, pq.pop());
+		assertEqual(node1, pq.pop());
+		assertEqual(node2, pq.pop());
+		assertEqual(true, pq.isEmpty());
+		pq.addElement(node1);
+		pq.addElement(node2);
+		assertEqual(false, pq.isEmpty());
+		pq.clear();
+		assertEqual(true, pq.isEmpty());
+	);
+	
+	-- (Not a test) builds a graph with enough information to run the 
+	-- shortest path algorithm using multiple criteria and travel types
+	public makeGraph: () ==> Graph
+	makeGraph() ==
+	(
+		dcl graph: Graph := new Graph();
+		
+		graph.addNode("L1", "C1", 1.0, 1.0);
+		graph.addNode("L2", "C1", 2.0, 2.0);
+		graph.addNode("L3", "C1", 3.0, 3.0);
+		graph.addNode("L4", "C2", 4.0, 4.0);
+		graph.addNode("L5", "C2", 5.0, 5.0);
+		graph.addNode("L6", "C2", 6.0, 6.0);
+		graph.addNode("L7", "C3", 7.0, 7.0);
+		graph.addNode("L8", "C3", 8.0, 8.0);
+		graph.addNode("L9", "C3", 9.0, 9.0);
+		graph.addNode("L10", "C4", 10.0, 10.0);
+		graph.addNode("L11", "C5", 11.0, 11.0);
+		graph.addNode("L12", "C6", 12.0, 12.0);
+		graph.addNode("L13", "C6", 13.0, 13.0);
+		graph.addNode("L14", "C6", 14.0, 14.0);
+		graph.addNode("L15", "C7", 15.0, 15.0);
+		graph.addNode("L16", "C7", 16.0, 16.0);
+		
+		graph.addEdge("L1", "L2", new EdgeType(<CAR>, 10, 123, 23.0));
+		graph.addEdge("L2", "L1", new EdgeType(<CAR>, 10, 234, 12.0));
+		graph.addEdge("L2", "L5", new EdgeType(<CAR>, 20, 134, 55.0));
+		graph.addEdge("L5", "L2", new EdgeType(<CAR>, 20, 215, 123.0));
+		graph.addEdge("L2", "L4", new EdgeType(<CAR>, 15, 234, 67.0));
+		graph.addEdge("L4", "L2", new EdgeType(<CAR>, 15, 642, 88.0));
+		graph.addEdge("L2", "L3", new EdgeType(<CAR>, 14, 2134, 234.0));
+		graph.addEdge("L3", "L2", new EdgeType(<CAR>, 13, 1531, 1003.0));
+		graph.addEdge("L5", "L6", new EdgeType(<CAR>, 60, 451, 114.0));
+		graph.addEdge("L6", "L7", new EdgeType(<CAR>, 55, 462, 665.0));
+		graph.addEdge("L6", "L8", new EdgeType(<CAR>, 22, 134, 54.0));
+		graph.addEdge("L8", "L6", new EdgeType(<CAR>, 51, 231, 245.5));
+		graph.addEdge("L7", "L3", new EdgeType(<CAR>, 100, 141, 123.0));
+		graph.addEdge("L5", "L9", new EdgeType(<CAR>, 4, 512, 134.0));
+		graph.addEdge("L9", "L5", new EdgeType(<CAR>, 90, 141, 131.0));
+		graph.addEdge("L9", "L10", new EdgeType(<CAR>, 30, 352, 7000.0));
+		graph.addEdge("L10", "L9", new EdgeType(<CAR>, 120, 42, 64.0));
+		graph.addEdge("L10", "L12", new EdgeType(<CAR>, 62, 875, 5000.0));
+		graph.addEdge("L12", "L10", new EdgeType(<CAR>, 78, 232, 56.0));
+		graph.addEdge("L12", "L11", new EdgeType(<CAR>, 788, 162, 6888));
+		graph.addEdge("L11", "L12", new EdgeType(<CAR>, 700, 124, 6444));
+		graph.addEdge("L11", "L9", new EdgeType(<CAR>, 33, 456, 95.0));
+		graph.addEdge("L9", "L11", new EdgeType(<CAR>, 33, 567, 74.0));
+		graph.addEdge("L11", "L13", new EdgeType(<CAR>, 9, 891, 41.0));
+		graph.addEdge("L13", "L11", new EdgeType(<CAR>, 10, 921, 92.0));
+		graph.addEdge("L13", "L16", new EdgeType(<CAR>, 87, 120, 22.0));
+		graph.addEdge("L16", "L13", new EdgeType(<CAR>, 86, 519, 15.0));
+		graph.addEdge("L16", "L15", new EdgeType(<CAR>, 50, 140, 12.0));
+		graph.addEdge("L15", "L16", new EdgeType(<CAR>, 55, 501, 93.0));
+		graph.addEdge("L15", "L13", new EdgeType(<CAR>, 23, 124, 54.0));
+		graph.addEdge("L13", "L15", new EdgeType(<CAR>, 22, 901, 246.0));
+		graph.addEdge("L13", "L14", new EdgeType(<CAR>, 17, 120, 234.0));
+		graph.addEdge("L14", "L13", new EdgeType(<CAR>, 15, 190, 421.0));
+		
+		graph.addEdgeType("L1", "L2", new EdgeType(<PLANE>, 15, 190, 421.0));
+		graph.addEdgeType("L2", "L5", new EdgeType(<PLANE>, 15, 190, 421.0));
+		graph.addEdgeType("L5", "L9", new EdgeType(<PLANE>, 15, 190, 421.0));
+		graph.addEdgeType("L9", "L10", new EdgeType(<PLANE>, 12, 190, 421.0));
+		graph.addEdgeType("L10", "L12", new EdgeType(<PLANE>, 13, 190, 421.0));
+		graph.addEdgeType("L12", "L11", new EdgeType(<PLANE>, 14, 190, 421.0));
+		graph.addEdgeType("L9", "L11", new EdgeType(<PLANE>, 78, 190, 56.0));
+		graph.addEdgeType("L11", "L13", new EdgeType(<PLANE>, 15, 190, 421.0));
+		
+		graph.addEdgeType("L1", "L2", new EdgeType(<TRAIN>, 1, 851, 45.0));
+		graph.addEdgeType("L2", "L5", new EdgeType(<TRAIN>, 2, 2614, 76.0));
+		graph.addEdgeType("L5", "L9", new EdgeType(<TRAIN>, 2, 1901, 82.0));
+		graph.addEdgeType("L9", "L10", new EdgeType(<TRAIN>, 5, 1901, 12.0));
+		graph.addEdgeType("L10", "L12", new EdgeType(<TRAIN>, 1, 1234, 56.0));
+		graph.addEdgeType("L12", "L11", new EdgeType(<TRAIN>, 8, 112, 64.0));
+		graph.addEdgeType("L9", "L11", new EdgeType(<TRAIN>, 8, 5413, 12.0));
+		graph.addEdgeType("L11", "L13", new EdgeType(<TRAIN>, 5, 4312, 23.0));
+		
+		graph.addEdgeType("L1", "L2", new EdgeType(<FERRY>, 12, 81, 405.0));
+		graph.addEdgeType("L2", "L5", new EdgeType(<FERRY>, 29, 24, 706.0));
+		graph.addEdgeType("L5", "L9", new EdgeType(<FERRY>, 25, 11, 802.0));
+		graph.addEdgeType("L9", "L10", new EdgeType(<FERRY>, 51, 101, 102.0));
+		graph.addEdgeType("L10", "L12", new EdgeType(<FERRY>, 15, 14, 560.0));
+		graph.addEdgeType("L12", "L11", new EdgeType(<FERRY>, 83, 12, 640.0));
+		graph.addEdgeType("L9", "L11", new EdgeType(<FERRY>, 81, 53, 102.0));
+		graph.addEdgeType("L11", "L13", new EdgeType(<FERRY>, 56, 42, 203.0));
+		
+		graph.addEdgeType("L1", "L2", new EdgeType(<BUS>, 14, 51, 4.0));
+		graph.addEdgeType("L2", "L5", new EdgeType(<BUS>, 12, 264, 7.0));
+		--graph.addEdgeType("L5", "L9", new EdgeType(<BUS>, 266, 191, 2.0));
+		graph.addEdgeType("L9", "L10", new EdgeType(<BUS>, 51, 191, 1.0));
+		graph.addEdgeType("L10", "L12", new EdgeType(<BUS>, 166, 134, 5.0));
+		graph.addEdgeType("L12", "L11", new EdgeType(<BUS>, 81, 12, 6.0));
+		graph.addEdgeType("L9", "L11", new EdgeType(<BUS>, 87, 543, 2.0));
+		graph.addEdgeType("L11", "L13", new EdgeType(<BUS>, 511, 4312, 3.0));
+		
+		return graph;
+	);
+	
+	-- Tests the path building and validation
+	public testPath : () ==> ()
+	testPath() ==
+	(
+		dcl path: Path := new Path(<CAR>, <PRICE>, 500);
+		dcl n1: Node := new Node(18, 18, "X1", "C1");
+		dcl n2: Node := new Node(45, 45, "X2", "C2");
+		dcl n3: Node := new Node(55, 55, "X3", "C2");
+		n2.path := n1;
+		n3.path := n2;
+		assertEqual(false, path.isPossible());
+		path.addNode(n1);
+		path.addNode(n2);
+		path.addNode(n3);
+		assertEqual(path.path(1).location, n3.location);
+		assertEqual(path.path(2).location, n2.location);
+		assertEqual(path.path(3).location, n1.location);
+		assertEqual(true, path.isPossible());
+	);
+	
+	-- Tests Dijkstra's algorithm for car only trips using all criteria
+	public testDijkstraCar: () ==> ()
+	testDijkstraCar() ==
+	(
+		dcl graph: Graph := makeGraph();
+		dcl path: Path;
+		
+		path := graph.findPath("L1", "L15", <TIME>, <CAR>);
+		assertEqual(98, path.cost);
+		assertEqual(7, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		assertEqual("L15", path.path(7).location);
+		
+		path := graph.findPath("L9", "L3", <TIME>, <CAR>);
+		assertEqual(124, path.cost);
+		assertEqual(4, len path.path);
+		assertEqual("L9", path.path(1).location);
+		assertEqual("L5", path.path(2).location);
+		assertEqual("L2", path.path(3).location);
+		assertEqual("L3", path.path(4).location);
+		
+		path := graph.findPath("L1", "L1", <TIME>, <CAR>);
+		assertEqual(0, path.cost);
+		assertEqual(1, len path.path);
+		assertEqual("L1", path.path(1).location);
+		
+		path := graph.findPath("L1", "L15", <PRICE>, <CAR>);
+		assertEqual(361, path.cost);
+		assertEqual(8, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		assertEqual("L16", path.path(7).location);
+		assertEqual("L15", path.path(8).location);
+		
+		path := graph.findPath("L15", "L7", <DISTANCE>, <CAR>);
+		assertEqual(2497, path.cost);
+		assertEqual(9, len path.path);
+		assertEqual("L15", path.path(1).location);
+		assertEqual("L13", path.path(2).location);
+		assertEqual("L11", path.path(3).location);
+		assertEqual("L12", path.path(4).location);
+		assertEqual("L10", path.path(5).location);
+		assertEqual("L9", path.path(6).location);
+		assertEqual("L5", path.path(7).location);
+		assertEqual("L6", path.path(8).location);
+		assertEqual("L7", path.path(9).location);
+	);
+	
+	-- Tests Dijkstra's algorithm for plane only trips using all criteria
+	public testDijkstraPlane: () ==> ()
+	testDijkstraPlane() ==
+	(
+		dcl graph: Graph := makeGraph();
+		dcl path: Path;
+		
+		path := graph.findPath("L1", "L13", <TIME>, <PLANE>);
+		assertEqual(99, path.cost);
+		assertEqual(8, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L10", path.path(5).location);
+		assertEqual("L12", path.path(6).location);
+		assertEqual("L11", path.path(7).location);
+		assertEqual("L13", path.path(8).location);
+		
+		path := graph.findPath("L1", "L15", <TIME>, <PLANE>);
+		assertEqual(-1, path.cost);
+		
+		path := graph.findPath("L1", "L13", <PRICE>, <PLANE>);
+		assertEqual(1740, path.cost);
+		assertEqual(6, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		
+		path := graph.findPath("L5", "L13", <DISTANCE>, <PLANE>);
+		assertEqual(570, path.cost);
+		assertEqual(4, len path.path);
+		assertEqual("L5", path.path(1).location);
+		assertEqual("L9", path.path(2).location);
+		assertEqual("L11", path.path(3).location);
+		assertEqual("L13", path.path(4).location);
+	);
+	
+	-- Tests Dijkstra's algorithm for other travel types trips using the time criterion
+	public testDijkstraOthers: () ==> ()
+	testDijkstraOthers() ==
+	(
+		dcl graph: Graph := makeGraph();
+		dcl path: Path;
+		
+		path := graph.findPath("L1", "L13", <TIME>, <ANY>);
+		assertEqual(true, path.isPossible());
+		assertEqual(18, path.cost);
+		assertEqual(6, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		
+		path := graph.findPath("L1", "L13", <TIME>, <FERRY>);
+		assertEqual(true, path.isPossible());
+		assertEqual(203, path.cost);
+		assertEqual(6, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		
+		path := graph.findPath("L1", "L13", <TIME>, <TRAIN>);
+		assertEqual(true, path.isPossible());
+		assertEqual(18, path.cost);
+		assertEqual(6, len path.path);
+		
+		path := graph.findPath("L1", "L13", <TIME>, <BUS>);
+		assertEqual(false, path.isPossible());
+	);
+
+	/** USE CASE SCENARIOS**/
+	/** Only pre-conditions relating to authentication are stated here,
+	as all others are already built into the model itself **/
+
+	-- Tests use case UC1
+	public testAdminLogin: () ==> ()
+	testAdminLogin() ==
+	(
+		r2r := new Rome2Rio();
+		assertEqual(false, r2r.changeToAdmin("foo"));
+		assertEqual(true, r2r.changeToAdmin("default"));
+		assertEqual(r2r.status, <Administrator>);
+	);
+	
+	-- Tests use cases UC2 and UC7
+	public testAdminPasswordChange: () ==> ()
+	testAdminPasswordChange() ==
+	(
+		r2r.setAdministratorPassword("new_password");
+		assertEqual(r2r.adminCode, "new_password");
+		r2r.changeToClient();
+		assertEqual(r2r.status, <Client>);
+		assertEqual(false, r2r.changeToAdmin("default"));
+		assertEqual(true, r2r.changeToAdmin("new_password"));
+		assertEqual(r2r.status, <Administrator>);
+	);
+	
+	-- Tests use case UC3
+	public testAddLocations : () ==> ()
+	testAddLocations() ==
+	(
+		r2r.addLocation("L1", "C1", 1.0, 1.0);
+		assertEqual(1, card r2r.graph.node);
+		r2r.addLocation("L2", "C1", 2.0, 2.0);
+		assertEqual(2, card r2r.graph.node);
+		r2r.addLocation("L3", "C1", 3.0, 3.0);
+		assertEqual(3, card r2r.graph.node);
+		r2r.addLocation("L4", "C1", 4.0, 3.0);
+		assertEqual(4, card r2r.graph.node);
+	);
+	
+	-- Tests use case UC4
+	public testAddConnections: () ==> ()
+	testAddConnections() ==
+	(
+		r2r.addWayBetweenLocations("L1", "L2", <CAR>, 1, 1, 1.0);
+		assertEqual(1, card r2r.graph.edge);
+		r2r.addWayBetweenLocations("L1", "L3", <CAR>, 2, 2, 2.0);
+		assertEqual(2, card r2r.graph.edge);
+		r2r.addWayBetweenLocations("L2", "L3", <CAR>, 3, 3, 3.0);
+		assertEqual(3, card r2r.graph.edge);
+	);
+	
+	-- Tests use case UC5
+	public testAddTravelTypes: () ==> ()
+	testAddTravelTypes() ==
+	(
+		r2r.addNewTransportationType("L1", "L2", <PLANE>, 50, 50, 50.5);
+		assertEqual(2, card r2r.graph.findEdge("L1", "L2").edgeType);
+		r2r.addNewTransportationType("L1", "L2", <FERRY>, 30, 30, 30.5);
+		assertEqual(3, card r2r.graph.findEdge("L1", "L2").edgeType);
+		r2r.addNewTransportationType("L2", "L3", <PLANE>, 50, 50, 50.5);
+		assertEqual(2, card r2r.graph.findEdge("L2", "L3").edgeType);
+	);
+	
+	-- Tests use case UC6
+	public testRemoveLocations: () ==> ()
+	testRemoveLocations() ==
+	(
+		dcl edgeCount: nat := card r2r.graph.edge;
+		dcl nodeCount: nat := card r2r.graph.node;
+		r2r.removeLocation("L1");
+		assertEqual(edgeCount - 2, card r2r.graph.edge);
+		assertEqual(nodeCount - 1, card r2r.graph.node);
+		r2r.graph := makeGraph();
+	);
+	
+	-- Tests use case UC8
+	public testListLocations: () ==> ()
+	testListLocations() ==
+		assertEqual(card r2r.graph.node, r2r.listLocations());
+		
+	-- Tests use case UC9
+	public testGetRouteWithCriteria: () ==> ()
+	testGetRouteWithCriteria() ==
+	(
+		dcl path: Path;
+		
+		-- since we need a few more nodes and edges to make interesting stuff,
+		-- we'll use the graph from the unit tests
+		r2r.graph := makeGraph();
+	
+		-- since we already proved that Dijkstra's algorithm worked with
+		-- different criteria using the unit tests, we'll just test an
+		-- instance with a possible route and another one with an impossible one
+		path := r2r.getRouteWithCriteria("L1", "L15", <CAR>, <TIME>);
+		assertEqual(true, path.isPossible());
+		assertEqual(98, path.cost);
+		assertEqual(7, len path.path);
+		assertEqual("L1", path.path(1).location);
+		assertEqual("L2", path.path(2).location);
+		assertEqual("L5", path.path(3).location);
+		assertEqual("L9", path.path(4).location);
+		assertEqual("L11", path.path(5).location);
+		assertEqual("L13", path.path(6).location);
+		assertEqual("L15", path.path(7).location);
+		
+		path := r2r.getRouteWithCriteria("L1", "L15", <PLANE>, <TIME>);
+		assertEqual(false, path.isPossible());
+		assertEqual(-1, path.cost);
+	);
+	
+	-- Tests use case UC10
+	public testGetAllRoutes : () ==> ()
+	testGetAllRoutes() ==
+	(
+		dcl paths: set of (Path) := {};
+		r2r := new Rome2Rio();
+		r2r.graph := makeGraph();
+		paths := r2r.getBestRoutesForAllCriteria("L1", "L13");
+		assertEqual(card paths, 15);
+		
+		for all p in set paths do 
+			assertEqual(true, p.isPossible());
+	);
+	
+	/** UNIT TEST FOR ERRORS (FAILING INVARIANTS, PRE AND POST CONDITIONS)**/
+	
+	-- uncomment each line and run to see the respective error
+	-- (only one at a time)
+	public testErrors: () ==> ()
+	testErrors() ==
+	(
+		dcl graph: Graph := new Graph();
+		dcl node: Node;
+		dcl edge: Edge;
+		dcl et: EdgeType;
+		dcl pq: PriorityQueue := new PriorityQueue();
+		dcl r2r: Rome2Rio := new Rome2Rio();
+		graph.addNode("L1", "C1", 1, 1);
+		
+		-- out-of-bounds coordinate (pre-condition)
+		--graph.addNode("L2", "C2", 200, 1);
+		--graph.addNode("L2", "C2", -200, 1);
+		--graph.addNode("L2", "C2", 1, 200);
+		--graph.addNode("L2", "C2", 1, -200);
+		
+		-- duplicate location (invariant)
+		-- graph.addNode("L1", "C1", 5, 5);
+		
+		-- duplicate coordinate (invariant)
+		--graph.addNode("L2", "C1", 1, 1);
+		
+		graph.addNode("L2", "C1", 5, 5);
+		graph.addEdge("L1", "L2", new EdgeType(<CAR>, 1, 1, 1));
+		
+		-- duplicate edge (pre-condition)
+		--graph.addEdge("L1", "L2", new EdgeType(<TRAIN>, 1, 1, 1));
+		
+		-- duplicate edge type (invariant)
+		--graph.addEdgeType("L1", "L2", new EdgeType(<CAR>, 1, 1, 1));
+		
+		-- find non-existing node (pre-condition)
+		--node := graph.findNode("L55");
+		
+		-- find non-existing edge (pre-condition)
+		--edge := graph.findEdge("L1", "L55");
+		--edge := graph.findEdge("L55", "L1");
+		--edge := graph.findEdge("L55", "L88");
+		
+		node := new Node(1, 1, "A", "B");
+		pq.addElement(node);
+		-- duplicate node in priority queue (pre-condition)
+		--pq.addElement(node);
+		
+		-- token <ANY> on EdgeType (pre-condition)
+		--et := new EdgeType(<ANY>, 1, 1, 1);
+		
+		-- remove non-existing node (pre-condition)
+		--graph.removeNode("L13");
+		
+		-- admin operations without being an admin (pre-condition)
+		--r2r.setAdministratorPassword("foo");
+		--r2r.addLocation("foo", "bar", 1, 1);
+		--r2r.addWayBetweenLocations("foo", "bar", <CAR>, 1, 1, 1);
+		--r2r.addNewTransportationType("foo", "bar", <BUS>, 1, 1, 1);
+		--r2r.removeLocation("foo");
+		--r2r.changeToClient();
+	);
+	
+	/** ENTRY POINT FOR THE TEST SUITE**/
+
+	public testAll: () ==> ()
+	testAll() == 
+	(
+		/*UNIT TESTS*/
+	  testAddNodesAndEdges();
+	  testPriorityQueue();
+	  testPath();
+	  testDijkstraCar();
+	  testDijkstraPlane();
+	  testDijkstraOthers();
+	  
+	  /*USE CASE SCENARIOS*/
+	  testAdminLogin();
+	  testAdminPasswordChange();
+	  testAddLocations();
+	  testAddConnections();
+	  testAddTravelTypes();
+	  testRemoveLocations();
+	  testListLocations();
+	  testGetRouteWithCriteria();
+	  testGetAllRoutes();
+	  
+	  /*ERROR CHECKING*/
+	  testErrors();
+	);
+
+end TestRome2Rio
